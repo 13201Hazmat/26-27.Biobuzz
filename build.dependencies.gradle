@@ -15,6 +15,17 @@ dependencies {
     implementation 'org.firstinspires.ftc:Vision:12.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
+    // PEDRO + IVY
     implementation 'com.pedropathing:revhub:3.0.1'
     implementation 'com.pedropathing:tuning:1.0.1'
+    implementation 'com.pedropathing.ivy:pedro:1.1.1'
+
+    // NEXTFTC
+    implementation 'dev.nextftc.v2:control:0.2.1'
+    implementation 'dev.nextftc.v2:hardware:0.2.1'
+    implementation 'dev.nextftc.v2:robot:0.2.1'
+
+    //SLOTH + PANELS
+    implementation "dev.frozenmilk.sinister:Sloth:0.3.2"
+    implementation "com.bylazar.sloth:fullpanels:0.3.2+1.0.13"
 }
