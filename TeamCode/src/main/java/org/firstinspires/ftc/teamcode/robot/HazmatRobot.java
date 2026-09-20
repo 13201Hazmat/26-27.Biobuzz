@@ -37,6 +37,10 @@ public class HazmatRobot implements NextRobot {
         return intake;
     }
 
+    public Limelight getLimelight(){
+        return limelight;
+    }
+
     @NonNull
     @Override
     public Set<Mechanism> getMechanisms() {
