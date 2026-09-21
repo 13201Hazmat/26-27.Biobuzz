@@ -4,38 +4,36 @@ import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.data.Config;
 
-import dev.nextftc.hardware.RobotController;
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.units.measuretypes.AngularVelocity;
 
 public class Intake implements Mechanism {
-    private final double forward = 1.0;
-    private final double reverse = -1.0;
-    private final double off = 0.0;
-    NextMotor intakeMotor = new NextMotor(RobotController.expansionHub(), Config.m);
+    private static final double FORWARD = 1.0;
+    private static final double REVERSE = -1.0;
+    private static final double OFF = 0.0;
+
+    NextMotor intakeMotor = new NextMotor(Config.mModule, Config.mPort);
     private IntakeState intakeState;
-    private final double power;
-    private AngularVelocity speed;
+
+    public enum IntakeState {
+        FORWARD,
+        REVERSE,
+        OFF
+    }
 
     public Intake() {
-        intakeState = IntakeState.OFF;
-        power = off;
         intakeMotor.setDirection(NextMotor.Direction.REVERSE);
+        intakeState = IntakeState.OFF;
     }
 
-    private void setState(IntakeState intakeState) {
-        this.intakeState = intakeState;
+    public Command setForward() {
+        return instant(() -> setState(IntakeState.FORWARD));
     }
 
-    // USE THESE METHOD FOR INTAKE
-    public Command setForward(){
-        return instant(() -> this.setState(IntakeState.FORWARD));
+    public Command setReverse() {
+        return instant(() -> setState(IntakeState.REVERSE));
     }
 
-    public Command setReverse(){
-        return instant(() -> this.setState(IntakeState.REVERSE));
-    }
     public double getSpeed() {
         return intakeMotor.getThrottle();
     }
@@ -46,24 +44,22 @@ public class Intake implements Mechanism {
         else intakeState = IntakeState.FORWARD;
     }
 
+    private void setState(IntakeState intakeState) {
+        this.intakeState = intakeState;
+    }
+
     @Override
     public void periodic() {
         switch (intakeState) {
             case FORWARD:
-                intakeMotor.setThrottle(forward);
+                intakeMotor.setThrottle(FORWARD);
                 break;
             case REVERSE:
-                intakeMotor.setThrottle(reverse);
+                intakeMotor.setThrottle(REVERSE);
                 break;
             case OFF:
-                intakeMotor.setThrottle(off);
+                intakeMotor.setThrottle(OFF);
                 break;
         }
-    }
-
-    public enum IntakeState {
-        FORWARD,
-        REVERSE,
-        OFF
     }
 }
