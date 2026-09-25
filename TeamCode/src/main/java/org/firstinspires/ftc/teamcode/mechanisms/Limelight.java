@@ -37,7 +37,6 @@ public class Limelight implements Mechanism {
             return null;
         }
 
-
         double cameraToBallAngle = Math.toRadians(CAMERA_PITCH + targetY);
 
         // Checks for impossible math
