@@ -14,10 +14,10 @@ public class Teleop extends NextOpMode {
         super(robot);
         this.robot = robot;
 
-//        Trigger.Companion.getDefaultEventLoop().clear();
-//        CommandGamepad gp1 = new CommandGamepad(gamepad1);
-//
-//        gp1.rightBumper().onTrue(robot.getIntake().setForward());
+        Trigger.Companion.getDefaultEventLoop().clear();
+        CommandGamepad gp1 = new CommandGamepad(gamepad1);
+
+        gp1.rightBumper().onTrue(robot.getIntake().setForward());
     }
 
     @Override
