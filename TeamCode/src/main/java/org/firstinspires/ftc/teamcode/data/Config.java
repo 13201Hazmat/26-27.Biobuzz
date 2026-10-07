@@ -35,7 +35,7 @@ public class Config {
     public static int kPort = 1;
     public static NextLynxModule lModule = RobotController.expansionHub();
     public static int lPort = 2;
-    public static NextLynxModule mModule = RobotController.expansionHub();
+    public static NextLynxModule mModule = RobotController.controlHub();
     public static int mPort = 3;
 
 }

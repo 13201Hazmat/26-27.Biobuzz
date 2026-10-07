@@ -5,9 +5,6 @@ import androidx.annotation.NonNull;
 import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
-import org.firstinspires.ftc.teamcode.mechanisms.Limelight;
-import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -19,11 +16,9 @@ import dev.nextftc.robot.NextRobot;
 public class HazmatRobot implements NextRobot {
     private Follower follower;
     private Intake intake;
-    private Launcher launcher;
-    private Transfer transfer;
-    private Limelight limelight;
 
     public HazmatRobot() {
+        intake = new Intake();
     }
 
     public Follower getFollower() {
@@ -37,13 +32,8 @@ public class HazmatRobot implements NextRobot {
         return intake;
     }
 
-    public Limelight getLimelight(){
-        return limelight;
-    }
-
-    @NonNull
     @Override
     public Set<Mechanism> getMechanisms() {
-        return Set.of(intake, transfer, launcher, limelight);
+        return Set.of(intake);
     }
 }
