@@ -18,30 +18,24 @@ import dev.nextftc.robot.Mechanism;
 public class Transfer implements Mechanism {
 	private static final double FORWARD_SPEED = 1.0;
 	private static final double BACKWARD_SPEED = -1.0;
+
 	private final NextMotor transferMotor = new NextMotor(Config.aModule, Config.aPort);
 	private TransferState transferState;
-	// Inverted means that when detected it will return true
 	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor(Config.bModule, Config.bPort, true);
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor(Config.cModule,
 			Config.cPort, true);
-	// Order in which the balls are stored and released.
-	private final Queue<BallType> storedBalls;
+
+	private boolean lastBeamBreakState = false;
+
+	private final ArrayDeque<BallType> storedBalls;
 
 	public enum TransferState {
-		// Moving forward
-		FORWARD,
-		// Moving backward
-		BACKWARD,
-		// Full, not moving at all
-		FULL
+		FORWARD, BACKWARD, FULL
 	}
 
 	public Transfer() {
-		// TODO SWITCH THIS VALUE IF NEEDED
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
-
 		transferState = TransferState.FORWARD;
-
 		storedBalls = new ArrayDeque<>();
 	}
 
@@ -74,19 +68,45 @@ public class Transfer implements Mechanism {
 		} else if (ColorProfiles.POLLEN_COLOR_PROFILE.matches(detectedColor)) {
 			return BallType.POLLEN;
 		}
-		return null;
+		return BallType.NOTHING;
+	}
+
+	public Queue<BallType> getStoredBalls() {
+		return storedBalls;
+	}
+
+	public BallType getTopBall() {
+		return storedBalls.peek();
+	}
+
+	public BallType removeTopBall() {
+		return storedBalls.removeFirst();
 	}
 
 	@Override
 	public void periodic() {
+		transferColorSensor.update();
 		switch (transferState) {
 			case FORWARD :
 				transferMotor.setThrottle(FORWARD_SPEED);
+				break;
 			case BACKWARD :
 				transferMotor.setThrottle(BACKWARD_SPEED);
+				break;
 			case FULL :
 				transferMotor.setThrottle(0.0);
+				break;
 		}
-		storedBalls.add(detectColor());
+
+		boolean currentBeamBreakState = transferBeamBreak.getRawState();
+
+		if (currentBeamBreakState && !lastBeamBreakState) {
+			BallType detected = detectColor();
+			if (detected != BallType.NOTHING) {
+				storedBalls.add(detected);
+			}
+		}
+
+		lastBeamBreakState = currentBeamBreakState;
 	}
 }

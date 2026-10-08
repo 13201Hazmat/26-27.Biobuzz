@@ -5,7 +5,7 @@ import dev.nextftc.hardware.sensors.colors.ColorSpace;
 import dev.nextftc.hardware.sensors.colors.NextColor;
 
 public class ColorProfiles {
-	//TODO CHANGE THE COLORS TO CORRESPONDING COLORS
+	// TODO CHANGE THE COLORS TO CORRESPONDING COLORS
 	public static final NextColor ACTUAL_POLLEN_COLOR = new NextColor(1, 1, 1);
 	public static final NextColor ACTUAL_RED_NECTAR_COLOR = new NextColor(1, 1, 1);
 	public static final NextColor ACTUAL_BLUE_NECTAR_COLOR = new NextColor(1, 1, 1);
