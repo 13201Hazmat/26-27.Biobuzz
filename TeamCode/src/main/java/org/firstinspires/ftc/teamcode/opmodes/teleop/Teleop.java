@@ -18,6 +18,11 @@ public class Teleop extends NextOpMode {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		gp1.rightBumper().onTrue(robot.getIntake().setForward());
+		robot.getFollower().manual(
+				-gp1.leftStickX().getValue(),
+				-gp1.leftStickX().getValue(),
+				-gp1.rightStickX().getValue()
+		);
 	}
 
 	@Override
