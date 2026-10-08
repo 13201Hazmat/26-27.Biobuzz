@@ -1,6 +1,7 @@
 repositories {
     mavenCentral()
     maven { url 'https://repo.dairy.foundation/releases/'}
+    maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     google() // Needed for androidx
 }
 
@@ -21,7 +22,7 @@ dependencies {
     implementation 'com.pedropathing.ivy:pedro:1.1.1'
 
     // NEXTFTC
-    implementation 'dev.nextftc.v2:robot:0.2.1'
+    implementation 'dev.nextftc.v2:0.3.0-SNAPSHOT'
 
     //SLOTH + PANELS
     implementation("dev.frozenmilk.sinister:Sloth:0.3.2")
