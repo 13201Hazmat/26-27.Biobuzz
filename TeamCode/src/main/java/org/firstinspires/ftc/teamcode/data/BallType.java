@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.data;
 
 public enum BallType {
-    NECTAR,
-    POLLEN,
-    NOTHING;
+	NECTAR, POLLEN, NOTHING;
 
-    public static BallType current = NECTAR;
+	public static BallType current = NECTAR;
 
 }

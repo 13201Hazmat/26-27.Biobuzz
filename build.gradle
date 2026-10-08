@@ -15,6 +15,7 @@ plugins {
     // Note for FTC Teams: Do not modify this yourself.
     id 'com.android.application' version '8.13.2' apply false
     id 'com.android.library' version '8.13.2' apply false
+    id "com.diffplug.spotless" version "7.2.1"
 }
 
 // This is now required because aapt2 has to be downloaded from the
@@ -28,4 +29,13 @@ allprojects {
 
 repositories {
     mavenCentral()
+}
+
+spotless {
+    java {
+        target "TeamCode/src/**/*.java"
+        targetExclude "TeamCode/src/**/pedro/**/*.java"
+
+        eclipse()
+    }
 }
