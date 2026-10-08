@@ -14,6 +14,7 @@ import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.hardware.sensors.colors.NextColor;
 import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.Telemetry;
 
 public class Transfer implements Mechanism {
 	private static final double FORWARD_SPEED = 1.0;
@@ -79,13 +80,25 @@ public class Transfer implements Mechanism {
 		return storedBalls.peek();
 	}
 
-	public BallType removeTopBall() {
-		return storedBalls.removeFirst();
+	public void removeTopBall() {
+		storedBalls.removeFirst();
+	}
+
+	public boolean isFull() {
+		return storedBalls.size() == 4;
+	}
+
+	public void printDebugMessages() {
+		Telemetry.log("TRANSFER TELEMETRY");
+		Telemetry.log("Motor Speed:", transferMotor.getThrottle());
+		Telemetry.log("Ball Color:", transferColorSensor.getColor());
+		Telemetry.log("Top Ball:", getTopBall());
 	}
 
 	@Override
 	public void periodic() {
 		transferColorSensor.update();
+		Telemetry.update();
 		switch (transferState) {
 			case FORWARD :
 				transferMotor.setThrottle(FORWARD_SPEED);
