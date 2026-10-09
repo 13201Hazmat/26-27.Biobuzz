@@ -28,7 +28,6 @@ public enum BallType {
 		} else if (currentBallType == BallType.BLUE_NECTAR) {
 			finalString = "BLUE NECTAR";
 		}
-
 		return finalString;
 	}
 }

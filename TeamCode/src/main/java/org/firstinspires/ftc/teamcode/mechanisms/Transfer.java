@@ -20,11 +20,10 @@ public class Transfer implements Mechanism {
 	private static final double FORWARD_SPEED = 1.0;
 	private static final double BACKWARD_SPEED = -1.0;
 
-	private final NextMotor transferMotor = new NextMotor(Config.aModule, Config.aPort);
+	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
 	private TransferState transferState;
-	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor(Config.bModule, Config.bPort, true);
-	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor(Config.cModule,
-			Config.cPort, true);
+	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
+	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorIsCool");
 
 	private boolean lastBeamBreakState = false;
 
@@ -60,16 +59,33 @@ public class Transfer implements Mechanism {
 		return instant(() -> setState(TransferState.FULL));
 	}
 
-	public BallType detectColor() {
-		NextColor detectedColor = transferColorSensor.getColor();
-		if (ColorProfiles.BLUE_NECTAR_COLOR_PROFILE.matches(detectedColor)) {
-			return BallType.BLUE_NECTAR;
-		} else if (ColorProfiles.RED_NECTAR_COLOR_PROFILE.matches(detectedColor)) {
-			return BallType.RED_NECTAR;
-		} else if (ColorProfiles.POLLEN_COLOR_PROFILE.matches(detectedColor)) {
-			return BallType.POLLEN;
+	public void cycle() {
+		if (transferState == TransferState.FORWARD){
+			transferState = TransferState.BACKWARD;
 		}
-		return BallType.NOTHING;
+		else if (transferState == TransferState.BACKWARD){
+			transferState = TransferState.FULL;
+		}
+		else {
+			transferState = TransferState.FORWARD;
+		}
+	}
+
+	public float[] getHSV() {
+		return transferColorSensor.getColor().getHsv();
+
+	}
+
+	public BallType getBallType() {
+		if(transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)){
+			return BallType.POLLEN;
+		} else if(transferColorSensor.isColor(ColorProfiles.BLUE_NECTAR_COLOR_PROFILE)) {
+			return BallType.BLUE_NECTAR;
+		} else if(transferColorSensor.isColor(ColorProfiles.RED_NECTAR_COLOR_PROFILE)) {
+			return BallType.RED_NECTAR;
+		}
+
+		return null;
 	}
 
 	public Queue<BallType> getStoredBalls() {
@@ -89,16 +105,20 @@ public class Transfer implements Mechanism {
 	}
 
 	public void printDebugMessages() {
-		Telemetry.log("TRANSFER TELEMETRY");
-		Telemetry.log("Motor Speed:", transferMotor.getThrottle());
-		Telemetry.log("Ball Color:", transferColorSensor.getColor());
-		Telemetry.log("Top Ball:", getTopBall());
+//		Telemetry.log("HUE:", getHSV()[0]);
+//		Telemetry.log("SATURATION:", getHSV()[1]);
+//		Telemetry.log("VALUE:", getHSV()[2]);
+		Telemetry.log("DEBUG:", transferColorSensor.debug());
+		Telemetry.log("BALL TYPE:", BallType.currentBallType);
 	}
 
 	@Override
 	public void periodic() {
+		BallType.currentBallType = getBallType();
 		transferColorSensor.update();
+		printDebugMessages();
 		Telemetry.update();
+
 		switch (transferState) {
 			case FORWARD :
 				transferMotor.setThrottle(FORWARD_SPEED);
@@ -110,16 +130,16 @@ public class Transfer implements Mechanism {
 				transferMotor.setThrottle(0.0);
 				break;
 		}
-
-		boolean currentBeamBreakState = transferBeamBreak.getRawState();
-
-		if (currentBeamBreakState && !lastBeamBreakState) {
-			BallType detected = detectColor();
-			if (detected != BallType.NOTHING) {
-				storedBalls.add(detected);
-			}
-		}
-
-		lastBeamBreakState = currentBeamBreakState;
+//
+//		boolean currentBeamBreakState = transferBeamBreak.getRawState();
+//
+//		if (currentBeamBreakState && !lastBeamBreakState) {
+//			BallType detected = detectColor();
+//			if (detected != BallType.NOTHING) {
+//				storedBalls.add(detected);
+//			}
+//		}
+//
+//		lastBeamBreakState = currentBeamBreakState;
 	}
 }
