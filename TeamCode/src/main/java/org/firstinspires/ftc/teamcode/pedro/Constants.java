@@ -29,7 +29,6 @@ public class Constants {
             }
     );
 
-
     public static OctoQuadConfig octoQuadConfig = new OctoQuadConfig(
             o -> {
 

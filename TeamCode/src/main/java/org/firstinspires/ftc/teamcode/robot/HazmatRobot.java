@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import androidx.annotation.NonNull;
+
 import com.pedropathing.follower.Follower;
+
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -13,12 +16,12 @@ import dev.nextftc.robot.NextRobot;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
-	private final Intake intake;
-	private final Drivetrain drivetrain;
+	private Intake intake;
+	private Drivetrain drivetrain;
 
 	public HazmatRobot() {
 		intake = new Intake();
-		drivetrain = new Drivetrain(getFollower());
+		drivetrain = new Drivetrain();
 	}
 
 	public Follower getFollower() {
@@ -38,6 +41,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, drivetrain);
+		return Set.of(intake);
 	}
 }
