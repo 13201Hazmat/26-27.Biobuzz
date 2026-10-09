@@ -6,18 +6,18 @@ import dev.nextftc.hardware.lynx.NextLynxModule;
 public class Config {
 
 	// Control Hub
-	public static NextLynxModule aModule = RobotController.controlHub();
-	public static int aPort = 0;
-	public static NextLynxModule bModule = RobotController.controlHub();
-	public static int bPort = 1;
+	public static NextLynxModule leftLauncherModule = RobotController.controlHub();
+	public static int leftLauncherPort = 0;
+	public static NextLynxModule rightLauncherModule = RobotController.controlHub();
+	public static int rightLauncherPort = 1;
 	public static NextLynxModule cModule = RobotController.controlHub();
 	public static int cPort = 2;
 	public static NextLynxModule dModule = RobotController.controlHub();
 	public static int dPort = 3;
 
 	// Servos
-	public static NextLynxModule eModule = RobotController.controlHub();
-	public static int ePort = 0;
+	public static NextLynxModule launcherHoodModule = RobotController.controlHub();
+	public static int launcherHoodPort = 0;
 	public static NextLynxModule fModule = RobotController.controlHub();
 	public static int fPort = 1;
 	public static NextLynxModule gModule = RobotController.controlHub();
