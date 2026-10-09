@@ -43,4 +43,9 @@ public class HazmatRobot implements NextRobot {
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake);
 	}
+
+	@Override
+	public void periodic() {
+		drivetrain.printDebugMessages();
+	}
 }
