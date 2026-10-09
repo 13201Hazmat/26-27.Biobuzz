@@ -13,13 +13,13 @@ public class Drivetrain implements Mechanism {
 	public final NextMotor backLeft = new NextMotor("backLeft");
 	public final NextMotor backRight = new NextMotor("backRight");
 
-    public void printDebugMessages(){
-        Telemetry.log("Front Left Motor Speed", frontLeft.getThrottle());
-        Telemetry.log("Front Right Motor Speed", frontRight.getThrottle());
-        Telemetry.log("Back Left Motor Speed", backLeft.getThrottle());
-        Telemetry.log("Back Right Motor Speed", backRight.getThrottle());
+	public void printDebugMessages() {
+		Telemetry.log("Front Left Motor Speed", frontLeft.getThrottle());
+		Telemetry.log("Front Right Motor Speed", frontRight.getThrottle());
+		Telemetry.log("Back Left Motor Speed", backLeft.getThrottle());
+		Telemetry.log("Back Right Motor Speed", backRight.getThrottle());
 
-    }
+	}
 
 	public void startDrive(Gamepad gamepad) {
 		DriveCommands.mecanumDrive(frontLeft, frontRight, backLeft, backRight, gamepad).schedule();
