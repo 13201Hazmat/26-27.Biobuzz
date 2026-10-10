@@ -44,6 +44,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		drivetrain.debug();
+
 	}
 }
