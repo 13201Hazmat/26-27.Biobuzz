@@ -10,7 +10,7 @@ import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextUtility(name = "Transfer Test")
+@NextTeleop(name = "Teleop")
 public class Teleop extends NextOpMode {
 	private final HazmatRobot robot;
 	public Teleop(HazmatRobot robot) {
@@ -21,13 +21,11 @@ public class Teleop extends NextOpMode {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
-		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
-		gp1.square().onTrue(instant(() -> robot.getTransfer().removeTopBall()));
 	}
 
 	@Override
 	public void periodic() {
-		robot.printTelemetry(telemetry);
+		robot.printTelemetry();
 		telemetry.update();
 	}
 }
