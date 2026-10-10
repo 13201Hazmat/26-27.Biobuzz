@@ -16,7 +16,6 @@ public class Drivetrain implements Mechanism {
 	public String debug() {
 		return "FL - " + frontLeft.getThrottle() + "\nFR - " + frontRight.getThrottle() + "\nBL - "
 				+ backLeft.getThrottle() + "\nBR" + backRight.getThrottle();
-
 	}
 
 	public void startDrive(Gamepad gamepad) {
