@@ -12,9 +12,7 @@ import java.util.Queue;
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
-import dev.nextftc.hardware.sensors.colors.NextColor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
 
 public class Transfer implements Mechanism {
 	private static final double FORWARD_SPEED = 1.0;
@@ -23,9 +21,9 @@ public class Transfer implements Mechanism {
 	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
 	private TransferState transferState;
 	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
-	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorIsCool");
+	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorSensor");
 
-	private boolean lastBeamBreakState = false;
+	private boolean ballAddedForCurrentTrigger = false;
 
 	private final ArrayDeque<BallType> storedBalls;
 
@@ -60,13 +58,11 @@ public class Transfer implements Mechanism {
 	}
 
 	public void cycle() {
-		if (transferState == TransferState.FORWARD){
+		if (transferState == TransferState.FORWARD) {
 			transferState = TransferState.BACKWARD;
-		}
-		else if (transferState == TransferState.BACKWARD){
+		} else if (transferState == TransferState.BACKWARD) {
 			transferState = TransferState.FULL;
-		}
-		else {
+		} else {
 			transferState = TransferState.FORWARD;
 		}
 	}
@@ -77,15 +73,15 @@ public class Transfer implements Mechanism {
 	}
 
 	public BallType getBallType() {
-		if(transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)){
+		if (transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)) {
 			return BallType.POLLEN;
-		} else if(transferColorSensor.isColor(ColorProfiles.BLUE_NECTAR_COLOR_PROFILE)) {
+		} else if (transferColorSensor.isColor(ColorProfiles.BLUE_NECTAR_COLOR_PROFILE)) {
 			return BallType.BLUE_NECTAR;
-		} else if(transferColorSensor.isColor(ColorProfiles.RED_NECTAR_COLOR_PROFILE)) {
+		} else if (transferColorSensor.isColor(ColorProfiles.RED_NECTAR_COLOR_PROFILE)) {
 			return BallType.RED_NECTAR;
 		}
 
-		return null;
+		return BallType.NOTHING;
 	}
 
 	public Queue<BallType> getStoredBalls() {
@@ -96,6 +92,14 @@ public class Transfer implements Mechanism {
 		return storedBalls.peek();
 	}
 
+	public NextColorDistanceSensor getTransferColorSensor() {
+		return transferColorSensor;
+	}
+
+	public NextDigitalSensor getTransferBeamBreak() {
+		return transferBeamBreak;
+	}
+
 	public void removeTopBall() {
 		storedBalls.removeFirst();
 	}
@@ -104,20 +108,15 @@ public class Transfer implements Mechanism {
 		return storedBalls.size() == 4;
 	}
 
-	public void printDebugMessages() {
-//		Telemetry.log("HUE:", getHSV()[0]);
-//		Telemetry.log("SATURATION:", getHSV()[1]);
-//		Telemetry.log("VALUE:", getHSV()[2]);
-		Telemetry.log("DEBUG:", transferColorSensor.debug());
-		Telemetry.log("BALL TYPE:", BallType.currentBallType);
+	public void init() {
+		storedBalls.clear();
+		ballAddedForCurrentTrigger = false;
 	}
 
 	@Override
 	public void periodic() {
-		BallType.currentBallType = getBallType();
 		transferColorSensor.update();
-		printDebugMessages();
-		Telemetry.update();
+		BallType.currentBallType = getBallType();
 
 		switch (transferState) {
 			case FORWARD :
@@ -130,16 +129,19 @@ public class Transfer implements Mechanism {
 				transferMotor.setThrottle(0.0);
 				break;
 		}
-//
-//		boolean currentBeamBreakState = transferBeamBreak.getRawState();
-//
-//		if (currentBeamBreakState && !lastBeamBreakState) {
-//			BallType detected = detectColor();
-//			if (detected != BallType.NOTHING) {
-//				storedBalls.add(detected);
-//			}
-//		}
-//
-//		lastBeamBreakState = currentBeamBreakState;
+
+		boolean isTriggered = transferBeamBreak.isTriggered();
+
+		if (isTriggered) {
+			if (!ballAddedForCurrentTrigger) {
+				BallType detected = getBallType();
+				if (detected != BallType.NOTHING) {
+					storedBalls.add(detected);
+					ballAddedForCurrentTrigger = true;
+				}
+			}
+		} else {
+			ballAddedForCurrentTrigger = false;
+		}
 	}
 }

@@ -11,23 +11,28 @@ public enum BallType {
 
 	public static BallType currentBallType = BallType.NOTHING;
 	private final ColorProfile ballTypeColorProfile;
+
 	BallType(ColorProfile ballTypeColorProfile) {
 		this.ballTypeColorProfile = ballTypeColorProfile;
+	}
+
+	public ColorProfile getBallTypeColorProfile() {
+		return ballTypeColorProfile;
 	}
 
 	@NonNull
 	@Override
 	public String toString() {
-		String finalString = "";
-		if (currentBallType == BallType.NOTHING) {
-			finalString = "NOTHING";
-		} else if (currentBallType == BallType.POLLEN) {
-			finalString = "POLLEN";
-		} else if (currentBallType == BallType.RED_NECTAR) {
-			finalString = "RED NECTAR";
-		} else if (currentBallType == BallType.BLUE_NECTAR) {
-			finalString = "BLUE NECTAR";
+		switch (this) {
+			case POLLEN :
+				return "POLLEN";
+			case RED_NECTAR :
+				return "RED NECTAR";
+			case BLUE_NECTAR :
+				return "BLUE NECTAR";
+			case NOTHING :
+			default :
+				return "NOTHING";
 		}
-		return finalString;
 	}
 }

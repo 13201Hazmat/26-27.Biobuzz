@@ -15,17 +15,18 @@ public class Teleop extends NextOpMode {
 	public Teleop(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
-
+		robot.getTransfer().init();
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
-		gp1.x().onTrue(instant(() -> robot.getTransfer().removeTopBall()));
+		gp1.square().onTrue(instant(() -> robot.getTransfer().removeTopBall()));
 	}
 
 	@Override
 	public void periodic() {
+		robot.printTelemetry(telemetry);
 		telemetry.update();
 	}
 }

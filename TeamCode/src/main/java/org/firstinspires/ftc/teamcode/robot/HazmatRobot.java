@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.pedropathing.follower.Follower;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -34,6 +36,14 @@ public class HazmatRobot implements NextRobot {
 	}
 	public Transfer getTransfer() {
 		return transfer;
+	}
+
+	public void printTelemetry(Telemetry telemetry) {
+		telemetry.addData("DEBUG:", transfer.getTransferColorSensor().debug());
+		telemetry.addData("BEAM BREAK TRIGGERED:", transfer.getTransferBeamBreak().isTriggered());
+		telemetry.addData("BEAM BREAK RAW:", transfer.getTransferBeamBreak().getRawState());
+		telemetry.addData("BALL TYPE:", BallType.currentBallType);
+		telemetry.addData("QUEUE:", transfer.getStoredBalls());
 	}
 
 	@Override
