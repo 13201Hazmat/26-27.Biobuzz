@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import static dev.nextftc.units.Units.Degrees;
 import static dev.nextftc.units.Units.RotationsPerMinute;
 
-import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
 
 public class Launcher implements Mechanism {
     private final NextMotor leftLauncher = new NextMotor(Config.leftLauncherModule, Config.leftLauncherPort, Degrees.of(360.0/ 28.0) );
@@ -21,6 +21,9 @@ public class Launcher implements Mechanism {
     private final double TOLERANCE = 25.0;
 
     private final double IDLE_SPEED = 0.0;
+    private final double CLOSE_SPEED = 0.0;
+    private final double FAR_SPEED = 0.0;
+
     private double targetVelocity = 0.0;
 
     private boolean powerMode = false;
@@ -103,6 +106,15 @@ public class Launcher implements Mechanism {
         rightLauncher.setThrottle(getPower() - 0.05);
     }
 
+    public void setClosePose(){
+        setTargetVelocity(CLOSE_SPEED);
+    }
+    public void setFarPose(){
+        setTargetVelocity(FAR_SPEED);
+    }
+    public void autoSetVelocity(Pose current){
+        setTargetVelocity(Calc.getVelocity(current));
+    }
     public String debug(){
         return "Launcher RPM:" + getCurrentRPM() + ", Launcher Power:" + getPower();
     }

@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import androidx.annotation.NonNull;
-
 import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -35,11 +36,32 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
+	public Pose getCurrentPose(){
+		return getFollower().pose();
+	}
+
 	public Intake getIntake() {
 		return intake;
 	}
 	public Launcher getLauncher() {
 		return launcher;
+	}
+
+	public void setTargetPose(Alliance a, Pose current){
+		if (a == Alliance.RED){
+			if (current.y() > 70.5){
+				PathsAndPoses.targetPose = PathsAndPoses.redFarHive;
+			} else {
+				PathsAndPoses.targetPose = PathsAndPoses.redAudienceHive;
+			}
+		}
+		if (a == Alliance.BLUE){
+			if (current.y() > 70.5){
+				PathsAndPoses.targetPose = PathsAndPoses.blueFarHive;
+			} else {
+				PathsAndPoses.targetPose = PathsAndPoses.blueAudienceHive;
+			}
+		}
 	}
 
 	public void updateTelemetry(Telemetry telemetry){
