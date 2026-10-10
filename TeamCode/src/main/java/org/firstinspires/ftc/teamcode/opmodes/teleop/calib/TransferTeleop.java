@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.teleop.calib;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
@@ -9,17 +9,21 @@ import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextTeleop(name = "Teleop")
-public class Teleop extends NextOpMode {
+@NextTeleop(name = "Transfer Test")
+public class TransferTeleop extends NextOpMode {
 	private final HazmatRobot robot;
-	public Teleop(HazmatRobot robot) {
+	public TransferTeleop(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
 		robot.getTransfer().init();
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+		gp1.leftBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+		gp1.rightBumper().onTrue(robot.getTransfer().setForward());
+		gp1.triangle().onTrue(robot.getTransfer().setReverse());
+		gp1.circle().onTrue(robot.getTransfer().setFull());
+		gp1.square().onTrue(instant(() -> robot.getTransfer().getTransferSensing().removeTopBall()));
 	}
 
 	@Override

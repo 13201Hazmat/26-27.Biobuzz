@@ -10,8 +10,8 @@ public class Config {
 	public static int aPort = 0;
 	public static NextLynxModule bModule = RobotController.controlHub();
 	public static int bPort = 1;
-	public static NextLynxModule cModule = RobotController.controlHub();
-	public static int cPort = 2;
+	public static NextLynxModule transferModule = RobotController.controlHub();
+	public static int transferMotorPort = 2;
 	public static NextLynxModule dModule = RobotController.controlHub();
 	public static int dPort = 3;
 
