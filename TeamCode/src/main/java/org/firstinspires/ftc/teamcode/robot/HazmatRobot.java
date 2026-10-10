@@ -36,7 +36,7 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
-	public Pose getCurrentPose(){
+	public Pose getCurrentPose() {
 		return getFollower().pose();
 	}
 
@@ -46,17 +46,20 @@ public class HazmatRobot implements NextRobot {
 	public Launcher getLauncher() {
 		return launcher;
 	}
+	public LauncherHood getLauncherHood() {
+		return launcherHood;
+	}
 
-	public void setTargetPose(Alliance a, Pose current){
-		if (a == Alliance.RED){
-			if (current.y() > 70.5){
+	public void setTargetPose(Alliance a, Pose current) {
+		if (a == Alliance.RED) {
+			if (current.y() > 70.5) {
 				PathsAndPoses.targetPose = PathsAndPoses.redFarHive;
 			} else {
 				PathsAndPoses.targetPose = PathsAndPoses.redAudienceHive;
 			}
 		}
-		if (a == Alliance.BLUE){
-			if (current.y() > 70.5){
+		if (a == Alliance.BLUE) {
+			if (current.y() > 70.5) {
 				PathsAndPoses.targetPose = PathsAndPoses.blueFarHive;
 			} else {
 				PathsAndPoses.targetPose = PathsAndPoses.blueAudienceHive;
@@ -64,13 +67,14 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
-	public void updateTelemetry(Telemetry telemetry){
+	public void updateTelemetry(Telemetry telemetry) {
 		telemetry.addData("Launcher", launcher.debug());
 		telemetry.addData("Launcher Hood", launcherHood.debug());
+		telemetry.update();
 	}
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake);
+		return Set.of(intake, launcher, launcherHood);
 	}
 }
