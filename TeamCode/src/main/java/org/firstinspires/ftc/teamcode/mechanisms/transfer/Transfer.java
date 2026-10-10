@@ -72,18 +72,20 @@ public class Transfer implements Mechanism {
 
 	@Override
 	public void periodic() {
+		transferSensing.periodic();
 
-		switch (transferSensing.getStoredBalls().size()){
+		switch (transferSensing.getStoredBalls().size()) {
 			case 0:
 				transferFullingState = TransferFullingState.EMPTY;
+				break;
 			case 1:
-				transferFullingState = TransferFullingState.FILLING;
 			case 2:
-				transferFullingState = TransferFullingState.FILLING;
 			case 3:
 				transferFullingState = TransferFullingState.FILLING;
+				break;
 			case 4:
 				transferFullingState = TransferFullingState.FULL;
+				break;
 		}
 
 		switch (transferMotorState) {

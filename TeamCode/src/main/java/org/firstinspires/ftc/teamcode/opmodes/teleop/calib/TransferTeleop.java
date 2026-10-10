@@ -19,8 +19,10 @@ public class TransferTeleop extends NextOpMode {
         Trigger.Companion.getDefaultEventLoop().clear();
         CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-        gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
-        gp1.leftBumper().onTrue(robot.getTransfer().setForward());
+        gp1.leftBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+        gp1.rightBumper().onTrue(robot.getTransfer().setForward());
+        gp1.triangle().onTrue(robot.getTransfer().setReverse());
+        gp1.circle().onTrue(robot.getTransfer().setFull());
         gp1.square().onTrue(instant(() -> robot.getTransfer().getTransferSensing().removeTopBall()));
     }
 

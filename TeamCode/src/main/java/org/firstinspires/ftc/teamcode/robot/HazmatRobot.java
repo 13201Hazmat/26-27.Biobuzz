@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.pedropathing.follower.Follower;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -12,6 +11,7 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
+import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
@@ -39,10 +39,11 @@ public class HazmatRobot implements NextRobot {
 
 	public void printTelemetry() {
 		transfer.debug();
+		Telemetry.update();
 	}
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer);
+		return Set.of(intake, transfer, transfer.getTransferSensing());
 	}
 }
