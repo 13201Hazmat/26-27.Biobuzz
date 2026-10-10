@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import androidx.annotation.NonNull;
-
 import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
@@ -46,6 +44,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		drivetrain.printDebugMessages();
+		drivetrain.debug();
 	}
 }
