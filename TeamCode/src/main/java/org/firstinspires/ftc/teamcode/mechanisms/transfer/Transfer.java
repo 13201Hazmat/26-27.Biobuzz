@@ -19,8 +19,7 @@ public class Transfer implements Mechanism {
 
 	private boolean ballAddedForCurrentTrigger = false;
 
-
-	public enum TransferFullingState{
+	public enum TransferFullingState {
 		EMPTY, FILLING, FULL
 	}
 
@@ -55,7 +54,7 @@ public class Transfer implements Mechanism {
 		return instant(() -> setState(TransferMotorState.STOPPED));
 	}
 
-	public TransferSensing getTransferSensing(){
+	public TransferSensing getTransferSensing() {
 		return this.transferSensing;
 	}
 
@@ -75,15 +74,15 @@ public class Transfer implements Mechanism {
 		transferSensing.periodic();
 
 		switch (transferSensing.getStoredBalls().size()) {
-			case 0:
+			case 0 :
 				transferFullingState = TransferFullingState.EMPTY;
 				break;
-			case 1:
-			case 2:
-			case 3:
+			case 1 :
+			case 2 :
+			case 3 :
 				transferFullingState = TransferFullingState.FILLING;
 				break;
-			case 4:
+			case 4 :
 				transferFullingState = TransferFullingState.FULL;
 				break;
 		}
@@ -95,7 +94,7 @@ public class Transfer implements Mechanism {
 			case BACKWARD :
 				transferMotor.setThrottle(BACKWARD_SPEED);
 				break;
-			case STOPPED:
+			case STOPPED :
 				transferMotor.setThrottle(0.0);
 				break;
 		}

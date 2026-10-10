@@ -14,76 +14,74 @@ import dev.nextftc.robot.Telemetry;
 
 public class TransferSensing implements Mechanism {
 
-    private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
-    private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorSensor");
+	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
+	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorSensor");
 
-    private final ArrayDeque<BallType> storedBalls;
+	private final ArrayDeque<BallType> storedBalls;
 
-    public TransferSensing() {
-        this.storedBalls = new ArrayDeque<>();
-    }
+	public TransferSensing() {
+		this.storedBalls = new ArrayDeque<>();
+	}
 
-    public float[] getHSV() {
-        return transferColorSensor.getColor().getHsv();
+	public float[] getHSV() {
+		return transferColorSensor.getColor().getHsv();
 
-    }
+	}
 
-    public BallType getBallType() {
-        if (transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)) {
-            return BallType.POLLEN;
-        } else if (transferColorSensor.isColor(ColorProfiles.BLUE_NECTAR_COLOR_PROFILE)) {
-            return BallType.BLUE_NECTAR;
-        } else if (transferColorSensor.isColor(ColorProfiles.RED_NECTAR_COLOR_PROFILE)) {
-            return BallType.RED_NECTAR;
-        }
+	public BallType getBallType() {
+		if (transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)) {
+			return BallType.POLLEN;
+		} else if (transferColorSensor.isColor(ColorProfiles.BLUE_NECTAR_COLOR_PROFILE)) {
+			return BallType.BLUE_NECTAR;
+		} else if (transferColorSensor.isColor(ColorProfiles.RED_NECTAR_COLOR_PROFILE)) {
+			return BallType.RED_NECTAR;
+		}
 
-        return BallType.NOTHING;
-    }
+		return BallType.NOTHING;
+	}
 
-    public NextColorDistanceSensor getTransferColorSensor() {
-        return transferColorSensor;
-    }
+	public NextColorDistanceSensor getTransferColorSensor() {
+		return transferColorSensor;
+	}
 
-    public NextDigitalSensor getTransferBeamBreak() {
-        return transferBeamBreak;
-    }
+	public NextDigitalSensor getTransferBeamBreak() {
+		return transferBeamBreak;
+	}
 
-    public Queue<BallType> getStoredBalls() {
-        return storedBalls;
-    }
+	public Queue<BallType> getStoredBalls() {
+		return storedBalls;
+	}
 
-    public BallType getTopBall() {
-        return storedBalls.peek();
-    }
+	public BallType getTopBall() {
+		return storedBalls.peek();
+	}
 
-    public void removeTopBall() {
-        try {
-            storedBalls.removeFirst();
-        } catch (NoSuchElementException e) {
-            // bl
-        }
-    }
+	public void removeTopBall() {
+		try {
+			storedBalls.removeFirst();
+		} catch (NoSuchElementException e) {
+			// bl
+		}
+	}
 
-    public boolean isFull() {
-        return storedBalls.size() == 4;
-    }
+	public boolean isFull() {
+		return storedBalls.size() == 4;
+	}
 
-    public void init() {
-        storedBalls.clear();
-    }
+	public void init() {
+		storedBalls.clear();
+	}
 
-    public void debug() {
-        Telemetry.log("DEBUG", transferColorSensor.debug());
-        Telemetry.log("BALL TYPE", BallType.currentBallType);
-        Telemetry.log("NUMBER OF BALLS", storedBalls.size());
-        Telemetry.log("QUEUE:", storedBalls);
-    }
+	public void debug() {
+		Telemetry.log("DEBUG", transferColorSensor.debug());
+		Telemetry.log("BALL TYPE", BallType.currentBallType);
+		Telemetry.log("NUMBER OF BALLS", storedBalls.size());
+		Telemetry.log("QUEUE:", storedBalls);
+	}
 
-
-
-    @Override
-    public void periodic() {
-        transferColorSensor.update();
-        BallType.currentBallType = getBallType();
-    }
+	@Override
+	public void periodic() {
+		transferColorSensor.update();
+		BallType.currentBallType = getBallType();
+	}
 }
