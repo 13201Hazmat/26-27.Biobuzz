@@ -6,10 +6,11 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextTeleop;
+import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextTeleop(name = "Transfer Teleop")
+@NextUtility(name = "Transfer Test")
 public class Teleop extends NextOpMode {
 	private final HazmatRobot robot;
 	public Teleop(HazmatRobot robot) {

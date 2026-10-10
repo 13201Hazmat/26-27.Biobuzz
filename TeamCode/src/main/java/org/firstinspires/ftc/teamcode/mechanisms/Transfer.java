@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.data.ColorProfiles;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import java.util.ArrayDeque;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import dev.nextftc.hardware.actuators.NextMotor;
@@ -101,7 +102,11 @@ public class Transfer implements Mechanism {
 	}
 
 	public void removeTopBall() {
-		storedBalls.removeFirst();
+		try {
+			storedBalls.removeFirst();
+		} catch (NoSuchElementException e) {
+			// bl
+		}
 	}
 
 	public boolean isFull() {
