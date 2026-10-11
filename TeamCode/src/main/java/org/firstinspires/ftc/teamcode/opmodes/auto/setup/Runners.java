@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.*;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.parkPath;
 
 import com.pedropathing.ivy.Command;
 
@@ -23,7 +23,9 @@ public class Runners {
 
     public Command preloadAuto() {
         return sequential(
+                // Robot Shoot Command
                 robot.moveToPoint(parkPath)
         );
     }
+
 }

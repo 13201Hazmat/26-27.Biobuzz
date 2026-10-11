@@ -14,7 +14,7 @@ public class PathsAndPoses {
 	private static PoseFactory factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 
 	// ALL POSES ARE IN RED
-	public void mirror() {
+	public static void mirror() {
 		if(Alliance.currentAlliance == Alliance.BLUE) {
 			factory = factory.mirrorX(70.75);
 			factory = factory.mirrorY(70.75);
@@ -23,7 +23,9 @@ public class PathsAndPoses {
 
 	static class Poses {
 		public static final Pose startingPose = factory.of(55.65, 9.03, 90);
-		public static final Pose leavePose = factory.of(9.59, 87.77, 90);
+		public static final Pose leavePose = factory.of(9.59, 89.65, 90);
+
+
 	}
 
 	public static class HazPaths {

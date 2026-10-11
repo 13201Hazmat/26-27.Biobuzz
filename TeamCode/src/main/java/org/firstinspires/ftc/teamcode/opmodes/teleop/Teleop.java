@@ -9,19 +9,20 @@ import dev.nextftc.robot.triggers.Trigger;
 
 @NextTeleop(name = "hi")
 public class Teleop extends NextOpMode {
-	private final HazmatRobot robot;
-	public Teleop(HazmatRobot robot) {
-		super(robot);
-		this.robot = robot;
+    private final HazmatRobot robot;
 
-		Trigger.Companion.getDefaultEventLoop().clear();
-		CommandGamepad gp1 = new CommandGamepad(gamepad1);
+    public Teleop(HazmatRobot robot) {
+        super(robot);
+        this.robot = robot;
 
-		gp1.rightBumper().onTrue(robot.getIntake().setForward());
-	}
+        Trigger.Companion.getDefaultEventLoop().clear();
+        CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-	@Override
-	public void periodic() {
+        gp1.rightBumper().onTrue(robot.getIntake().setForward());
+    }
 
-	}
+    @Override
+    public void periodic() {
+
+    }
 }
