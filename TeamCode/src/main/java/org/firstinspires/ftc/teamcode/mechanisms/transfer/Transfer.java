@@ -12,14 +12,15 @@ import dev.nextftc.robot.Telemetry;
 public class Transfer implements Mechanism {
 	private final double FORWARD_SPEED = 1.0;
 	private final double BACKWARD_SPEED = -1.0;
+	private final double IDLE_SPEED = 0.0;
 	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
 	private TransferMotorState transferMotorState;
-	private TransferFullingState transferFullingState;
+	private TransferSensingState transferSensingState;
 	private TransferSensing transferSensing;
 
 	private boolean ballAddedForCurrentTrigger = false;
 
-	public enum TransferFullingState {
+	public enum TransferSensingState {
 		EMPTY, FILLING, FULL
 	}
 
@@ -31,7 +32,7 @@ public class Transfer implements Mechanism {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
 		transferSensing = new TransferSensing();
 		transferMotorState = TransferMotorState.FORWARD;
-		transferFullingState = TransferFullingState.FULL;
+		transferSensingState = TransferSensingState.FULL;
 	}
 
 	private void setState(TransferMotorState transferMotorState) {
@@ -75,15 +76,25 @@ public class Transfer implements Mechanism {
 
 		switch (transferSensing.getStoredBalls().size()) {
 			case 0 :
-				transferFullingState = TransferFullingState.EMPTY;
+				transferSensingState = TransferSensingState.EMPTY;
 				break;
 			case 1 :
 			case 2 :
 			case 3 :
-				transferFullingState = TransferFullingState.FILLING;
+				transferSensingState = TransferSensingState.FILLING;
 				break;
 			case 4 :
-				transferFullingState = TransferFullingState.FULL;
+				transferSensingState = TransferSensingState.FULL;
+				break;
+		}
+
+		switch (transferSensingState) {
+			case EMPTY:
+            case FILLING:
+                transferMotorState = TransferMotorState.FORWARD;
+				break;
+            case FULL:
+				transferMotorState = TransferMotorState.STOPPED;
 				break;
 		}
 
@@ -95,7 +106,7 @@ public class Transfer implements Mechanism {
 				transferMotor.setThrottle(BACKWARD_SPEED);
 				break;
 			case STOPPED :
-				transferMotor.setThrottle(0.0);
+				transferMotor.setThrottle(IDLE_SPEED);
 				break;
 		}
 

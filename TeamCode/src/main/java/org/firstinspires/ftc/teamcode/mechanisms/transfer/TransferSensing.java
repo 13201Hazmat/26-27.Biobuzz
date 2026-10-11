@@ -13,19 +13,12 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class TransferSensing implements Mechanism {
-
 	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorSensor");
-
 	private final ArrayDeque<BallType> storedBalls;
 
 	public TransferSensing() {
 		this.storedBalls = new ArrayDeque<>();
-	}
-
-	public float[] getHSV() {
-		return transferColorSensor.getColor().getHsv();
-
 	}
 
 	public BallType getBallType() {
@@ -48,6 +41,7 @@ public class TransferSensing implements Mechanism {
 		return transferBeamBreak;
 	}
 
+	/* QUEUE METHODS */
 	public Queue<BallType> getStoredBalls() {
 		return storedBalls;
 	}
@@ -64,19 +58,17 @@ public class TransferSensing implements Mechanism {
 		}
 	}
 
-	public boolean isFull() {
-		return storedBalls.size() == 4;
-	}
-
-	public void init() {
-		storedBalls.clear();
-	}
+	/* SUBSYSTEM METHODS */
 
 	public void debug() {
 		Telemetry.log("DEBUG", transferColorSensor.debug());
 		Telemetry.log("BALL TYPE", BallType.currentBallType);
 		Telemetry.log("NUMBER OF BALLS", storedBalls.size());
 		Telemetry.log("QUEUE:", storedBalls);
+	}
+
+	public void init() {
+		storedBalls.clear();
 	}
 
 	@Override
