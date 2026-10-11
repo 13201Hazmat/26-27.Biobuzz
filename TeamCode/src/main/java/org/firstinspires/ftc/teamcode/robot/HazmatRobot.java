@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import com.pedropathing.follower.Follower;
@@ -36,6 +37,27 @@ public class HazmatRobot implements NextRobot {
 
 	public Command moveToPoint(Path path) {
 		return follow(getFollower(), path);
+	}
+
+	public Command flowerIntake(Path intakePath) {
+		return parallel(
+				intakeToPoint(intakePath),
+				intake.moveRampDown()
+		);
+	}
+
+	public Command flowerOuttake(Path outtakePath) {
+		return parallel(
+				moveToPoint(outtakePath),
+				intake.moveRampUp()
+		);
+	}
+
+	public Command intakeToPoint(Path intakePath) {
+		return parallel(
+				moveToPoint(intakePath),
+				intake.setForward()
+		);
 	}
 
 	@Override

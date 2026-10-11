@@ -25,9 +25,13 @@ public class PathsAndPoses {
 		public static final Pose startingPose = factory.of(55.65, 9.03, 90);
 		public static final Pose leavePose = factory.of(9.59, 89.65, 90);
 
+		public static final Pose audienceFlowerControlPose = factory.of(77.31, 27.68, 90);
+		public static final Pose audienceFlowerPose = factory.of(67.20, 41.06, 270);
+
 	}
 
 	public static class HazPaths {
-		public static Path parkPath = Paths.line(startingPose, leavePose).constant(startingPose);
+		public static Path startingPose_To_leavePose = Paths.line(startingPose, leavePose).constant(startingPose);
+		public static Path startingPose_To_audienceFlowerPose = Paths.curve(startingPose, audienceFlowerControlPose, audienceFlowerPose).linear(startingPose, audienceFlowerPose);
 	}
 }
