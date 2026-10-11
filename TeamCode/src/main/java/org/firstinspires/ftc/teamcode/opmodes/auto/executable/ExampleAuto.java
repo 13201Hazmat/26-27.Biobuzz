@@ -8,17 +8,17 @@ import dev.nextftc.robot.opmode.NextOpMode;
 
 @NextAutonomous(name = "Example Autonomous")
 public class ExampleAuto extends NextOpMode {
-    private final HazmatRobot robot;
-    private final Runners runners;
+	private final HazmatRobot robot;
+	private final Runners runners;
 
-    public ExampleAuto(HazmatRobot robot) {
-        super(robot);
-        this.robot = robot;
-        runners = new Runners(this.robot);
-    }
+	public ExampleAuto(HazmatRobot robot) {
+		super(robot);
+		this.robot = robot;
+		runners = new Runners(this.robot);
+	}
 
-    @Override
-    public void start() {
-        runners.leaveAuto().schedule();
-    }
+	@Override
+	public void start() {
+		runners.leaveAuto().schedule();
+	}
 }
