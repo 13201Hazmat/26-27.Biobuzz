@@ -12,28 +12,35 @@ import dev.nextftc.robot.triggers.Trigger;
 
 @NextUtility(name = "Launcher PID")
 public class LauncherPID extends NextOpMode {
-    private final HazmatRobot robot;
+	private final HazmatRobot robot;
 
-    public LauncherPID(HazmatRobot robot){
-        super(robot);
-        this.robot = robot;
+	public LauncherPID(HazmatRobot robot) {
+		super(robot);
+		this.robot = robot;
 
-        Trigger.Companion.getDefaultEventLoop().clear();
-    }
+		Trigger.Companion.getDefaultEventLoop().clear();
+	}
 
-    @Override
-    public void start(){
-        CommandGamepad gp1 = new CommandGamepad(gamepad1);
+	@Override
+	public void start() {
+		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-        gp1.dpadUp().onTrue(instant(()->robot.getLauncher().increaseKS()));
-        gp1.dpadDown().onTrue(instant(()->robot.getLauncher().decreaseKS()));
+		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increaseKS()));
+		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreaseKS()));
+		gp1.dpadRight().onTrue(instant(() -> robot.getLauncher().increaseKP()));
+		gp1.dpadLeft().onTrue(instant(() -> robot.getLauncher().decreaseKP()));
 
-        gp1.dpadRight().onTrue(instant(()->robot.getLauncher().increaseKP()));
-        gp1.dpadLeft().onTrue(instant(()->robot.getLauncher().decreaseKP()));
-    }
+		gp1.y().onTrue(instant(() -> robot.getLauncher().incrementRPM()));
+		gp1.a().onTrue(instant(() -> robot.getLauncher().decrementRPM()));
+		gp1.b().onTrue(instant(() -> robot.getLauncher().setTargetVelocity(0)));
+	}
 
-    @Override
-    public void periodic(){
-        telemetry.addData("PID", robot.getLauncher().PID());
-    }
+	@Override
+	public void periodic() {
+		telemetry.addData("Constants", robot.getLauncher().PID());
+		telemetry.addData("Target RPM", robot.getLauncher().getTargetVelocity());
+		telemetry.addData("Current RPM", robot.getLauncher().getCurrentRPM());
+		telemetry.addData("Error", robot.getLauncher().getTargetVelocity() - robot.getLauncher().getCurrentRPM());
+		telemetry.addData("Power", robot.getLauncher().getPower());
+	}
 }

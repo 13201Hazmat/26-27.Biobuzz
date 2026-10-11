@@ -21,13 +21,15 @@ public class Launcher implements Mechanism {
 	private double kS = 0.0;
 	private double kP = 0.0;
 
-	private final double TOLERANCE = 25.0;
+	private final double READY_TOLERANCE = 25.0;
+	private final double EXIT_TOLERANCE = 75.0;
 
 	private final double IDLE_SPEED = 0.0;
 	private final double CLOSE_SPEED = 0.0;
 	private final double FAR_SPEED = 0.0;
 
 	private double targetVelocity = 0.0;
+	private double error = 0.0;
 
 	private boolean powerMode = false;
 
@@ -60,46 +62,68 @@ public class Launcher implements Mechanism {
 	public Launcher() {
 		setIdle();
 
+		leftLauncher.setZeroPowerBehavior(NextMotor.ZeroPowerBehavior.FLOAT);
+		rightLauncher.setZeroPowerBehavior(NextMotor.ZeroPowerBehavior.FLOAT);
+
 		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 
 		rightLauncher.getVelocityConstants().setKV(kV);
 		rightLauncher.getVelocityConstants().setKS(kS);
 		rightLauncher.getVelocityConstants().setKP(kP);
 	}
-    public void setKS(double kS) {
-        this.kS = kS;
-        rightLauncher.getVelocityConstants().setKS(kS);
-    }
-    public void increaseKS() { setKS(kS + 0.001); }
-    public void decreaseKS() { setKS(kS - 0.001); }
+	public void setKS(double kS) {
+		this.kS = kS;
+		rightLauncher.getVelocityConstants().setKS(kS);
+	}
+	public void increaseKS() {
+		setKS(kS + 0.001);
+	}
+	public void decreaseKS() {
+		setKS(Math.max(0, kS - 0.001));
+	}
 
-    public void setKP(double kP) {
-        this.kP = kP;
-        rightLauncher.getVelocityConstants().setKP(kP);
-    }
-    public void increaseKP() { setKP(kP + 0.001); }
-    public void decreaseKP() { setKP(kP - 0.001); }
+	public void setKP(double kP) {
+		this.kP = kP;
+		rightLauncher.getVelocityConstants().setKP(kP);
+	}
+	public void increaseKP() {
+		setKP(kP + 0.0001);
+	}
+	public void decreaseKP() {
+		setKP(Math.max(0, kP - 0.0001));
+	}
 
 	public double getPower() {
 		return rightLauncher.getThrottle();
+	}
+	public double getTargetVelocity() {
+		return targetVelocity;
 	}
 	public double getCurrentRPM() {
 		return rightLauncher.getEncoderVelocity().into(RotationsPerMinute);
 	}
 	public boolean isAtVelocity() {
-		return Math.abs(getCurrentRPM() - targetVelocity) <= TOLERANCE;
+		return error <= READY_TOLERANCE;
 	}
+
 	public void updateState() {
-		if (!isIdle()) {
-			if (isAtVelocity()) {
-				setReady();
-			} else {
+		if (isIdle())
+			return;
+
+		error = Math.abs(getCurrentRPM() - targetVelocity);
+
+		if (isReady()) {
+			if (error > EXIT_TOLERANCE)
 				setSpinUp();
-			}
+		} else {
+			if (error <= READY_TOLERANCE)
+				setReady();
 		}
 	}
 
 	public void setTargetVelocity(double RPM) {
+		if (RPM == targetVelocity)
+			return;
 		targetVelocity = RPM;
 		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(RPM));
 		if (RPM == IDLE_SPEED) {
@@ -133,13 +157,12 @@ public class Launcher implements Mechanism {
 	public void autoSetVelocity(Pose current) {
 		setTargetVelocity(Calc.getVelocity(current));
 	}
-    public String PID(){
-        return "kV" + this.kV + "kP" + this.kP + "kS" + this.kS;
-    }
+	public String PID() {
+		return String.format("kV=%.6f  kS=%.4f  kP=%.5f", kV, kS, kP);
+	}
 	public String debug() {
 		return "Launcher RPM:" + getCurrentRPM() + ", Launcher Power:" + getPower();
 	}
-
 
 	@Override
 	public void periodic() {
