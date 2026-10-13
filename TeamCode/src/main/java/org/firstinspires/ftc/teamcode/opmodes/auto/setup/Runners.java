@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.startingPose_To_audienceFlowerPose;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.firstFlowerPose_To_otherSideShootingPose;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.startingPose_To_firstFlowerPose;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.startingPose_To_leavePose;
 
 import com.pedropathing.ivy.Command;
@@ -17,21 +18,24 @@ public class Runners {
 	}
 
 	public Command leaveAuto() {
-		return sequential(robot.moveToPoint(startingPose_To_leavePose));
+		return robot.moveToPoint(startingPose_To_leavePose);
 	}
 
 	public Command preloadAuto() {
 		return sequential(
-				// Robot Shoot Command
+				// SHOOT COMMAND
 				robot.moveToPoint(startingPose_To_leavePose));
 	}
 
-	public Command audienceFlowerAuto() {
+	public Command basicFlowerAuto() {
 		return sequential(
-				// Robot Shoot command for preload
-
+				// SHOOT COMMAND
 				// Intake to Flower
-				robot.flowerIntake(startingPose_To_audienceFlowerPose)
+				robot.flowerIntake(startingPose_To_firstFlowerPose),
+				// Go to shoot other side
+				robot.flowerOuttake(firstFlowerPose_To_otherSideShootingPose)
+				// SHOOT COMMAND
+				
 		);
 	}
 

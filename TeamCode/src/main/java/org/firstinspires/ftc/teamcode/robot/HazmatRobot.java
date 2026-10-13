@@ -40,24 +40,15 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command flowerIntake(Path intakePath) {
-		return parallel(
-				intakeToPoint(intakePath),
-				intake.moveRampDown()
-		);
+		return parallel(intakeToPoint(intakePath), intake.moveRampDown());
 	}
 
 	public Command flowerOuttake(Path outtakePath) {
-		return parallel(
-				moveToPoint(outtakePath),
-				intake.moveRampUp()
-		);
+		return parallel(moveToPoint(outtakePath), intake.moveRampUp());
 	}
 
 	public Command intakeToPoint(Path intakePath) {
-		return parallel(
-				moveToPoint(intakePath),
-				intake.setForward()
-		);
+		return parallel(moveToPoint(intakePath), intake.setForward());
 	}
 
 	@Override

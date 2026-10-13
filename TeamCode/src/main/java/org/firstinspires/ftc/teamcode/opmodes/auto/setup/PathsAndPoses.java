@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Poses.*;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.ControlPoints.*;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
@@ -21,17 +22,26 @@ public class PathsAndPoses {
 		}
 	}
 
+	public static Path createLinearPath(Pose p1, Pose p2) {
+		return Paths.line(p1, p2).linear(p1, p2);
+	}
+
 	static class Poses {
 		public static final Pose startingPose = factory.of(55.65, 9.03, 90);
 		public static final Pose leavePose = factory.of(9.59, 89.65, 90);
+		public static final Pose firstFlowerPose = factory.of(15.17, 47.14, -180);
+		public static final Pose otherSideShootingPose = factory.of(46.88, 127.49, 90);
+	}
 
-		public static final Pose audienceFlowerControlPose = factory.of(77.31, 27.68, 90);
-		public static final Pose audienceFlowerPose = factory.of(67.20, 41.06, 270);
+	static class ControlPoints {
 
 	}
 
 	public static class HazPaths {
-		public static Path startingPose_To_leavePose = Paths.line(startingPose, leavePose).constant(startingPose);
-		public static Path startingPose_To_audienceFlowerPose = Paths.curve(startingPose, audienceFlowerControlPose, audienceFlowerPose).linear(startingPose, audienceFlowerPose);
+		public static Path startingPose_To_leavePose = createLinearPath(startingPose, leavePose);
+		public static Path startingPose_To_firstFlowerPose = createLinearPath(startingPose, firstFlowerPose);
+
+		public static Path firstFlowerPose_To_otherSideShootingPose = createLinearPath(firstFlowerPose,
+				otherSideShootingPose);
 	}
 }
