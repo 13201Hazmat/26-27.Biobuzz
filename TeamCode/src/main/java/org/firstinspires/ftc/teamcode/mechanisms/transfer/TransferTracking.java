@@ -13,16 +13,18 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 //this is a transfer sensing subsystem which senses and compares colors
-public class TransferSensing implements Mechanism {
-	private final NextDigitalSensor transferBeamBreak = new NextDigitalSensor("beamBreak");
-	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("colorSensor");
+public class TransferTracking implements Mechanism {
+	private final NextDigitalSensor startTransferBeamBreak = new NextDigitalSensor("startBeamBreak");
+	private final NextDigitalSensor endTransferColorSensor = new NextDigitalSensor("endBeamBreak");
+	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
 	private final ArrayDeque<BallType> storedBalls;
 
-	public TransferSensing() {
+	public TransferTracking() {
 		this.storedBalls = new ArrayDeque<>();
 	}
 
-	//this returns the ball types based on color (blue nectar, red nectar, pollen, nothing)
+	// this returns the ball types based on color (blue nectar, red nectar, pollen,
+	// nothing)
 	public BallType getBallType() {
 		if (transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)) {
 			return BallType.POLLEN;
@@ -39,22 +41,22 @@ public class TransferSensing implements Mechanism {
 		return transferColorSensor;
 	}
 
-	public NextDigitalSensor getTransferBeamBreak() {
-		return transferBeamBreak;
+	public NextDigitalSensor getStartTransferBeamBreak() {
+		return startTransferBeamBreak;
 	}
 
 	/* QUEUE METHODS */
-	//returns all the balls in the transfer
+	// returns all the balls in the transfer
 	public Queue<BallType> getStoredBalls() {
 		return storedBalls;
 	}
 
-	//returns the first ball we intake
+	// returns the first ball we intake
 	public BallType getTopBall() {
 		return storedBalls.peek();
 	}
 
-	//removes the ball when we shoot it
+	// removes the ball when we shoot it
 	public void removeTopBall() {
 		try {
 			storedBalls.removeFirst();
@@ -65,7 +67,7 @@ public class TransferSensing implements Mechanism {
 
 	/* SUBSYSTEM METHODS */
 
-	//this returns the ball type, number of balls, and the queue for debugging
+	// this returns the ball type, number of balls, and the queue for debugging
 	public void debug() {
 		Telemetry.log("DEBUG", transferColorSensor.debug());
 		Telemetry.log("BALL TYPE", BallType.currentBallType);
@@ -73,15 +75,19 @@ public class TransferSensing implements Mechanism {
 		Telemetry.log("QUEUE:", storedBalls);
 	}
 
-	//clears the array so that we don't have previous matches' data
+	// clears the array so that we don't have previous matches' data
 	public void init() {
 		storedBalls.clear();
 	}
 
-	//always updating the color sensor and the current ball type
+	// always updating the color sensor and the current ball type
 	@Override
 	public void periodic() {
 		transferColorSensor.update();
 		BallType.currentBallType = getBallType();
+
+		if (endTransferColorSensor.isTriggered()) {
+			storedBalls.removeFirst();
+		}
 	}
 }
