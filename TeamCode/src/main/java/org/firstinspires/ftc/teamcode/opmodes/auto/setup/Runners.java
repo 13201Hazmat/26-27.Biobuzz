@@ -29,13 +29,11 @@ public class Runners {
 
 	public Command basicFlowerAuto() {
 		return sequential(
-				// SHOOT COMMAND
-				// Intake to Flower
-				robot.flowerIntake(startingPose_To_firstFlowerPose),
-				// Go to shoot other side
-				robot.flowerOuttake(firstFlowerPose_To_otherSideShootingPose)
-				// SHOOT COMMAND
-				
+		// SHOOT COMMAND
+		// Intake to Flower
+		// Go to shoot other side
+		// SHOOT COMMAND
+
 		);
 	}
 
