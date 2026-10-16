@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.data.Config;
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.Telemetry;
 
 /**
  * This section initiates an individual subsystem called Intake. This makes the
@@ -16,7 +17,10 @@ public class Intake implements Mechanism {
 	private static final double FORWARD = 1.0;
 	private static final double REVERSE = -1.0;
 	private static final double OFF = 0.0;
-	private static final double V_CHANGE_VAL = 0.1;
+	private static final double CALIB_DELTA = 0.1;
+
+	private final double RAMP_UP_POS = 1.0;
+	private final double RAMP_DOWN_POS = 0;
 
 	// Power Value is current power of the intake, we set the power to 0 becasue the
 	// intake starts off
@@ -32,8 +36,6 @@ public class Intake implements Mechanism {
 	public enum IntakeState {
 		FORWARD, REVERSE, OFF, CALIB
 	}
-	private final double RAMP_UP_POS = 1.0;
-	private final double RAMP_DOWN_POS = 0;
 
 	// this section reverses the motor of the intake in case it is mounted backwards
 	// setting the intake state to off so it won't move when you construct
@@ -41,6 +43,36 @@ public class Intake implements Mechanism {
 		intakeMotor.setDirection(NextMotor.Direction.REVERSE);
 		intakeState = IntakeState.OFF;
 	}
+
+	// getters
+	public double getPosition() {
+		return intakeRampServo.getPosition();
+	}
+
+	public double getSpeed() {
+		return intakeMotor.getThrottle();
+	}
+
+	// this section takes the current power value and decreases it by the
+	// V_CHANGE_VAL (0.1)
+	public Command decreasePower() {
+		return instant(() -> {
+			intakeState = IntakeState.CALIB;
+			powerValue -= CALIB_DELTA;
+			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
+		});
+	}
+
+	// this section takes the current power value and increases it by the
+	// V_CHANGE_VAL (0.1)
+	public Command increasePower() {
+		return instant(() -> {
+			intakeState = IntakeState.CALIB;
+			powerValue += CALIB_DELTA;
+			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
+		});
+	}
+
 	// this sections returns a command instantly and sets the intake to forward
 	public Command setForward() {
 		return instant(() -> setState(IntakeState.FORWARD));
@@ -49,35 +81,22 @@ public class Intake implements Mechanism {
 	public Command setOff() {
 		return instant(() -> setState(IntakeState.OFF));
 	}
-	// this section takes the current power value and decreases it by the
-	// V_CHANGE_VAL (0.1)
-	public Command downPower() {
-		return instant(() -> {
-			intakeState = IntakeState.CALIB;
-			powerValue -= V_CHANGE_VAL;
-			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
-		});
-	}
-
-	// this section takes the current power value and increases it by the
-	// V_CHANGE_VAL (0.1)
-	public Command upPower() {
-		return instant(() -> {
-			intakeState = IntakeState.CALIB;
-			powerValue += V_CHANGE_VAL;
-			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
-		});
-	}
 	// this sections returns a command instantly and sets the intake to reverse
 	public Command setReverse() {
 		return instant(() -> setState(IntakeState.REVERSE));
 	}
 
+	public Command setRampDown() {
+		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
+	}
+
+	public Command setRampUp() {
+		return instant(() -> intakeRampServo.setPosition(RAMP_UP_POS));
+	}
+
 	// this method returns the current speed
 	// for debugging purposes
-	public double getSpeed() {
-		return intakeMotor.getThrottle();
-	}
+
 	// if the intake is going forward then we will press a button and it will
 	// reverse
 	// if the intake if going reverse then we will press a button and it will stop
@@ -92,18 +111,6 @@ public class Intake implements Mechanism {
 		}
 	}
 
-	public Command lowerIntakeRamp() {
-		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
-	}
-
-	public Command raiseIntakeRamp() {
-		return instant(() -> intakeRampServo.setPosition(RAMP_UP_POS));
-	}
-
-	public double getPosition() {
-		return intakeRampServo.getPosition();
-	}
-
 	// this is a basic method to make the intake move forward, reverse, and off
 	private void setState(IntakeState intakeState) {
 		this.intakeState = intakeState;
@@ -111,8 +118,8 @@ public class Intake implements Mechanism {
 
 	// this returns the motor speed and the state (forward, reverse, and off) for
 	// debugging
-	public String debug() {
-		return "INTAKE MOTOR SPEED: " + intakeMotor.getThrottle() + "\nINTAKE STATE: " + intakeState;
+	public void debug() {
+		Telemetry.log("INTAKE MOTOR SPEED: " + intakeMotor.getThrottle() + "\nINTAKE STATE: " + intakeState);
 	}
 
 	// periodic means the code will run for the entire teleOp
