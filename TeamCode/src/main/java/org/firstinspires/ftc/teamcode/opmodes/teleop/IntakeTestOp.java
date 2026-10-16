@@ -21,6 +21,8 @@ public class IntakeTestOp extends NextOpMode {
 		gp1.cross().onTrue(robot.getIntake().setOff());
 		gp1.dpadUp().onTrue(robot.getIntake().upPower());
 		gp1.dpadDown().onTrue(robot.getIntake().downPower());
+		gp1.dpadRight().onTrue(robot.getIntake().lowerIntakeRamp());
+		gp1.dpadLeft().onTrue(robot.getIntake().raiseIntakeRamp());
 	}
 
 	@Override

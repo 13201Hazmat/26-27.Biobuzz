@@ -5,6 +5,7 @@ import com.pedropathing.ivy.Command;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
+import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 
 /**
@@ -23,12 +24,16 @@ public class Intake implements Mechanism {
 	//This section helps us with config - combinging hardware and software
 	//Defines the motors in module and port
 	NextMotor intakeMotor = new NextMotor(Config.mModule, Config.mPort);
+	NextServo intakeRampServo = new NextServo (Config.mModule, Config.mPort);
 	private IntakeState intakeState;
 
 	//Represents the state of the intake (forward, reverse, off, variable)
 	public enum IntakeState {
 		FORWARD, REVERSE, OFF, VARIABLE
 	}
+	private final double RAMP_UP_POS = 1.0;
+	private final double RAMP_DOWN_POS = 0;
+
 	//this section reverses the motor of the intake in case it is mounted backwards
 	//setting the intake state to off so it won't move when you construct
 	public Intake() {
@@ -65,6 +70,7 @@ public class Intake implements Mechanism {
 		return instant(() -> setState(IntakeState.REVERSE));
 	}
 
+
 	//this method returns the current speed
 	//for debugging purposes
 	public double getSpeed() {
@@ -83,6 +89,18 @@ public class Intake implements Mechanism {
 		else {
 			intakeState = IntakeState.FORWARD;
 		}
+	}
+
+	public Command lowerIntakeRamp() {
+		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
+	}
+
+	public Command raiseIntakeRamp() {
+		return instant(() -> intakeRampServo.setPosition(RAMP_UP_POS));
+	}
+
+	public double getPosition(){
+		return intakeRampServo.getPosition();
 	}
 
 	//this is a basic method to make the intake move forward, reverse, and off
