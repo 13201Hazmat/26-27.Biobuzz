@@ -27,7 +27,8 @@ public class TransferTracking implements Mechanism {
 		this.storedBalls = new ArrayDeque<>();
 	}
 
-	// this returns the ball types based on color (blue nectar, red nectar, pollen, nothing)
+	// this returns the ball types based on color (blue nectar, red nectar, pollen,
+	// nothing)
 	public BallType getBallType() {
 		if (transferColorSensor.isColor(ColorProfiles.POLLEN_COLOR_PROFILE)) {
 			return BallType.POLLEN;
