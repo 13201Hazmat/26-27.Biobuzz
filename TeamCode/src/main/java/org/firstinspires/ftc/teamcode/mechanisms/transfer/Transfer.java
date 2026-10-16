@@ -119,18 +119,5 @@ public class Transfer implements Mechanism {
 				transferMotor.setThrottle(IDLE_SPEED);
 				break;
 		}
-
-		//detects change in the beam break state and adds ball type to the queue
-		if (isTriggered) {
-			if (!currentTriggerState) {
-				BallType detected = transferTracking.getBallType();
-				if (detected != BallType.NOTHING) {
-					transferTracking.getStoredBalls().add(detected);
-					currentTriggerState = true;
-				}
-			}
-		} else {
-			currentTriggerState = false;
-		}
 	}
 }
