@@ -10,12 +10,11 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.Telemetry;
 
 public class Launcher implements Mechanism {
-	private final NextMotor leftLauncher = new NextMotor(Config.leftLauncherModule, Config.leftLauncherPort,
-			Degrees.of(360.0 / 28.0));
-	private final NextMotor rightLauncher = new NextMotor(Config.rightLauncherModule, Config.rightLauncherPort,
-			Degrees.of(360.0 / 28.0));
+	private final NextMotor leftLauncher = new NextMotor(Config.aModule, Config.aPort, Degrees.of(360.0 / 28.0));
+	private final NextMotor rightLauncher = new NextMotor(Config.bModule, Config.bPort, Degrees.of(360.0 / 28.0));
 
 	private double kV = 0.0;
 	private double kS = 0.0;
@@ -71,6 +70,17 @@ public class Launcher implements Mechanism {
 		rightLauncher.getVelocityConstants().setKS(kS);
 		rightLauncher.getVelocityConstants().setKP(kP);
 	}
+
+	public double getPower() {
+		return rightLauncher.getThrottle();
+	}
+	public double getTargetVelocity() {
+		return targetVelocity;
+	}
+	public double getCurrentRPM() {
+		return rightLauncher.getEncoderVelocity().into(RotationsPerMinute);
+	}
+
 	public void setKS(double kS) {
 		this.kS = kS;
 		rightLauncher.getVelocityConstants().setKS(kS);
@@ -93,15 +103,6 @@ public class Launcher implements Mechanism {
 		setKP(Math.max(0, kP - 0.0001));
 	}
 
-	public double getPower() {
-		return rightLauncher.getThrottle();
-	}
-	public double getTargetVelocity() {
-		return targetVelocity;
-	}
-	public double getCurrentRPM() {
-		return rightLauncher.getEncoderVelocity().into(RotationsPerMinute);
-	}
 	public boolean isAtVelocity() {
 		return error <= READY_TOLERANCE;
 	}
@@ -160,8 +161,9 @@ public class Launcher implements Mechanism {
 	public String PID() {
 		return String.format("kV=%.6f  kS=%.4f  kP=%.5f", kV, kS, kP);
 	}
-	public String debug() {
-		return "Launcher RPM:" + getCurrentRPM() + ", Launcher Power:" + getPower();
+	public void debug() {
+		Telemetry.log("Launcher RPM" + getCurrentRPM());
+		Telemetry.log("Launcher Power" + getPower());
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
@@ -16,6 +15,7 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
+import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
@@ -67,10 +67,10 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
-	public void updateTelemetry(Telemetry telemetry) {
-		telemetry.addData("Launcher", launcher.debug());
-		telemetry.addData("Launcher Hood", launcherHood.debug());
-		telemetry.update();
+	public void updateTelemetry() {
+		launcher.debug();
+		launcherHood.debug();
+		Telemetry.update();
 	}
 
 	@Override

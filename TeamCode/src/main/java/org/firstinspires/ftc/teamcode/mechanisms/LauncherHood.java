@@ -6,9 +6,10 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.Telemetry;
 
 public class LauncherHood implements Mechanism {
-	private final NextServo launcherHood = new NextServo(Config.launcherHoodModule, Config.launcherHoodPort, 0.0);
+	private final NextServo launcherHood = new NextServo(Config.eModule, Config.ePort, 0.01);
 
 	private final double POLLEN_POS = 0.0;
 	private final double NECTAR_POS = 0.0;
@@ -25,13 +26,6 @@ public class LauncherHood implements Mechanism {
 		return instant(() -> launcherHood.setPosition(pos));
 	}
 
-	public Command incrementUp() {
-		return setServoPos(getServoPos() + 0.01);
-	}
-
-	public Command incrementDown() {
-		return setServoPos(getServoPos() - 0.01);
-	}
 	public Command setPollenPos() {
 		return setServoPos(POLLEN_POS);
 	}
@@ -40,7 +34,14 @@ public class LauncherHood implements Mechanism {
 		return setServoPos(NECTAR_POS);
 	}
 
-	public String debug() {
-		return "Hood Servo Position:" + getServoPos();
+	public Command incrementUp() {
+		return setServoPos(getServoPos() + 0.01);
+	}
+	public Command incrementDown() {
+		return setServoPos(getServoPos() - 0.01);
+	}
+
+	public void debug() {
+		Telemetry.log("Hood Servo Pos" + getServoPos());
 	}
 }

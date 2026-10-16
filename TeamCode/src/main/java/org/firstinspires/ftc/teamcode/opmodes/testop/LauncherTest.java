@@ -35,7 +35,7 @@ public class LauncherTest extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.updateTelemetry(telemetry);
+		robot.updateTelemetry();
 	}
 
 }
