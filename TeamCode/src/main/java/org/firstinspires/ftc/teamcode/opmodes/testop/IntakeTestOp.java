@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.testop;
 
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextTeleop;
+import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextTeleop(name = "Intake Test Teleop")
+@NextUtility(name = "Intake Test Teleop")
 public class IntakeTestOp extends NextOpMode {
 	private final HazmatRobot robot;
 	public IntakeTestOp(HazmatRobot robot) {
@@ -27,6 +28,6 @@ public class IntakeTestOp extends NextOpMode {
 
 	@Override
 	public void periodic() {
-
+		robot.getIntake().debug();
 	}
 }
