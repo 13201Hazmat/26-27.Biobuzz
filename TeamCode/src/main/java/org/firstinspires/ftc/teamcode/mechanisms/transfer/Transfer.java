@@ -173,7 +173,6 @@ public class Transfer implements Mechanism {
 				break;
 		}
 
-
 	}
 
 }
