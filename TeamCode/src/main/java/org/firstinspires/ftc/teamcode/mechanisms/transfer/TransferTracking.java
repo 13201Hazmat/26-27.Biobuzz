@@ -108,6 +108,8 @@ public class TransferTracking implements Mechanism {
 		Telemetry.log("BALL TYPE", BallType.currentBallType);
 		Telemetry.log("NUMBER OF BALLS", storedBalls.size());
 		Telemetry.log("QUEUE:", storedBalls);
+		Telemetry.log("FRONT", startTransferBeamBreak.debug());
+		Telemetry.log("BACK", endTransferBeamBreak.debug());
 	}
 
 	/**
