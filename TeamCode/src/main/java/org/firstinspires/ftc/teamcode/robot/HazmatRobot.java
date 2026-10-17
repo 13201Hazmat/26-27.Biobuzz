@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
-import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+//import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -14,11 +14,11 @@ import dev.nextftc.robot.NextRobot;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
-	private Intake intake;
+//	private Intake intake;
 	private Drivetrain drivetrain;
 
 	public HazmatRobot() {
-		intake = new Intake();
+//		intake = new Intake();
 		drivetrain = new Drivetrain();
 	}
 
@@ -33,9 +33,9 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().pose().heading();
 	}
 
-	public Intake getIntake() {
-		return intake;
-	}
+//	public Intake getIntake() {
+//		return intake;
+//	}
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -43,6 +43,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, drivetrain);
+		return Set.of(drivetrain);
 	}
 }
