@@ -22,7 +22,6 @@ public class TransferTracking implements Mechanism {
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
 	private final ArrayDeque<BallType> storedBalls;
 
-	// Edge detection state variables
 	private boolean lastStartBeamState = false;
 	private boolean lastEndBeamState = false;
 
