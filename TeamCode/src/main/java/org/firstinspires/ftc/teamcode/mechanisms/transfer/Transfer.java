@@ -135,11 +135,8 @@ public class Transfer implements Mechanism {
 	@Override
 	public void periodic() {
 		transferTracking.periodic();
-		// if there is something in front of the beam break
 		boolean isTriggered = transferTracking.getStartTransferBeamBreak().isTriggered();
 
-		// if the transfer is empty or filling --> transfer state forward
-		// if the transfer is full --> transfer state stopped
 		switch (transferTracking.getStoredBalls().size()) {
 			case 0 :
 				transferSensingState = TransferSensingState.EMPTY;
@@ -164,7 +161,6 @@ public class Transfer implements Mechanism {
 				break;
 		}
 
-		// this sets the speed depending on the transfer state
 		switch (transferMotorState) {
 			case FORWARD :
 				transferMotor.setThrottle(FORWARD_SPEED);
