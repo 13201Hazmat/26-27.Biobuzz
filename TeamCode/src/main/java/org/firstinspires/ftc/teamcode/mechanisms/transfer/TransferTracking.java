@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.data.ColorProfiles;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import dev.nextftc.hardware.RobotController;
 import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.robot.Mechanism;
@@ -17,8 +18,8 @@ import dev.nextftc.robot.Telemetry;
  * sensors.
  */
 public class TransferTracking implements Mechanism {
-	private final NextDigitalSensor startTransferBeamBreak = new NextDigitalSensor("startBeamBreak");
-	private final NextDigitalSensor endTransferBeamBreak = new NextDigitalSensor("endBeamBreak");
+	private final NextDigitalSensor startTransferBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 0);
+	private final NextDigitalSensor endTransferBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 4);
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
 	private final ArrayDeque<BallType> storedBalls;
 
