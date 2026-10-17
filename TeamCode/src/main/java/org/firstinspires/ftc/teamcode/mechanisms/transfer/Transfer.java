@@ -9,81 +9,136 @@ import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
+/**
+ * Handles the transfer mechanism for managing ball intake and tracking storage
+ */
 public class Transfer implements Mechanism {
-	private final double FORWARD_SPEED = 1.0;
-	private final double BACKWARD_SPEED = -1.0;
-	private final double IDLE_SPEED = 0.0;
-	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
-	private TransferMotorState transferMotorState;
-	private TransferSensingState transferSensingState;
-	private TransferTracking transferTracking;
 
-	private boolean currentTriggerState = false;
-	// the transfer is always in one of three states - empty, filling, or full
+	private static final double FORWARD_SPEED = 1.0;
+	private static final double BACKWARD_SPEED = -1.0;
+	private static final double IDLE_SPEED = 0.0;
 
+	/**
+	 * Represents the capacity state of the transfer system based on stored ball
+	 * count.
+	 */
 	public enum TransferSensingState {
 		EMPTY, FILLING, FULL
 	}
-	// transfer is either moving forward, backward, or stopped
+
+	/**
+	 * Represents the movement state of the transfer motor.
+	 */
 	public enum TransferMotorState {
 		FORWARD, BACKWARD, STOPPED
 	}
-	// this constructor method sets the direction and sets the states (forward and
-	// full)
+
+	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
+	private TransferMotorState transferMotorState;
+	private TransferSensingState transferSensingState;
+	private final TransferTracking transferTracking;
+
+	private boolean currentTriggerState = false;
+
+	/**
+	 * Constructs a new Transfer instance, initializing motor direction, tracking,
+	 * and default states (FORWARD and EMPTY).
+	 */
 	public Transfer() {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
 		transferTracking = new TransferTracking();
 		transferMotorState = TransferMotorState.FORWARD;
 		transferSensingState = TransferSensingState.EMPTY;
 	}
-	// this returns the current transfer speed
+
+	/**
+	 * Gets the current throttle speed of the transfer motor.
+	 *
+	 * @return Current motor throttle output.
+	 */
 	public double getSpeed() {
 		return transferMotor.getThrottle();
 	}
 
+	/**
+	 * Gets the associated {@link TransferTracking} instance.
+	 *
+	 * @return The sensing and ball tracking object.
+	 */
 	public TransferTracking getTransferSensing() {
 		return this.transferTracking;
 	}
 
-	// sets the speed state
+	/**
+	 * Sets the internal motor state.
+	 *
+	 * @param transferMotorState
+	 *            The target motor state.
+	 */
 	private void setState(TransferMotorState transferMotorState) {
 		this.transferMotorState = transferMotorState;
 	}
-	// this sets the transfer to move forward
+
+	/**
+	 * Command to set the transfer motor state to move forward.
+	 *
+	 * @return Command triggering state change to FORWARD.
+	 */
 	public Command setForward() {
 		return instant(() -> setState(TransferMotorState.FORWARD));
 	}
-	// this sets the transfer to move backwards
+
+	/**
+	 * Command to set the transfer motor state to move in reverse.
+	 *
+	 * @return Command triggering state change to BACKWARD.
+	 */
 	public Command setReverse() {
 		return instant(() -> setState(TransferMotorState.BACKWARD));
 	}
 
-	// this sets the transfer to stop moving
+	/**
+	 * Command to set the transfer motor state to stopped.
+	 *
+	 * @return Command triggering state change to STOPPED.
+	 */
 	public Command setFull() {
 		return instant(() -> setState(TransferMotorState.STOPPED));
 	}
 
-	// this is where the initialization goes, steps you have to do before running
-	// the transfer
-	public void init() {
-		transferTracking.init();
-		currentTriggerState = false;
-	}
-	// this returns the state and speed of the transfer for debugging
+	/**
+	 * Logs current transfer state and throttle speed to Telemetry for debugging.
+	 */
 	public void debug() {
 		transferTracking.debug();
 		Telemetry.log("TRANSFER STATE:", transferMotorState);
 		Telemetry.log("TRANSFER SPEED", transferMotor.getThrottle());
 	}
 
-	// if 0 balls --> empty
-	// if 1-3 balls --> filling
-	// if 4 balls --> full
+	/**
+	 * Initializes tracking hardware and resets internal state before running the
+	 * transfer.
+	 */
+	public void init() {
+		transferTracking.init();
+		currentTriggerState = false;
+	}
+
+	/**
+	 * Periodic update loop. Evaluates stored ball count, updates sensing state,
+	 * adjusts motor state accordingly, and sets motor speed throttle.
+	 * <ul>
+	 * <li>0 balls &rarr; EMPTY</li>
+	 * <li>1-3 balls &rarr; FILLING</li>
+	 * <li>4 balls &rarr; FULL</li>
+	 * </ul>
+	 */
 	@Override
 	public void periodic() {
 		transferTracking.periodic();
 		// if there is something in front of the beam break
 		boolean isTriggered = transferTracking.getStartTransferBeamBreak().isTriggered();
+
 		// if the transfer is empty or filling --> transfer state forward
 		// if the transfer is full --> transfer state stopped
 		switch (transferTracking.getStoredBalls().size()) {
@@ -109,6 +164,7 @@ public class Transfer implements Mechanism {
 				transferMotorState = TransferMotorState.STOPPED;
 				break;
 		}
+
 		// this sets the speed depending on the transfer state
 		switch (transferMotorState) {
 			case FORWARD :
@@ -122,4 +178,5 @@ public class Transfer implements Mechanism {
 				break;
 		}
 	}
+
 }
