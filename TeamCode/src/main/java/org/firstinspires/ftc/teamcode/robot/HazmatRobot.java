@@ -29,6 +29,10 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
+	public double getHeading() {
+		return getFollower().pose().heading();
+	}
+
 	public Intake getIntake() {
 		return intake;
 	}
@@ -39,11 +43,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake);
-	}
-
-	@Override
-	public void periodic() {
-
+		return Set.of(intake, drivetrain);
 	}
 }

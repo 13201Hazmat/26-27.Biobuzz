@@ -13,14 +13,16 @@ import com.pedropathing.revhub.localizers.OctoQuadLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.data.Config;
+
 public class Constants {
 
     public static MecanumConfig driveConfig = new MecanumConfig(
             c -> {
-                c.frontLeftName.set("left_front");
-                c.backLeftName.set("left_back");
-                c.frontRightName.set("right_front");
-                c.backRightName.set("right_back");
+                c.frontLeftName.set(Config.fl);
+                c.backLeftName.set(Config.bL);
+                c.frontRightName.set(Config.fR);
+                c.backRightName.set(Config.bR);
 
                 c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
                 c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
