@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.mechanisms.transfer;
 
 import com.pedropathing.ivy.Command;
 
-import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
@@ -33,7 +32,7 @@ public class Transfer implements Mechanism {
 		FORWARD, BACKWARD, STOPPED
 	}
 
-	private final NextMotor transferMotor = new NextMotor(Config.transferModule, Config.transferMotorPort);
+	private final NextMotor transferMotor = new NextMotor(Config.cModule, Config.cPort);
 	private TransferMotorState transferMotorState;
 	private TransferSensingState transferSensingState;
 	private final TransferTracking transferTracking;
