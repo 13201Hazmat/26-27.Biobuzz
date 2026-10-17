@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import static com.pedropathing.ivy.groups.Groups.parallel;
+
 import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
@@ -44,5 +47,9 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake, drivetrain);
+	}
+
+	public Command init() {
+		return parallel(intake.setRampUp());
 	}
 }
