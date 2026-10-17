@@ -33,6 +33,7 @@ public class Drivetrain implements Mechanism {
 	}
 
 	public void startDrive(Gamepad gamepad, double heading) {
-		DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading).schedule();
+		DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading)
+				.schedule();
 	}
 }
