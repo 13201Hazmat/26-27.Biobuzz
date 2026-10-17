@@ -151,16 +151,6 @@ public class Transfer implements Mechanism {
 				break;
 		}
 
-		switch (transferSensingState) {
-			case EMPTY :
-			case FILLING :
-				transferMotorState = TransferMotorState.FORWARD;
-				break;
-			case FULL :
-				transferMotorState = TransferMotorState.STOPPED;
-				break;
-		}
-
 		switch (transferMotorState) {
 			case FORWARD :
 				transferMotor.setThrottle(FORWARD_SPEED);
@@ -172,6 +162,18 @@ public class Transfer implements Mechanism {
 				transferMotor.setThrottle(IDLE_SPEED);
 				break;
 		}
+
+		switch (transferSensingState) {
+			case EMPTY :
+			case FILLING :
+				transferMotorState = TransferMotorState.FORWARD;
+				break;
+			case FULL :
+				transferMotorState = TransferMotorState.STOPPED;
+				break;
+		}
+
+
 	}
 
 }
