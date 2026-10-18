@@ -37,8 +37,6 @@ public class Transfer implements Mechanism {
 	private TransferSensingState transferSensingState;
 	private final TransferTracking transferTracking;
 
-	private boolean currentTriggerState = false;
-
 	/**
 	 * Constructs a new Transfer instance, initializing motor direction, tracking,
 	 * and default states (FORWARD and EMPTY).
@@ -48,6 +46,7 @@ public class Transfer implements Mechanism {
 		transferTracking = new TransferTracking();
 		transferMotorState = TransferMotorState.FORWARD;
 		transferSensingState = TransferSensingState.EMPTY;
+		transferTracking.init();
 	}
 
 	/**
@@ -115,15 +114,6 @@ public class Transfer implements Mechanism {
 	}
 
 	/**
-	 * Initializes tracking hardware and resets internal state before running the
-	 * transfer.
-	 */
-	public void init() {
-		transferTracking.init();
-		currentTriggerState = false;
-	}
-
-	/**
 	 * Periodic update loop. Evaluates stored ball count, updates sensing state,
 	 * adjusts motor state accordingly, and sets motor speed throttle.
 	 * <ul>
@@ -135,7 +125,7 @@ public class Transfer implements Mechanism {
 	@Override
 	public void periodic() {
 		transferTracking.periodic();
-		boolean isTriggered = transferTracking.getStartTransferBeamBreak().isTriggered();
+		boolean isTriggered = transferTracking.getIntakeBeamBreak().isTriggered();
 
 		switch (transferTracking.getStoredBalls().size()) {
 			case 0 :

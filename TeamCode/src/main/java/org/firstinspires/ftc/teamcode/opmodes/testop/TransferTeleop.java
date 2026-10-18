@@ -5,7 +5,6 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
-import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
@@ -16,7 +15,6 @@ public class TransferTeleop extends NextOpMode {
 	public TransferTeleop(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
-		robot.getTransfer().init();
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
@@ -29,7 +27,7 @@ public class TransferTeleop extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.printTelemetry();
+		robot.updateTelemetry();
 		telemetry.update();
 	}
 }

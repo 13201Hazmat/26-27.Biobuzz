@@ -18,13 +18,13 @@ import dev.nextftc.robot.Telemetry;
  * sensors.
  */
 public class TransferTracking implements Mechanism {
-	private final NextDigitalSensor startTransferBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 0);
-	private final NextDigitalSensor endTransferBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 4);
+	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 0);
+	private final NextDigitalSensor launcherBeamBreak = new NextDigitalSensor(RobotController.controlHub(), 4);
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
 	private final ArrayDeque<BallType> storedBalls;
 
-	private boolean lastStartBeamState = false;
-	private boolean lastEndBeamState = false;
+	private boolean lastIntakeBeamState = false;
+	private boolean lastLauncherBeamState = false;
 
 	/**
 	 * Constructs a new TransferTracking instance and initializes the internal ball
@@ -67,8 +67,8 @@ public class TransferTracking implements Mechanism {
 	 *
 	 * @return The start {@link NextDigitalSensor} instance.
 	 */
-	public NextDigitalSensor getStartTransferBeamBreak() {
-		return startTransferBeamBreak;
+	public NextDigitalSensor getIntakeBeamBreak() {
+		return intakeBeamBreak;
 	}
 
 	/**
@@ -104,12 +104,13 @@ public class TransferTracking implements Mechanism {
 	 * to Telemetry.
 	 */
 	public void debug() {
-		Telemetry.log("DEBUG", transferColorSensor.debug());
-		Telemetry.log("BALL TYPE", BallType.currentBallType);
-		Telemetry.log("NUMBER OF BALLS", storedBalls.size());
+		Telemetry.log("Color Sensor:", transferColorSensor.debug());
+		Telemetry.log("Intake Beam", intakeBeamBreak.isTriggered());
+		Telemetry.log("Launcher Beam", launcherBeamBreak.isTriggered());
+		Telemetry.log("BALL TYPE:", BallType.currentBallType);
+		Telemetry.log("NUMBER OF BALLS:", storedBalls.size());
 		Telemetry.log("QUEUE:", storedBalls);
-		Telemetry.log("FRONT", startTransferBeamBreak.debug());
-		Telemetry.log("BACK", endTransferBeamBreak.debug());
+
 	}
 
 	/**
@@ -117,8 +118,8 @@ public class TransferTracking implements Mechanism {
 	 */
 	public void init() {
 		storedBalls.clear();
-		lastStartBeamState = false;
-		lastEndBeamState = false;
+		lastIntakeBeamState = false;
+		lastLauncherBeamState = false;
 	}
 
 	/**
@@ -130,25 +131,25 @@ public class TransferTracking implements Mechanism {
 	public void periodic() {
 		transferColorSensor.update();
 
-		boolean currentStartBeamState = startTransferBeamBreak.isTriggered();
-		boolean currentEndBeamState = endTransferBeamBreak.isTriggered();
+		boolean currentIntakeBeamState = intakeBeamBreak.isTriggered();
+		boolean currentLauncherBeamState = launcherBeamBreak.isTriggered();
 
 		BallType sensedColor = getBallType();
 		BallType.currentBallType = sensedColor;
 
-		if (currentStartBeamState && !lastStartBeamState) {
+		if (currentIntakeBeamState && !lastIntakeBeamState) {
 			if (sensedColor != BallType.NOTHING) {
 				storedBalls.addLast(sensedColor);
 			}
 		}
 
-		if (!currentEndBeamState && lastEndBeamState) {
+		if (!currentLauncherBeamState && lastLauncherBeamState) {
 			if (!storedBalls.isEmpty()) {
 				storedBalls.removeFirst();
 			}
 		}
 
-		lastStartBeamState = currentStartBeamState;
-		lastEndBeamState = currentEndBeamState;
+		lastIntakeBeamState = currentIntakeBeamState;
+		lastLauncherBeamState = currentLauncherBeamState;
 	}
 }

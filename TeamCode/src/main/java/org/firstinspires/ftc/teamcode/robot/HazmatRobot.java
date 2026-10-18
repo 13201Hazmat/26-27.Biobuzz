@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
@@ -37,13 +38,14 @@ public class HazmatRobot implements NextRobot {
 		return transfer;
 	}
 
-	public void printTelemetry() {
+	public void updateTelemetry() {
 		transfer.debug();
 		Telemetry.update();
 	}
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, transfer.getTransferSensing());
+		return Set.of(intake, transfer);
 	}
+
 }

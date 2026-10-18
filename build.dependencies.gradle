@@ -22,7 +22,7 @@ dependencies {
     implementation 'com.pedropathing.ivy:pedro:1.1.1'
 
     // NEXTFTC
-    implementation 'dev.nextftc.v2:robot:0.3.0-SNAPSHOT'
+    implementation 'dev.nextftc.v2:robot:0.3.0'
 
     //SLOTH + PANELS
     implementation("dev.frozenmilk.sinister:Sloth:0.3.2")
