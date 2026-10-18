@@ -10,6 +10,7 @@ import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.control.feedback.PIDController;
 import dev.nextftc.hardware.actuators.NextCRServo;
 import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.Telemetry;
 
 public class Turret implements Mechanism {
     private final NextCRServo leftTurretServo = new NextCRServo(Config.eModule, Config.ePort);
@@ -24,7 +25,7 @@ public class Turret implements Mechanism {
     private final double CLOSE_ENOUGH_DEG = 0.75;
 
     private final int OQ_CHANNEL = 2;
-    private final int TICKS_PER_REV = 4096;
+    private final int TICKS_PER_REV = 8192;
     private final double GEAR_RATIO = 0;
     private final double MIN_DEG = 0;
     private final double MAX_DEG = 0;
@@ -48,7 +49,7 @@ public class Turret implements Mechanism {
         targetDeg = curAngle;
     }
 
-    public void enable(boolean on) {
+    public void autoAim(boolean on) {
         enabled = on;
     }
     public void stop() {
@@ -120,8 +121,11 @@ public class Turret implements Mechanism {
         setPower(pid.calculate(targetDeg - curAngle));
     }
 
-    public String debug() {
-        return "Servo Power" + rightTurretServo.getPower() + "Turret Angle:" + getAngle() + ", Target:" + targetDeg + ", Error:" + getError();
+    public void debug() {
+        Telemetry.log("Servo Power", rightTurretServo.getPower());
+        Telemetry.log("Turret Angle", getAngle());
+        Telemetry.log("Target", targetDeg);
+        Telemetry.log("Error", getError());
     }
 
     @Override
