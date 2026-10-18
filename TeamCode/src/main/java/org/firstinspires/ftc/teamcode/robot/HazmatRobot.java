@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import androidx.annotation.NonNull;
-
 import com.pedropathing.follower.Follower;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -32,15 +31,28 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
+	public Pose getPose() {
+		return getFollower().pose();
+	}
+	public double getOmega() {
+		return getFollower().velocity().omega;
+	}
+
 	public Intake getIntake() {
 		return intake;
 	}
 
-	public Turret getTurret(){
+	public Turret getTurret() {
 		return turret;
 	}
 	@Override
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake, turret);
+	}
+
+	@Override
+	public void periodic(){
+		getFollower().update();
+//		turret.trackGoal(PathsAndPoses.targetPose, getPose());
 	}
 }
