@@ -7,6 +7,7 @@ import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -14,14 +15,17 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
+import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
 	private Intake intake;
+	private Transfer transfer;
 	private Drivetrain drivetrain;
 
 	public HazmatRobot() {
 		intake = new Intake();
+		transfer = new Transfer();
 		drivetrain = new Drivetrain();
 	}
 
@@ -39,6 +43,16 @@ public class HazmatRobot implements NextRobot {
 	public Intake getIntake() {
 		return intake;
 	}
+	public Transfer getTransfer() {
+		return transfer;
+	}
+
+	public void updateTelemetry() {
+		transfer.debug();
+		drivetrain.debug();
+		intake.debug();
+		Telemetry.update();
+	}
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -46,10 +60,11 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, drivetrain);
+		return Set.of(intake, transfer, drivetrain);
 	}
 
 	public Command init() {
 		return parallel(intake.setRampUp());
 	}
+
 }
