@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
-import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
@@ -19,12 +18,10 @@ import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
-	private Intake intake;
 	private Launcher launcher;
 	private LauncherHood launcherHood;
 
 	public HazmatRobot() {
-		intake = new Intake();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
 	}
@@ -40,9 +37,6 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().pose();
 	}
 
-	public Intake getIntake() {
-		return intake;
-	}
 	public Launcher getLauncher() {
 		return launcher;
 	}
@@ -75,6 +69,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, launcher, launcherHood);
+		return Set.of(launcher, launcherHood);
 	}
 }
