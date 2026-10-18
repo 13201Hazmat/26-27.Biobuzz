@@ -27,6 +27,7 @@ public class LauncherTest extends NextOpMode {
 
 		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
+		gp1.triangle().onTrue(instant(() -> robot.getLauncher().test()));
 
 		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementUp()));
 		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));

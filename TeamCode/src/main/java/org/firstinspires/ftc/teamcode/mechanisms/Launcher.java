@@ -13,8 +13,8 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Launcher implements Mechanism {
-	private final NextMotor leftLauncher = new NextMotor(Config.aModule, Config.aPort, Degrees.of(360.0 / 28.0));
 	private final NextMotor rightLauncher = new NextMotor(Config.bModule, Config.bPort, Degrees.of(360.0 / 28.0));
+	private final NextMotor leftLauncher = new NextMotor(Config.aModule, Config.aPort, Degrees.of(360.0 / 28.0));
 
 	private double kV = 0.0;
 	private double kS = 0.0;
@@ -34,6 +34,12 @@ public class Launcher implements Mechanism {
 
 	public void setPowerMode(boolean powerMode) {
 		this.powerMode = powerMode;
+	}
+
+	public void test() {
+		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
+		rightLauncher.setThrottle(1.0);
 	}
 
 	public enum LauncherState {
@@ -123,9 +129,11 @@ public class Launcher implements Mechanism {
 	}
 
 	public void setTargetVelocity(double RPM) {
+		setPowerMode(false);
 		if (RPM == targetVelocity)
 			return;
 		targetVelocity = RPM;
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(RPM));
 		if (RPM == IDLE_SPEED) {
 			setIdle();
@@ -133,6 +141,7 @@ public class Launcher implements Mechanism {
 		}
 		setSpinUp();
 	}
+
 	public void incrementRPM() {
 		setTargetVelocity(targetVelocity + 25);
 	}
@@ -142,11 +151,15 @@ public class Launcher implements Mechanism {
 	}
 
 	public void increasePower() {
-		rightLauncher.setThrottle(getPower() + 0.05);
+		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
+		rightLauncher.setThrottle(Math.min(1.0, getPower() + 0.1));
 	}
 
 	public void decreasePower() {
-		rightLauncher.setThrottle(getPower() - 0.05);
+		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
+		rightLauncher.setThrottle(Math.max(-1.0, getPower() - 0.1));
 	}
 
 	public void setClosePose() {
@@ -162,8 +175,9 @@ public class Launcher implements Mechanism {
 		return String.format("kV=%.6f  kS=%.4f  kP=%.5f", kV, kS, kP);
 	}
 	public void debug() {
-		Telemetry.log("Launcher RPM" + getCurrentRPM());
-		Telemetry.log("Launcher Power" + getPower());
+		Telemetry.log("Launcher RPM", getCurrentRPM());
+		Telemetry.log("Right Power", rightLauncher.getThrottle());
+		Telemetry.log("Left Power", leftLauncher.getThrottle());
 	}
 
 	@Override

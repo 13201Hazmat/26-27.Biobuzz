@@ -15,6 +15,9 @@ public class LauncherHood implements Mechanism {
 	private final double NECTAR_POS = 0.0;
 
 	public LauncherHood() {
+	}
+
+	public void init() {
 		launcherHood.setPosition(POLLEN_POS);
 	}
 
@@ -35,9 +38,15 @@ public class LauncherHood implements Mechanism {
 	}
 
 	public Command incrementUp() {
+		if(getServoPos() + 0.01 >= 1.0) {
+			return setServoPos(1.0);
+		}
 		return setServoPos(getServoPos() + 0.01);
 	}
 	public Command incrementDown() {
+		if(getServoPos() - 0.01 <= 0.0) {
+			return setServoPos(0.0);
+		}
 		return setServoPos(getServoPos() - 0.01);
 	}
 

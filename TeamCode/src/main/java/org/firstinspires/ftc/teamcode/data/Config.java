@@ -27,12 +27,20 @@ public class Config {
 	public static NextLynxModule iModule = RobotController.controlHub();
 	public static int iPort = 4;
 
-	// Expansion Hub
-	public static NextLynxModule jModule = RobotController.expansionHub();
+	// Expansion Hub (safely resolved in case Expansion Hub is not present in hardware config)
+	private static NextLynxModule getExpansionHubSafely() {
+		try {
+			return RobotController.expansionHub();
+		} catch (Exception e) {
+			return RobotController.controlHub();
+		}
+	}
+
+	public static NextLynxModule jModule = getExpansionHubSafely();
 	public static int jPort = 0;
-	public static NextLynxModule kModule = RobotController.expansionHub();
+	public static NextLynxModule kModule = getExpansionHubSafely();
 	public static int kPort = 1;
-	public static NextLynxModule lModule = RobotController.expansionHub();
+	public static NextLynxModule lModule = getExpansionHubSafely();
 	public static int lPort = 2;
 	public static NextLynxModule mModule = RobotController.controlHub();
 	public static int mPort = 3;
