@@ -20,26 +20,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.BallTracker;
+import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import org.firstinspires.ftc.teamcode.vision.BallChaseController;
 
 @TeleOp(name = "Ball Chase Tool Test", group = "Hive Vision")
 public class BallChaseControllerTest extends LinearOpMode {
 
 	private static final int PIPELINE_INDEX = 0;
-
+	private HazmatRobot robot;
 	@Override
 	public void runOpMode() {
-		DcMotor lf = hardwareMap.get(DcMotor.class, "leftFront");
-		DcMotor rf = hardwareMap.get(DcMotor.class, "rightFront");
-		DcMotor lb = hardwareMap.get(DcMotor.class, "leftBack");
-		DcMotor rb = hardwareMap.get(DcMotor.class, "rightBack");
-		DcMotor intake = hardwareMap.tryGet(DcMotor.class, "intake"); // optional
-
-		BallChaseController.configureMecanumDirections(lf, rf, lb, rb);
-		for (DcMotor m : new DcMotor[]{lf, rf, lb, rb}) {
-			m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-			m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		}
+		robot = new HazmatRobot();
 
 		Limelight3A limelight = hardwareMap.get(Limelight3A.class, "limelight");
 		limelight.pipelineSwitch(PIPELINE_INDEX);
@@ -47,7 +38,7 @@ public class BallChaseControllerTest extends LinearOpMode {
 		limelight.start();
 
 		BallTracker tracker = new BallTracker(limelight);
-		BallChaseController chase = new BallChaseController(tracker, lf, rf, lb, rb, intake);
+		BallChaseController chase = new BallChaseController(tracker, robot.getDrivetrain(), null);
 		chase.setMaxPickups(3);
 
 		while (!isStarted() && !isStopRequested()) {
@@ -81,12 +72,7 @@ public class BallChaseControllerTest extends LinearOpMode {
 			if (held) {
 				chase.update();
 			} else {
-				lf.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-				rf.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-				lb.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
-				rb.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-				if (intake != null)
-					intake.setPower(gamepad1.left_bumper ? 1.0 : 0.0);
+				robot.getDrivetrain().startDrive(gamepad1, 90);
 			}
 
 			chase.addTelemetry(telemetry);

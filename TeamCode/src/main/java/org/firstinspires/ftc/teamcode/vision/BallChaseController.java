@@ -19,7 +19,7 @@
  *   DONE      when pickups reach maxPickups (or update() is never started).
  *
  * Auto usage:
- *     BallChaseController chase = new BallChaseController(tracker, lf, rf, lb, rb, intake);
+ *     BallChaseController chase = new BallChaseController(tracker, frontLeft, frontRight, backLeft, backRight, intake);
  *     chase.setMaxPickups(2);              // optional: end after 2 pickups
  *     chase.start();
  *     while (opModeIsActive() && !chase.isDone()) {
@@ -43,6 +43,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.BallTracker;
+import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
+
+import dev.nextftc.hardware.actuators.NextMotor;
 
 public class BallChaseController {
 
@@ -74,8 +77,8 @@ public class BallChaseController {
 	public static double INTAKE_POWER = 1.0;
 
 	private final BallTracker tracker;
-	private final DcMotor lf, rf, lb, rb;
-	private final DcMotor intake; // may be null
+	private final NextMotor frontLeft, frontRight, backLeft, backRight;
+	private final NextMotor intake; // may be null
 
 	private State state = State.IDLE;
 	private int pickups = 0;
@@ -89,25 +92,13 @@ public class BallChaseController {
 	private double searchSwept = 0; // dead-reckoned rotation while searching
 	private boolean searchingWas = false; // was the LAST drive a search turn?
 
-	public BallChaseController(BallTracker tracker, DcMotor lf, DcMotor rf, DcMotor lb, DcMotor rb,
-			DcMotor intakeOrNull) {
+	public BallChaseController(BallTracker tracker, Drivetrain drivetrain, NextMotor intakeOrNull) {
 		this.tracker = tracker;
-		this.lf = lf;
-		this.rf = rf;
-		this.lb = lb;
-		this.rb = rb;
+		this.frontLeft = drivetrain.frontLeft;
+		this.frontRight = drivetrain.frontRight;
+		this.backLeft = drivetrain.backLeft;
+		this.backRight = drivetrain.backRight;
 		this.intake = intakeOrNull;
-	}
-
-	/**
-	 * Standard symmetric mecanum directions (LF F, LB F, RF R, RB R). Call once in
-	 * your OpMode init unless a flipped gearbox changes the wiring.
-	 */
-	public static void configureMecanumDirections(DcMotor lf, DcMotor rf, DcMotor lb, DcMotor rb) {
-		lf.setDirection(DcMotorSimple.Direction.FORWARD);
-		lb.setDirection(DcMotorSimple.Direction.FORWARD);
-		rf.setDirection(DcMotorSimple.Direction.REVERSE);
-		rb.setDirection(DcMotorSimple.Direction.REVERSE);
 	}
 
 	/* ---------------- public API ---------------- */
@@ -306,14 +297,14 @@ public class BallChaseController {
 		double max = Math.max(1.0,
 				Math.max(Math.max(Math.abs(pLf), Math.abs(pRf)), Math.max(Math.abs(pLb), Math.abs(pRb))));
 
-		lf.setPower(pLf / max);
-		rf.setPower(pRf / max);
-		lb.setPower(pLb / max);
-		rb.setPower(pRb / max);
+		frontLeft.setThrottle(pLf / max);
+		frontRight.setThrottle(pRf / max);
+		backLeft.setThrottle(pLb / max);
+		backRight.setThrottle(pRb / max);
 	}
 
 	private void setIntake(double power) {
 		if (intake != null)
-			intake.setPower(power);
+			intake.setThrottle(power);
 	}
 }
