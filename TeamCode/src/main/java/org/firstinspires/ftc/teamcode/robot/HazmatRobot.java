@@ -16,6 +16,7 @@ public class HazmatRobot implements NextRobot {
 	private Vision vision;
 
 	public HazmatRobot() {
+		vision = new Vision();
 	}
 
 	public Vision getVision() {
