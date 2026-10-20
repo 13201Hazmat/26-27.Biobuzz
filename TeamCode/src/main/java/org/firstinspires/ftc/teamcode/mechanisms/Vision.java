@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.pedropathing.ivy.Command;
 
+import org.firstinspires.ftc.teamcode.BallTracker;
 import org.firstinspires.ftc.teamcode.data.Config;
-import org.firstinspires.ftc.teamcode.vision.BallTracker;
-import org.firstinspires.ftc.teamcode.vision.HiveConfig;
 
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.hardware.webcams.NextLimelight;
@@ -56,11 +55,11 @@ public class Vision implements Mechanism {
 	}
 
 	public void trackPollenAndRedNectar() {
-		getBallTracker().setAllowedClasses(HiveConfig.CLASS_YELLOW_NEUTRAL, HiveConfig.CLASS_RED);
+		getBallTracker().setAllowedClasses(BallTracker.CLASS_YELLOW_NEUTRAL, BallTracker.CLASS_RED);
 	}
 
 	public void trackPollenAndBlueNectar() {
-		getBallTracker().setAllowedClasses(HiveConfig.CLASS_YELLOW_NEUTRAL, HiveConfig.CLASS_BLUE);
+		getBallTracker().setAllowedClasses(BallTracker.CLASS_YELLOW_NEUTRAL, BallTracker.CLASS_BLUE);
 	}
 
 	public void trackAll() {
