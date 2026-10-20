@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import dev.nextftc.hardware.webcams.NextLimelight;
+
 public class BallChaseFollower {
 
 	public enum State {
@@ -146,7 +148,7 @@ public class BallChaseFollower {
 	}
 
 	/** Convenience: build a default BallTracker over the Limelight for you. */
-	public BallChaseFollower(Follower follower, Limelight3A limelight, DcMotor intakeOrNull) {
+	public BallChaseFollower(Follower follower, NextLimelight limelight, DcMotor intakeOrNull) {
 		this(follower, new BallTracker(limelight), intakeOrNull);
 	}
 

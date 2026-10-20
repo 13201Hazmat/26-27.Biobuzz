@@ -31,12 +31,7 @@ public class BallChaseControllerTest extends LinearOpMode {
 	public void runOpMode() {
 		robot = new HazmatRobot();
 
-		Limelight3A limelight = hardwareMap.get(Limelight3A.class, "limelight");
-		limelight.pipelineSwitch(PIPELINE_INDEX);
-		limelight.setPollRateHz(100);
-		limelight.start();
-
-		BallTracker tracker = new BallTracker(limelight);
+		BallTracker tracker = new BallTracker(robot.getVision().getLimelight());
 		BallChaseController chase = new BallChaseController(tracker, robot.getDrivetrain(), null);
 		chase.setMaxPickups(3);
 
@@ -79,6 +74,6 @@ public class BallChaseControllerTest extends LinearOpMode {
 		}
 
 		chase.abort();
-		limelight.stop();
+		robot.getVision().getLimelight().stop();
 	}
 }

@@ -48,7 +48,7 @@ public class Vision implements Mechanism {
 
 	public BallTracker getBallTracker() {
 		if (ballTracker == null) {
-			ballTracker = new BallTracker(limelight.getCamera());
+			ballTracker = new BallTracker(limelight);
 		}
 		return ballTracker;
 	}

@@ -49,6 +49,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import dev.nextftc.hardware.webcams.NextLimelight;
+
 public class BallTracker {
 
 	/* ---- Limelight / geometry (MEASURE THESE) ---- */
@@ -128,8 +130,8 @@ public class BallTracker {
 	}
 
 	private static final class LimelightSource implements DetectionSource {
-		private final Limelight3A limelight;
-		LimelightSource(Limelight3A limelight) {
+		private final NextLimelight limelight;
+		LimelightSource(NextLimelight limelight) {
 			this.limelight = limelight;
 		}
 
@@ -163,7 +165,7 @@ public class BallTracker {
 	private Sighting locked = null; // last real sighting of the locked ball
 	private Sighting last = null; // most recent result of update()
 
-	public BallTracker(Limelight3A limelight) {
+	public BallTracker(NextLimelight limelight) {
 		this(new LimelightSource(limelight));
 	}
 

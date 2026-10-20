@@ -41,13 +41,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import dev.nextftc.hardware.webcams.NextLimelight;
+
 public class BallHunt {
 
 	private final BallChaseFollower hunt;
 	private final Follower follower;
 
 	/** Defaults: alliance colors (red+blue), 1 ball, 15 s budget. */
-	public BallHunt(Follower follower, Limelight3A limelight, DcMotor intakeOrNull) {
+	public BallHunt(Follower follower, NextLimelight limelight, DcMotor intakeOrNull) {
 		this(follower, new BallTracker(limelight), intakeOrNull);
 	}
 
