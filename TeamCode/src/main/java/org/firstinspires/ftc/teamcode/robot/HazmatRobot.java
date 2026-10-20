@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
-import org.firstinspires.ftc.teamcode.mechanisms.Vision;
+import org.firstinspires.ftc.teamcode.mechanisms.vision.Vision;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
