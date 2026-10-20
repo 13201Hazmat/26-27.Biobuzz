@@ -101,8 +101,10 @@ public class BallHunt {
 
 	/* ---------------- run it ---------------- */
 
-	/** Blocking: run the whole hunt, own follower.update(), stream telemetry,
-	 *  abort() when done, and return how many balls were picked. */
+	/**
+	 * Blocking: run the whole hunt, own follower.update(), stream telemetry,
+	 * abort() when done, and return how many balls were picked.
+	 */
 	public int go(LinearOpMode op) {
 		hunt.start();
 		while (op.opModeIsActive() && !hunt.isDone()) {
