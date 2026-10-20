@@ -17,7 +17,6 @@ public class Teleop extends NextOpMode {
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		gp1.rightBumper().onTrue(robot.getIntake().setForward());
 	}
 
 	@Override
