@@ -37,7 +37,7 @@
  * list before trusting it - nothing here is checked against the model at
  * runtime.
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mechanisms.vision;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;

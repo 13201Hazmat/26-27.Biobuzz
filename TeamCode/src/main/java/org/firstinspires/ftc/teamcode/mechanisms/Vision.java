@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.pedropathing.ivy.Command;
 
-import org.firstinspires.ftc.teamcode.BallTracker;
 import org.firstinspires.ftc.teamcode.data.Config;
+import org.firstinspires.ftc.teamcode.mechanisms.vision.BallTracker;
 
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.hardware.webcams.NextLimelight;

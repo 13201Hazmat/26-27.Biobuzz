@@ -35,14 +35,12 @@
  * All tunables are public static so a config system (e.g. Bylazar
  * Configurables) or plain edits can drive them.
  */
-package org.firstinspires.ftc.teamcode.vision;
+package org.firstinspires.ftc.teamcode.mechanisms.vision;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.BallTracker;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 
 import dev.nextftc.hardware.actuators.NextMotor;

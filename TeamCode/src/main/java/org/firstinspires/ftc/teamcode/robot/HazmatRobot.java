@@ -25,7 +25,6 @@ public class HazmatRobot implements NextRobot {
 		return vision;
 	}
 
-
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
 	}

@@ -17,11 +17,10 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.BallTracker;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
-import org.firstinspires.ftc.teamcode.vision.BallChaseController;
+import org.firstinspires.ftc.teamcode.mechanisms.vision.BallChaseController;
+import org.firstinspires.ftc.teamcode.mechanisms.vision.BallTracker;
 
 @TeleOp(name = "Ball Chase Tool Test", group = "Hive Vision")
 public class BallChaseControllerTest extends LinearOpMode {

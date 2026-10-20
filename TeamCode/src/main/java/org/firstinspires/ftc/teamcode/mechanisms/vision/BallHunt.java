@@ -32,12 +32,13 @@
  * filter and target lock are in effect, so the robot hunts that color
  * specifically and never flip-flops between two balls.
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mechanisms.vision;
 
 import com.pedropathing.follower.Follower;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BallHunt {

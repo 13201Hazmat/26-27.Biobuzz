@@ -33,7 +33,7 @@
  * / +Y left. Limelight tx is + to the RIGHT, ty is + UP. Assumes Pedro Pathing
  * 3.x - check for your version.
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mechanisms.vision;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.drivetrain.DrivePowers;
@@ -45,6 +45,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
