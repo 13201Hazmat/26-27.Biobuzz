@@ -2,14 +2,10 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.data.Config;
-
-import dev.nextftc.hardware.RobotController;
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 import dev.nextftc.robot.drive.DriveCommands;
-import dev.nextftc.robot.opmode.NextTeleop;
 
 public class Drivetrain implements Mechanism {
     public final NextMotor frontLeft = new NextMotor("frontLeft");

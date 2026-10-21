@@ -16,6 +16,7 @@ import java.util.List;
 public class OctoQuadTuner extends Procedure {
     public static double SWING_ARM = 336.877962768;
     public static double FOUR_BAR = 505.316944406;
+
     public OctoQuadTuner() {
         super("OctoQuad Tuner", "A procedure for tuning the OctoQuad localizer.");
     }
