@@ -17,10 +17,10 @@ public class Constants {
 
     public static MecanumConfig driveConfig = new MecanumConfig(
             c -> {
-                c.frontLeftName.set("left_front");
-                c.backLeftName.set("left_back");
-                c.frontRightName.set("right_front");
-                c.backRightName.set("right_back");
+                c.frontLeftName.set("frontLeft");
+                c.backLeftName.set("backLeft");
+                c.frontRightName.set("frontRight");
+                c.backRightName.set("backRight");
 
                 c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
                 c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);

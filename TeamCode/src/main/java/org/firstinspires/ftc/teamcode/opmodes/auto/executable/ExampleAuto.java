@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runners;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
@@ -7,6 +9,7 @@ import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
 
 @NextAutonomous(name = "Example Autonomous")
+@Disabled
 public class ExampleAuto extends NextOpMode {
 	private enum AutoOption {
 		LEAVE_AUTO("Leave Auto"), PRELOAD_AUTO("Preload Auto"), AUDIENCE_FLOWER_AUTO("Audience Flower Auto");

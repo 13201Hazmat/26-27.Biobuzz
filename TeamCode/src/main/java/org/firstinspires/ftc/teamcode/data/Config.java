@@ -7,13 +7,13 @@ public class Config {
 
 	// Control Hub
 	public static NextLynxModule aModule = RobotController.controlHub();
-	public static int aPort = 0;
+	public static int bL = 0;
 	public static NextLynxModule bModule = RobotController.controlHub();
-	public static int bPort = 1;
+	public static int fL = 1;
 	public static NextLynxModule cModule = RobotController.controlHub();
-	public static int cPort = 2;
+	public static int bR = 2;
 	public static NextLynxModule dModule = RobotController.controlHub();
-	public static int dPort = 3;
+	public static int fR = 3;
 
 	// Servos
 	public static NextLynxModule eModule = RobotController.controlHub();
