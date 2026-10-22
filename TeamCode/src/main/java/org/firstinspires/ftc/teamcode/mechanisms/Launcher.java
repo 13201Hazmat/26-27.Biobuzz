@@ -36,12 +36,6 @@ public class Launcher implements Mechanism {
 		this.powerMode = powerMode;
 	}
 
-	public void test() {
-		setPowerMode(true);
-		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
-		rightLauncher.setThrottle(1.0);
-	}
-
 	public enum LauncherState {
 		IDLE, SPINUP, READY
 	}
@@ -112,7 +106,11 @@ public class Launcher implements Mechanism {
 	public boolean isAtVelocity() {
 		return error <= READY_TOLERANCE;
 	}
-
+	public void test() {
+		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
+		rightLauncher.setThrottle(1.0);
+	}
 	public void updateState() {
 		if (isIdle())
 			return;

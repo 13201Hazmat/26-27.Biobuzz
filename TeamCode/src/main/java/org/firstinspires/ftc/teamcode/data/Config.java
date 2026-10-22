@@ -27,7 +27,8 @@ public class Config {
 	public static NextLynxModule iModule = RobotController.controlHub();
 	public static int iPort = 4;
 
-	// Expansion Hub (safely resolved in case Expansion Hub is not present in hardware config)
+	// Expansion Hub (safely resolved in case Expansion Hub is not present in
+	// hardware config)
 	private static NextLynxModule getExpansionHubSafely() {
 		try {
 			return RobotController.expansionHub();

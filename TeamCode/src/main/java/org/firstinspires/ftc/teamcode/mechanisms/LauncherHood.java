@@ -38,13 +38,13 @@ public class LauncherHood implements Mechanism {
 	}
 
 	public Command incrementUp() {
-		if(getServoPos() + 0.01 >= 1.0) {
+		if (getServoPos() + 0.01 >= 1.0) {
 			return setServoPos(1.0);
 		}
 		return setServoPos(getServoPos() + 0.01);
 	}
 	public Command incrementDown() {
-		if(getServoPos() - 0.01 <= 0.0) {
+		if (getServoPos() - 0.01 <= 0.0) {
 			return setServoPos(0.0);
 		}
 		return setServoPos(getServoPos() - 0.01);
