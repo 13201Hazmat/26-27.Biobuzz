@@ -46,4 +46,9 @@ public class Config {
 	public static NextLynxModule mModule = RobotController.controlHub();
 	public static int mPort = 3;
 
+	public static String fl = "frontLeft";
+	public static String fR = "frontRight";
+	public static String bL = "backLeft";
+	public static String bR = "backRight";
+
 }

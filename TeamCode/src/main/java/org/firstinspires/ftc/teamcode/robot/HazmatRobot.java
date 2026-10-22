@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import static com.pedropathing.ivy.groups.Groups.parallel;
+
 import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
+import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
@@ -20,10 +26,16 @@ public class HazmatRobot implements NextRobot {
 	private Follower follower;
 	private Launcher launcher;
 	private LauncherHood launcherHood;
+	private Intake intake;
+	private Transfer transfer;
+	private Drivetrain drivetrain;
 
 	public HazmatRobot() {
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
+		intake = new Intake();
+		transfer = new Transfer();
+		drivetrain = new Drivetrain();
 	}
 
 	public Follower getFollower() {
@@ -36,6 +48,10 @@ public class HazmatRobot implements NextRobot {
 	public Pose getCurrentPose() {
 		return getFollower().pose();
 	}
+
+    public double getHeading() {
+        return getFollower().pose().heading();
+    }
 
 	public Launcher getLauncher() {
 		return launcher;
@@ -61,14 +77,33 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
+	public Intake getIntake() {
+		return intake;
+	}
+	public Transfer getTransfer() {
+		return transfer;
+	}
+
 	public void updateTelemetry() {
-		launcher.debug();
-		launcherHood.debug();
+		transfer.debug();
+		drivetrain.debug();
+		intake.debug();
+        launcher.debug();
+        launcherHood.debug();
 		Telemetry.update();
+	}
+
+	public Drivetrain getDrivetrain() {
+		return drivetrain;
 	}
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(launcher, launcherHood);
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
 	}
+
+	public Command init() {
+		return parallel(intake.setRampUp());
+	}
+
 }
