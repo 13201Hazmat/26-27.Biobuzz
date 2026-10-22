@@ -8,11 +8,13 @@ import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
+import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
+
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
+
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -49,9 +51,9 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().pose();
 	}
 
-    public double getHeading() {
-        return getFollower().pose().heading();
-    }
+	public double getHeading() {
+		return getFollower().pose().heading();
+	}
 
 	public Launcher getLauncher() {
 		return launcher;
@@ -80,6 +82,7 @@ public class HazmatRobot implements NextRobot {
 	public Intake getIntake() {
 		return intake;
 	}
+
 	public Transfer getTransfer() {
 		return transfer;
 	}
@@ -88,8 +91,8 @@ public class HazmatRobot implements NextRobot {
 		transfer.debug();
 		drivetrain.debug();
 		intake.debug();
-        launcher.debug();
-        launcherHood.debug();
+		launcher.debug();
+		launcherHood.debug();
 		Telemetry.update();
 	}
 
