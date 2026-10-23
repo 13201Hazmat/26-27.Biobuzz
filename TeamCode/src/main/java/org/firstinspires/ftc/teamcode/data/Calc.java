@@ -5,6 +5,7 @@ import com.pedropathing.math.Pose;
 public class Calc {
     private static double TURRET_OFFSET_IN = 0.0;
 
+
     /**
      * Computes the angle the turret must point at to face a goal, relative to the robot heading.
      * <p>
@@ -23,4 +24,10 @@ public class Calc {
         double fieldAngle = Math.atan2(g.y() - ty, g.x() - tx);
         return (Math.toDegrees(fieldAngle - h));
     }
+
+    public static double clamp(double value, double lo, double hi) {
+        return Math.max(lo, Math.min(hi, value));
+    }
+
+
 }
