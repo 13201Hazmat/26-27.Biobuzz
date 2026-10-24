@@ -110,6 +110,13 @@ public class Intake implements Mechanism {
 		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
 	}
 
+	public Command toggleRamp() {
+		if(intakeRampServo.getPosition() == RAMP_UP_POS) {
+			return setRampDown();
+		}
+		return setRampUp();
+	}
+
 	/**
 	 * Cycles through intake states in sequence: FORWARD -> REVERSE -> OFF ->
 	 * FORWARD.
