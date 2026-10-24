@@ -6,6 +6,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -16,8 +17,10 @@ import dev.nextftc.robot.NextRobot;
 
 public class HazmatRobot implements NextRobot {
     private Follower follower;
+    private Drivetrain drivetrain;
 
     public HazmatRobot() {
+        drivetrain = new Drivetrain();
     }
 
     public Follower getFollower() {
@@ -27,6 +30,10 @@ public class HazmatRobot implements NextRobot {
         return follower;
     }
 
+    public Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
+
     public Command moveToPoint(Path path) {
         return follow(getFollower(), path);
     }
@@ -34,6 +41,6 @@ public class HazmatRobot implements NextRobot {
 
     @Override
     public Set<Mechanism> getMechanisms() {
-        return Set.of();
+        return Set.of(drivetrain);
     }
 }

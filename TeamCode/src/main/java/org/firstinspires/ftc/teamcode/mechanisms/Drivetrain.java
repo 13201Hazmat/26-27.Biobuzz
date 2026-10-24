@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import dev.nextftc.control.drive.MecanumKinematics;
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
@@ -15,7 +16,7 @@ public class Drivetrain implements Mechanism {
 
     public Drivetrain() {
 
-        frontLeft.setDirection(NextMotor.Direction.REVERSE);
+        frontLeft.setDirection(NextMotor.Direction.FORWARD);
         frontRight.setDirection(NextMotor.Direction.FORWARD);
         backLeft.setDirection(NextMotor.Direction.FORWARD);
         backRight.setDirection(NextMotor.Direction.FORWARD);
@@ -30,7 +31,8 @@ public class Drivetrain implements Mechanism {
     }
 
     public void startDrive(Gamepad gamepad, double heading) {
-        DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading)
-                .schedule();
+//        DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading)
+//                .schedule();
+        DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading).schedule();
     }
 }

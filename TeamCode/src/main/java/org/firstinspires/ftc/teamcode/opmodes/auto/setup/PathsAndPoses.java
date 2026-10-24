@@ -1,10 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Poses.firstFlowerPose;
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Poses.leavePose;
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Poses.otherSideShootingPose;
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Poses.startingPose;
-
 import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
@@ -28,22 +23,22 @@ public class PathsAndPoses {
         return Paths.line(p1, p2).linear(p1, p2);
     }
 
-    static class Poses {
-        public static final Pose startingPose = factory.of(55.65, 9.03, 90);
-        public static final Pose leavePose = factory.of(9.59, 89.65, 90);
-        public static final Pose firstFlowerPose = factory.of(15.17, 47.14, -180);
-        public static final Pose otherSideShootingPose = factory.of(46.88, 127.49, 90);
+    public static Path createCurvyPath(Pose p1, Pose control, Pose p2) {
+        return Paths.curve(p1, control, p2).linear(p1, p2);
     }
 
-    static class ControlPoints {
-
+    public static class LeavePoses {
+        public static final Pose startingPose = factory.of(30.43, 7.48, 180);
+        public static final Pose midPose = factory.of(9.24, 7.30, 180);
+        public static final Pose control = factory.of(25.96, 56.11, 180);
+        public static final Pose leavePose = factory.of(9.76, 96.28, 180);
     }
 
     public static class HazPaths {
-        public static Path startingPose_To_leavePose = createLinearPath(startingPose, leavePose);
-        public static Path startingPose_To_firstFlowerPose = createLinearPath(startingPose, firstFlowerPose);
-
-        public static Path firstFlowerPose_To_otherSideShootingPose = createLinearPath(firstFlowerPose,
-                otherSideShootingPose);
+        // Direct path from start to finish
+        public static Path startingPose_To_leavePose = createLinearPath(LeavePoses.startingPose, LeavePoses.leavePose);
+        public static Path startingPose_To_midPose = createLinearPath(LeavePoses.startingPose, LeavePoses.midPose);
+        // Uses control point from the mid point
+        public static Path midPose_To_leavePose = createCurvyPath(LeavePoses.midPose, LeavePoses.control, LeavePoses.leavePose);
     }
 }

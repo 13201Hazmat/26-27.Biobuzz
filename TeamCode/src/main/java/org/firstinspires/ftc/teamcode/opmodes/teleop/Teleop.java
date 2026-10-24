@@ -17,7 +17,11 @@ public class Teleop extends NextOpMode {
 
         Trigger.Companion.getDefaultEventLoop().clear();
         CommandGamepad gp1 = new CommandGamepad(gamepad1);
+    }
 
+    @Override
+    public void start() {
+        robot.getDrivetrain().startDrive(gamepad1, 180);
     }
 
     @Override
