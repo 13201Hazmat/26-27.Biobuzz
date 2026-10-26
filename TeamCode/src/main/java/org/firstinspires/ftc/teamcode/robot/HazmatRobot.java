@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import static com.pedropathing.ivy.groups.Groups.parallel;
 
+import androidx.annotation.NonNull;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
@@ -26,18 +28,18 @@ import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
-	private Launcher launcher;
-	private LauncherHood launcherHood;
-	private Intake intake;
-	private Transfer transfer;
-	private Drivetrain drivetrain;
+	private final Drivetrain drivetrain;
+	private final Intake intake;
+	private final Transfer transfer;
+	private final Launcher launcher;
+	private final LauncherHood launcherHood;
 
 	public HazmatRobot() {
-		launcher = new Launcher();
-		launcherHood = new LauncherHood();
+		drivetrain = new Drivetrain();
 		intake = new Intake();
 		transfer = new Transfer();
-		drivetrain = new Drivetrain();
+		launcher = new Launcher();
+		launcherHood = new LauncherHood();
 	}
 
 	public Follower getFollower() {
@@ -47,20 +49,33 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
-	public Pose getCurrentPose() {
-		return getFollower().pose();
+	public Drivetrain getDrivetrain() {
+		return drivetrain;
 	}
-
-	public double getHeading() {
-		return getFollower().pose().heading();
+	public Intake getIntake() {
+		return intake;
 	}
-
+	public Transfer getTransfer() {
+		return transfer;
+	}
 	public Launcher getLauncher() {
 		return launcher;
 	}
 	public LauncherHood getLauncherHood() {
 		return launcherHood;
 	}
+
+
+
+	public Pose getCurrentPose() {
+		return follower.pose();
+	}
+
+	public double getHeading() {
+		return follower.pose().heading();
+	}
+
+
 
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
@@ -79,13 +94,14 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
-	public Intake getIntake() {
-		return intake;
+
+
+	@NonNull
+	@Override
+	public Set<Mechanism> getMechanisms() {
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
 	}
 
-	public Transfer getTransfer() {
-		return transfer;
-	}
 
 	public void updateTelemetry() {
 		transfer.debug();
@@ -96,17 +112,14 @@ public class HazmatRobot implements NextRobot {
 		Telemetry.update();
 	}
 
-	public Drivetrain getDrivetrain() {
-		return drivetrain;
+	public Command init() {
+		return parallel(
+				intake.setRampDown()
+		);
 	}
 
 	@Override
-	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
-	}
+	public void periodic() {
 
-	public Command init() {
-		return parallel(intake.setRampUp());
 	}
-
 }

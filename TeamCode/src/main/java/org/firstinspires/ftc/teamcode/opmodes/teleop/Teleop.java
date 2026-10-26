@@ -11,14 +11,9 @@ import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
 @NextTeleop(name = "Main")
-public abstract class Teleop extends NextOpMode {
-	private final HazmatRobot robot;
+public abstract class Teleop extends BaseTeleop {
 	public Teleop(HazmatRobot robot) {
 		super(robot);
-		this.robot = robot;
-
-		Trigger.Companion.getDefaultEventLoop().clear();
-		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		gp1.leftStickButton().onTrue(robot.getIntake().toggleRamp());
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
@@ -26,7 +21,7 @@ public abstract class Teleop extends NextOpMode {
 
 	@Override
 	public void start() {
-		robot.getDrivetrain().startDrive(gamepad1, robot.getFollower().pose().heading());
+		robot.getDrivetrain().startDrive(gamepad1, robot.getHeading());
 	}
 
 	@Override
