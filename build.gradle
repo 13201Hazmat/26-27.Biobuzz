@@ -36,6 +36,6 @@ spotless {
         target "TeamCode/src/**/*.java"
         targetExclude "TeamCode/src/**/pedro/**/*.java"
 
-        eclipse()
+        eclipse().configFile("spotless.eclipse.xml")
     }
 }
