@@ -14,10 +14,13 @@ public class ColorProfiles {
 	private static final NextColor BLUE_NECTAR_COLOR = NextColor.Companion.hsv(215.5f, 1f, 0.016f);
 	private static final NextColor BLUE_NECTAR_TOLERANCE = NextColor.Companion.hsv(20f, 0.4f, 0.2f);
 
-	public static final ColorProfile POLLEN_COLOR_PROFILE = new ColorProfile(ColorSpace.HSV, POLLEN_COLOR,
-			POLLEN_TOLERANCE);
-	public static final ColorProfile RED_NECTAR_COLOR_PROFILE = new ColorProfile(ColorSpace.HSV, RED_NECTAR_COLOR,
-			RED_NECTAR_TOLERANCE);
-	public static final ColorProfile BLUE_NECTAR_COLOR_PROFILE = new ColorProfile(ColorSpace.HSV, BLUE_NECTAR_COLOR,
-			BLUE_NECTAR_TOLERANCE);
+	public static final ColorProfile POLLEN_COLOR_PROFILE = new ColorProfile(
+			ColorSpace.HSV, POLLEN_COLOR, POLLEN_TOLERANCE
+	);
+	public static final ColorProfile RED_NECTAR_COLOR_PROFILE = new ColorProfile(
+			ColorSpace.HSV, RED_NECTAR_COLOR, RED_NECTAR_TOLERANCE
+	);
+	public static final ColorProfile BLUE_NECTAR_COLOR_PROFILE = new ColorProfile(
+			ColorSpace.HSV, BLUE_NECTAR_COLOR, BLUE_NECTAR_TOLERANCE
+	);
 }

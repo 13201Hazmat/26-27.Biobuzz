@@ -156,9 +156,8 @@ public class HazmatRobot implements NextRobot {
 				waitMs(1000),
 				launcher.closeGate(),
 				instant(() -> isLaunching = false)
-		)
-		.raceWith(onInterrupt(() -> isLaunching = false))
-		.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
+		).raceWith(onInterrupt(() -> isLaunching = false))
+				.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
 	}
 
 	public void updateTelemetry() {
