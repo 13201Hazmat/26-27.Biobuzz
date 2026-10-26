@@ -23,7 +23,6 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
@@ -107,17 +106,36 @@ public class HazmatRobot implements NextRobot {
 		return parallel(intake.setRampDown());
 	}
 
-	public Command cycleBallTypeServo() {
+	private Command setHoodForFirst() {
 		return lazy(() -> {
-			Queue<BallType> currentBalls = transfer.getTransferSensing().getStoredBalls();
+			BallType front = transfer.getTransferSensing().getTopBall();
+			if (front == BallType.POLLEN)
+				return launcherHood.setPollenPos();
+			if (front == BallType.RED_NECTAR || front == BallType.BLUE_NECTAR)
+				return launcherHood.setNectarPos();
+			return instant(() -> {
+			});
+		});
+	}
+
+	private Command setHoodFor(BallType type) {
+		return conditional(() -> type == BallType.POLLEN, launcherHood.setPollenPos(), launcherHood.setNectarPos());
+	}
+
+	private Command cycleHood() {
+		return lazy(() -> {
+			List<BallType> balls = new ArrayList<>(transfer.getTransferSensing().getStoredBalls());
+			if (balls.isEmpty())
+				return instant(() -> {
+				});
 			List<Command> commands = new ArrayList<>();
-			for (BallType ballType : currentBalls) {
-				if (ballType == BallType.POLLEN) {
-					commands.add(launcherHood.setPollenPos());
-				} else if (ballType == BallType.RED_NECTAR || ballType == BallType.BLUE_NECTAR) {
-					commands.add(launcherHood.setNectarPos());
-				}
-				commands.add(transfer.setForward());
+
+			commands.add(waitMs(250));
+			for (BallType ballType : balls.subList(1, balls.size())) {
+				if (ballType == null || ballType == BallType.NOTHING)
+					break;
+				commands.add(setHoodFor(ballType));
+				commands.add(waitMs(150));
 			}
 			return sequential(commands.toArray(new Command[0]));
 		});
@@ -125,15 +143,18 @@ public class HazmatRobot implements NextRobot {
 
 	public Command launch() {
 		return sequential(
-				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 				instant(() -> isLaunching = true),
+				setHoodForFirst(),
+				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 				transfer.setForward(),
 				launcher.openGate(),
-				cycleBallTypeServo(),
-				waitMs(2000),
+				cycleHood(),
+				waitMs(1000),
 				launcher.closeGate(),
 				instant(() -> isLaunching = false)
-		);
+		)
+		.raceWith(onInterrupt(() -> isLaunching = false))
+		.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
 	}
 
 	public void updateTelemetry() {
