@@ -163,8 +163,9 @@ public class HazmatRobot implements NextRobot {
 				waitMs(1000),
 				launcher.closeGate(),
 				instant(() -> isLaunching = false)
-		).raceWith(onInterrupt(() -> isLaunching = false))
-				.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
+		)
+		.raceWith(onInterrupt(() -> { isLaunching = false; launcher.closeGate().schedule();}))
+		.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
 	}
 	// @formatter:on
 
@@ -182,17 +183,17 @@ public class HazmatRobot implements NextRobot {
 		switch (transfer.getTransferSensingState()) {
 			case EMPTY :
 				launcher.setIdle();
-				intake.setForward();
-				transfer.setForward();
+				intake.forward();
+				transfer.forward();
 				break;
 			case FILLING :
-				transfer.setForward();
-				intake.setForward();
+				transfer.forward();
+				intake.forward();
 				launcher.autoSetVelocity(getCurrentPose());
 				break;
 			case FULL :
-				transfer.setOff();
-				intake.setOff();
+				transfer.off();
+				intake.off();
 				break;
 		}
 	}
