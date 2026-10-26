@@ -41,9 +41,7 @@ public class PathsAndPoses {
 		public static final Pose midPose = factory.of(9.24, 7.30, 180);
 		public static final Pose control = factory.of(25.96, 56.11, 180);
 		public static final Pose leavePose = factory.of(9.76, 96.28, 180);
-	}
 
-	public static class HazPaths {
 		// Direct path from start to finish
 		public static Path startingPose_To_leavePose = createLinearPath(LeavePoses.startingPose, LeavePoses.leavePose);
 		public static Path startingPose_To_midPose = createLinearPath(LeavePoses.startingPose, LeavePoses.midPose);
