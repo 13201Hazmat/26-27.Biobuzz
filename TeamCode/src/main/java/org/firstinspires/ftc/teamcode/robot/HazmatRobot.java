@@ -129,6 +129,7 @@ public class HazmatRobot implements NextRobot {
 				instant(() -> isLaunching = true),
 				transfer.setForward(),
 				launcher.openGate(),
+				cycleBallTypeServo(),
 				waitMs(2000),
 				launcher.closeGate(),
 				instant(() -> isLaunching = false)
