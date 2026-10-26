@@ -124,16 +124,9 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command launch() {
-		return sequential(
-				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
-				instant(() -> isLaunching = true),
-				transfer.setForward(),
-				launcher.openGate(),
-				cycleBallTypeServo(),
-				waitMs(2000),
-				launcher.closeGate(),
-				instant(() -> isLaunching = false)
-		);
+		return sequential(waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), instant(() -> isLaunching = true),
+				transfer.setForward(), launcher.openGate(), cycleBallTypeServo(), waitMs(2000), launcher.closeGate(),
+				instant(() -> isLaunching = false));
 	}
 
 	public void updateTelemetry() {
