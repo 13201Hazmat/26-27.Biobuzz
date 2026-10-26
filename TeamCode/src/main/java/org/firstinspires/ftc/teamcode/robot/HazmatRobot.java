@@ -145,6 +145,7 @@ public class HazmatRobot implements NextRobot {
 		});
 	}
 
+	// @formatter:off
 	public Command launch() {
 		return sequential(
 				instant(() -> isLaunching = true),
@@ -160,6 +161,7 @@ public class HazmatRobot implements NextRobot {
 		.raceWith(onInterrupt(() -> isLaunching = false))
 		.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
 	}
+	// @formatter:on
 
 	public void updateTelemetry() {
 		transfer.debug();
