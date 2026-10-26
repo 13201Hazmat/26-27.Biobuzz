@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 
-import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.*;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
@@ -85,7 +85,7 @@ public class HazmatRobot implements NextRobot {
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
 			if (current.y() > 70.5) {
-				PathsAndPoses.targetPose = PathsAndPoses.redFarHive;
+				TurretPose.targetPose = PathsAndPoses.redFarHive;
 			} else {
 				PathsAndPoses.targetPose = PathsAndPoses.redAudienceHive;
 			}
@@ -130,16 +130,9 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command launch() {
-		return sequential(
-				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
-				instant(() -> isLaunching = true),
-				transfer.setForward(),
-				launcher.openGate(),
-				cycleBallTypeServo(),
-				waitMs(2000),
-				launcher.closeGate(),
-				instant(() -> isLaunching = false)
-		);
+		return sequential(waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), instant(() -> isLaunching = true),
+				transfer.setForward(), launcher.openGate(), cycleBallTypeServo(), waitMs(2000), launcher.closeGate(),
+				instant(() -> isLaunching = false));
 	}
 
 	public void updateTelemetry() {

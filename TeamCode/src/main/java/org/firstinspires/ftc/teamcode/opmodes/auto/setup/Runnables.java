@@ -12,29 +12,25 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 public class Runnables {
 
-    private final HazmatRobot robot;
+	private final HazmatRobot robot;
 
-    public Runnables(HazmatRobot robot) {
-        this.robot = robot;
-    }
+	public Runnables(HazmatRobot robot) {
+		this.robot = robot;
+	}
 
-    // MAKE SURE TO PUT PATHSANDPOSES.MIRROR()
+	// MAKE SURE TO PUT PATHSANDPOSES.MIRROR()
 
-    public Command leaveAuto() {
-        return robot.moveToPoint(startingPose_To_leavePose);
-    }
+	public Command leaveAuto() {
+		return robot.moveToPoint(startingPose_To_leavePose);
+	}
 
-    public Command preloadAuto() {
-        return sequential(
-                robot.moveToPoint(startingPose_To_midPose),
-                waitMs(1000),
-                robot.moveToPoint(midPose_To_leavePose)
-        );
-    }
+	public Command preloadAuto() {
+		return sequential(robot.moveToPoint(startingPose_To_midPose), waitMs(1000),
+				robot.moveToPoint(midPose_To_leavePose));
+	}
 
-    public Command basicFlowerAuto() {
-        return sequential(
-        );
-    }
+	public Command basicFlowerAuto() {
+		return sequential();
+	}
 
 }

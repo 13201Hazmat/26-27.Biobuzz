@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.opmodes.auto.setup.HazmatAuto;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 public class ExampleAuto extends HazmatAuto {
-    public ExampleAuto(HazmatRobot robot) {
-        super(robot, Alliance.BLUE, leavePose);
-        setAutoCommand(runnables.preloadAuto());
-    }
+	public ExampleAuto(HazmatRobot robot) {
+		super(robot, Alliance.BLUE, leavePose);
+		setAutoCommand(runnables.preloadAuto());
+	}
 }

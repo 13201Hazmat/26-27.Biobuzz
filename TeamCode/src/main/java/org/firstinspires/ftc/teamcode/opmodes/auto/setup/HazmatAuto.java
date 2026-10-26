@@ -11,34 +11,34 @@ import dev.nextftc.robot.opmode.NextOpMode;
 
 @NextAutonomous(name = "Test Auto")
 public class HazmatAuto extends NextOpMode {
-    protected final HazmatRobot robot;
-    protected final Runnables runnables;
-    protected final Pose startingPose;
-    protected Command autoCommand;
+	protected final HazmatRobot robot;
+	protected final Runnables runnables;
+	protected final Pose startingPose;
+	protected Command autoCommand;
 
-    protected HazmatAuto(HazmatRobot robot, Alliance alliance, Pose startingPose) {
-        super(robot);
-        this.robot = robot;
-        this.startingPose = startingPose;
-        runnables = new Runnables(robot);
+	protected HazmatAuto(HazmatRobot robot, Alliance alliance, Pose startingPose) {
+		super(robot);
+		this.robot = robot;
+		this.startingPose = startingPose;
+		runnables = new Runnables(robot);
 
-        Alliance.currentAlliance = alliance;
-        PathsAndPoses.mirror();
-    }
+		Alliance.currentAlliance = alliance;
+		PathsAndPoses.mirror();
+	}
 
-    public void setAutoCommand(Command command) {
-        this.autoCommand = command;
-    }
+	public void setAutoCommand(Command command) {
+		this.autoCommand = command;
+	}
 
-    @Override
-    public void start() {
-        robot.getFollower().setPose(startingPose);
-        autoCommand.schedule();
-    }
+	@Override
+	public void start() {
+		robot.getFollower().setPose(startingPose);
+		autoCommand.schedule();
+	}
 
-    @Override
-    public void periodic() {
-        robot.getFollower().update();
-        telemetry.addData("POSE", robot.getFollower().pose());
-    }
+	@Override
+	public void periodic() {
+		robot.getFollower().update();
+		telemetry.addData("POSE", robot.getFollower().pose());
+	}
 }
