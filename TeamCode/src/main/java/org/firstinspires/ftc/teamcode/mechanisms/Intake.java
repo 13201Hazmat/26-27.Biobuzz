@@ -113,11 +113,7 @@ public class Intake implements Mechanism {
 	}
 
 	public Command toggleRamp() {
-		return conditional(
-				()-> intakeRampServo.getPosition() == RAMP_UP_POS,
-				setRampDown(),
-				setRampUp()
-		);
+		return conditional(() -> intakeRampServo.getPosition() == RAMP_UP_POS, setRampDown(), setRampUp());
 	}
 
 	/**

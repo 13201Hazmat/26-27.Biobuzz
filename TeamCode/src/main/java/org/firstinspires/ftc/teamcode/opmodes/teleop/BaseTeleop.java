@@ -12,23 +12,23 @@ import dev.nextftc.robot.triggers.Trigger;
 
 @NextTeleop(name = "Main")
 public abstract class BaseTeleop extends NextOpMode {
-    protected final HazmatRobot robot;
-    protected CommandGamepad gp1 = new CommandGamepad(gamepad1);
+	protected final HazmatRobot robot;
+	protected CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-    public BaseTeleop(HazmatRobot robot) {
-        super(robot);
-        this.robot = robot;
+	public BaseTeleop(HazmatRobot robot) {
+		super(robot);
+		this.robot = robot;
 
-        Trigger.Companion.getDefaultEventLoop().clear();
-    }
+		Trigger.Companion.getDefaultEventLoop().clear();
+	}
 
-    @Override
-    public void start() {
+	@Override
+	public void start() {
 
-    }
+	}
 
-    @Override
-    public void periodic() {
+	@Override
+	public void periodic() {
 
-    }
+	}
 }

@@ -67,7 +67,6 @@ public class Transfer implements Mechanism {
 		return this.transferTracking;
 	}
 
-
 	public TransferSensingState getTransferSensingState() {
 		return transferSensingState;
 	}

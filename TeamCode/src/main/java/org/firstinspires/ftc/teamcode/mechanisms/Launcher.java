@@ -145,13 +145,13 @@ public class Launcher implements Mechanism {
 		setSpinUp();
 	}
 
-	private Command setGatePosition(double pos){
+	private Command setGatePosition(double pos) {
 		return instant(() -> launcherGate.setPosition(pos));
 	}
-	public Command openGate(){
+	public Command openGate() {
 		return setGatePosition(OPEN_POS);
 	}
-	public Command closeGate(){
+	public Command closeGate() {
 		return setGatePosition(CLOSE_POS);
 	}
 

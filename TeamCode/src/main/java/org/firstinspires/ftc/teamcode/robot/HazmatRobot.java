@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import static com.pedropathing.ivy.commands.Commands.instant;
-import static com.pedropathing.ivy.commands.Commands.waitMs;
-import static com.pedropathing.ivy.commands.Commands.waitUntil;
-import static com.pedropathing.ivy.groups.Groups.parallel;
-import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.commands.Commands.*;
+import static com.pedropathing.ivy.groups.Groups.*;
 
 import androidx.annotation.NonNull;
 
@@ -71,8 +68,6 @@ public class HazmatRobot implements NextRobot {
 		return launcherHood;
 	}
 
-
-
 	public Pose getCurrentPose() {
 		return follower.pose();
 	}
@@ -80,8 +75,6 @@ public class HazmatRobot implements NextRobot {
 	public double getHeading() {
 		return follower.pose().heading();
 	}
-
-
 
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
@@ -100,8 +93,6 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
-
-
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
@@ -109,21 +100,13 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command init() {
-		return parallel(
-				intake.setRampDown()
-		);
+		return parallel(intake.setRampDown());
 	}
 
-	public Command launch(){
-		return sequential(
-			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
-				instant(()-> isLaunching = true),
-				transfer.setForward(),
-				launcher.openGate(),
-				waitMs(2000),
-				launcher.closeGate(),
-				instant(()-> isLaunching = false)
-		);
+	public Command launch() {
+		return sequential(waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), instant(() -> isLaunching = true),
+				transfer.setForward(), launcher.openGate(), waitMs(2000), launcher.closeGate(),
+				instant(() -> isLaunching = false));
 	}
 
 	public void updateTelemetry() {
@@ -134,10 +117,10 @@ public class HazmatRobot implements NextRobot {
 		launcherHood.debug();
 		Telemetry.update();
 	}
-	public void updateStates(){
-		if (isLaunching) return;
-
-			switch (transfer.getTransferSensingState()) {
+	public void updateStates() {
+		if (isLaunching)
+			return;
+		switch (transfer.getTransferSensingState()) {
 			case EMPTY :
 				launcher.setIdle();
 				intake.setForward();
