@@ -1,31 +1,32 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import static com.pedropathing.ivy.commands.Commands.*;
-import static com.pedropathing.ivy.groups.Groups.*;
-import static com.pedropathing.ivy.pedro.PedroCommands.follow;
+import static com.pedropathing.ivy.commands.Commands.conditional;
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.lazy;
+import static com.pedropathing.ivy.commands.Commands.onInterrupt;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
-import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-
-import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.*;
-
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
@@ -85,16 +86,16 @@ public class HazmatRobot implements NextRobot {
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
 			if (current.y() > 70.5) {
-				TurretPose.targetPose = PathsAndPoses.redFarHive;
+				TurretPoses.targetPose = TurretPoses.redFarHive;
 			} else {
-				PathsAndPoses.targetPose = PathsAndPoses.redAudienceHive;
+				TurretPoses.targetPose = TurretPoses.redAudienceHive;
 			}
 		}
 		if (a == Alliance.BLUE) {
 			if (current.y() > 70.5) {
-				PathsAndPoses.targetPose = PathsAndPoses.blueFarHive;
+				TurretPoses.targetPose = TurretPoses.blueFarHive;
 			} else {
-				PathsAndPoses.targetPose = PathsAndPoses.blueAudienceHive;
+				TurretPoses.targetPose = TurretPoses.blueAudienceHive;
 			}
 		}
 	}
@@ -109,30 +110,54 @@ public class HazmatRobot implements NextRobot {
 		return parallel(intake.setRampDown());
 	}
 
-	public Command moveToPoint(Path path) {
-		return follow(follower, path);
+	private Command setHoodForFirst() {
+		return lazy(() -> {
+			BallType front = transfer.getTransferSensing().getTopBall();
+			if (front == BallType.POLLEN)
+				return launcherHood.setPollenPos();
+			if (front == BallType.RED_NECTAR || front == BallType.BLUE_NECTAR)
+				return launcherHood.setNectarPos();
+			return instant(() -> {
+			});
+		});
 	}
 
-	public Command cycleBallTypeServo() {
+	private Command setHoodFor(BallType type) {
+		return conditional(() -> type == BallType.POLLEN, launcherHood.setPollenPos(), launcherHood.setNectarPos());
+	}
+
+	private Command cycleHood() {
 		return lazy(() -> {
-			Queue<BallType> currentBalls = transfer.getTransferSensing().getStoredBalls();
+			List<BallType> balls = new ArrayList<>(transfer.getTransferSensing().getStoredBalls());
+			if (balls.isEmpty())
+				return instant(() -> {
+				});
 			List<Command> commands = new ArrayList<>();
-			for (BallType ballType : currentBalls) {
-				if (ballType == BallType.POLLEN) {
-					commands.add(launcherHood.setPollenPos());
-				} else if (ballType == BallType.RED_NECTAR || ballType == BallType.BLUE_NECTAR) {
-					commands.add(launcherHood.setNectarPos());
-				}
-				commands.add(transfer.setForward());
+
+			commands.add(waitMs(250));
+			for (BallType ballType : balls.subList(1, balls.size())) {
+				if (ballType == null || ballType == BallType.NOTHING)
+					break;
+				commands.add(setHoodFor(ballType));
+				commands.add(waitMs(150));
 			}
 			return sequential(commands.toArray(new Command[0]));
 		});
 	}
 
 	public Command launch() {
-		return sequential(waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), instant(() -> isLaunching = true),
-				transfer.setForward(), launcher.openGate(), cycleBallTypeServo(), waitMs(2000), launcher.closeGate(),
-				instant(() -> isLaunching = false));
+		return sequential(
+				instant(() -> isLaunching = true),
+				setHoodForFirst(),
+				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
+				transfer.setForward(),
+				launcher.openGate(),
+				cycleHood(),
+				waitMs(1000),
+				launcher.closeGate(),
+				instant(() -> isLaunching = false)
+		).raceWith(onInterrupt(() -> isLaunching = false))
+				.unless(transfer.getTransferSensing().getStoredBalls()::isEmpty);
 	}
 
 	public void updateTelemetry() {
