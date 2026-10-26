@@ -9,6 +9,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.data.Alliance;
@@ -20,6 +21,9 @@ import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
@@ -103,10 +107,32 @@ public class HazmatRobot implements NextRobot {
 		return parallel(intake.setRampDown());
 	}
 
+	public Command cycleBallTypeServo() {
+		return lazy(() -> {
+			Queue<BallType> currentBalls = transfer.getTransferSensing().getStoredBalls();
+			List<Command> commands = new ArrayList<>();
+			for (BallType ballType : currentBalls) {
+				if (ballType == BallType.POLLEN) {
+					commands.add(launcherHood.setPollenPos());
+				} else if (ballType == BallType.RED_NECTAR || ballType == BallType.BLUE_NECTAR) {
+					commands.add(launcherHood.setNectarPos());
+				}
+				commands.add(transfer.setForward());
+			}
+			return sequential(commands.toArray(new Command[0]));
+		});
+	}
+
 	public Command launch() {
-		return sequential(waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), instant(() -> isLaunching = true),
-				transfer.setForward(), launcher.openGate(), waitMs(2000), launcher.closeGate(),
-				instant(() -> isLaunching = false));
+		return sequential(
+				waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
+				instant(() -> isLaunching = true),
+				transfer.setForward(),
+				launcher.openGate(),
+				waitMs(2000),
+				launcher.closeGate(),
+				instant(() -> isLaunching = false)
+		);
 	}
 
 	public void updateTelemetry() {
