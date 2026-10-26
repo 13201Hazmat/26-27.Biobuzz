@@ -1,17 +1,14 @@
 package org.firstinspires.ftc.teamcode.data;
 
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
+
 import com.pedropathing.math.Pose;
-
-import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
-
-import java.util.Arrays;
-import java.util.List;
 
 import dev.nextftc.control.util.InterpolatingMap;
 
 public class Calc {
 	public static double distance(Pose current) {
-		return Math.hypot(PathsAndPoses.targetPose.x() - current.x(), PathsAndPoses.targetPose.y() - current.y()) / 12;
+		return Math.hypot(TurretPoses.targetPose.x() - current.x(), TurretPoses.targetPose.y() - current.y()) / 12;
 	}
 
 	private static final InterpolatingMap<Double> velocity = buildVelocity();

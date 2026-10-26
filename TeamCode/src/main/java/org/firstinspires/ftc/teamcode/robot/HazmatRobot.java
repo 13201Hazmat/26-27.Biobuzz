@@ -1,7 +1,12 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import static com.pedropathing.ivy.commands.Commands.*;
-import static com.pedropathing.ivy.groups.Groups.*;
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.lazy;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
 
@@ -9,16 +14,13 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-
-import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
-
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
@@ -82,16 +84,16 @@ public class HazmatRobot implements NextRobot {
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
 			if (current.y() > 70.5) {
-				PathsAndPoses.targetPose = PathsAndPoses.redFarHive;
+				TurretPoses.targetPose = TurretPoses.redFarHive;
 			} else {
-				PathsAndPoses.targetPose = PathsAndPoses.redAudienceHive;
+				TurretPoses.targetPose = TurretPoses.redAudienceHive;
 			}
 		}
 		if (a == Alliance.BLUE) {
 			if (current.y() > 70.5) {
-				PathsAndPoses.targetPose = PathsAndPoses.blueFarHive;
+				TurretPoses.targetPose = TurretPoses.blueFarHive;
 			} else {
-				PathsAndPoses.targetPose = PathsAndPoses.blueAudienceHive;
+				TurretPoses.targetPose = TurretPoses.blueAudienceHive;
 			}
 		}
 	}
