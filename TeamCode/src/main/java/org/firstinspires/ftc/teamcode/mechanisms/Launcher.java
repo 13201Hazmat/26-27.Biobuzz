@@ -3,19 +3,21 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import static dev.nextftc.units.Units.Degrees;
 import static dev.nextftc.units.Units.RotationsPerMinute;
 
+import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
+import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Launcher implements Mechanism {
 	private final NextMotor rightLauncher = new NextMotor(Config.bModule, Config.bPort, Degrees.of(360.0 / 28.0));
 	private final NextMotor leftLauncher = new NextMotor(Config.aModule, Config.aPort, Degrees.of(360.0 / 28.0));
-
+	private final NextServo launcherGate = new NextServo(Config.mModule, Config.mPort);
 	private double kV = 0.0;
 	private double kS = 0.0;
 	private double kP = 0.0;
@@ -26,6 +28,9 @@ public class Launcher implements Mechanism {
 	private final double IDLE_SPEED = 0.0;
 	private final double CLOSE_SPEED = 0.0;
 	private final double FAR_SPEED = 0.0;
+
+	private final double OPEN_POS = 1.0;
+	private final double CLOSE_POS = 0.0;
 
 	private double targetVelocity = 0.0;
 	private double error = 0.0;
@@ -138,6 +143,16 @@ public class Launcher implements Mechanism {
 			return;
 		}
 		setSpinUp();
+	}
+
+	private Command setGatePosition(double pos){
+		return instant(() -> launcherGate.setPosition(pos));
+	}
+	public Command openGate(){
+		return setGatePosition(OPEN_POS);
+	}
+	public Command closeGate(){
+		return setGatePosition(CLOSE_POS);
 	}
 
 	public void incrementRPM() {

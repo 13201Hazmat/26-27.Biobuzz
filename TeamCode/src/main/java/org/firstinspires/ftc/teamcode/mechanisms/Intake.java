@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import static com.pedropathing.ivy.commands.Commands.conditional;
+
 import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.data.Config;
@@ -111,10 +113,11 @@ public class Intake implements Mechanism {
 	}
 
 	public Command toggleRamp() {
-		if(intakeRampServo.getPosition() == RAMP_UP_POS) {
-			return setRampDown();
-		}
-		return setRampUp();
+		return conditional(
+				()-> intakeRampServo.getPosition() == RAMP_UP_POS,
+				setRampDown(),
+				setRampUp()
+		);
 	}
 
 	/**

@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import androidx.annotation.NonNull;
 
@@ -33,6 +37,8 @@ public class HazmatRobot implements NextRobot {
 	private final Transfer transfer;
 	private final Launcher launcher;
 	private final LauncherHood launcherHood;
+
+	private boolean isLaunching = false;
 
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
@@ -102,6 +108,23 @@ public class HazmatRobot implements NextRobot {
 		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
 	}
 
+	public Command init() {
+		return parallel(
+				intake.setRampDown()
+		);
+	}
+
+	public Command launch(){
+		return sequential(
+			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
+				instant(()-> isLaunching = true),
+				transfer.setForward(),
+				launcher.openGate(),
+				waitMs(2000),
+				launcher.closeGate(),
+				instant(()-> isLaunching = false)
+		);
+	}
 
 	public void updateTelemetry() {
 		transfer.debug();
@@ -111,15 +134,30 @@ public class HazmatRobot implements NextRobot {
 		launcherHood.debug();
 		Telemetry.update();
 	}
+	public void updateStates(){
+		if (isLaunching) return;
 
-	public Command init() {
-		return parallel(
-				intake.setRampDown()
-		);
+			switch (transfer.getTransferSensingState()) {
+			case EMPTY :
+				launcher.setIdle();
+				intake.setForward();
+				transfer.setForward();
+				break;
+			case FILLING :
+				transfer.setForward();
+				intake.setForward();
+				launcher.autoSetVelocity(getCurrentPose());
+				break;
+			case FULL :
+				transfer.setOff();
+				intake.setOff();
+				break;
+		}
 	}
 
 	@Override
 	public void periodic() {
-
+		updateStates();
+		updateTelemetry();
 	}
 }

@@ -67,6 +67,10 @@ public class Transfer implements Mechanism {
 		return this.transferTracking;
 	}
 
+
+	public TransferSensingState getTransferSensingState() {
+		return transferSensingState;
+	}
 	/**
 	 * Sets the internal motor state.
 	 *
@@ -100,7 +104,7 @@ public class Transfer implements Mechanism {
 	 *
 	 * @return Command triggering state change to STOPPED.
 	 */
-	public Command setFull() {
+	public Command setOff() {
 		return instant(() -> setState(TransferMotorState.STOPPED));
 	}
 
@@ -125,7 +129,6 @@ public class Transfer implements Mechanism {
 	@Override
 	public void periodic() {
 		transferTracking.periodic();
-		boolean isTriggered = transferTracking.getIntakeBeamBreak().isTriggered();
 
 		switch (transferTracking.getStoredBalls().size()) {
 			case 0 :
@@ -150,16 +153,6 @@ public class Transfer implements Mechanism {
 				break;
 			case STOPPED :
 				transferMotor.setThrottle(IDLE_SPEED);
-				break;
-		}
-
-		switch (transferSensingState) {
-			case EMPTY :
-			case FILLING :
-				transferMotorState = TransferMotorState.FORWARD;
-				break;
-			case FULL :
-				transferMotorState = TransferMotorState.STOPPED;
 				break;
 		}
 

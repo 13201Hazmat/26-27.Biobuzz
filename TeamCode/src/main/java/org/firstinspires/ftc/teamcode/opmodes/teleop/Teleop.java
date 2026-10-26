@@ -26,6 +26,5 @@ public abstract class Teleop extends BaseTeleop {
 
 	@Override
 	public void periodic() {
-
 	}
 }
