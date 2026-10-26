@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import static com.pedropathing.ivy.commands.Commands.*;
 import static com.pedropathing.ivy.groups.Groups.*;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import androidx.annotation.NonNull;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
@@ -105,6 +107,10 @@ public class HazmatRobot implements NextRobot {
 
 	public Command init() {
 		return parallel(intake.setRampDown());
+	}
+
+	public Command moveToPoint(Path path) {
+		return follow(follower, path);
 	}
 
 	public Command cycleBallTypeServo() {

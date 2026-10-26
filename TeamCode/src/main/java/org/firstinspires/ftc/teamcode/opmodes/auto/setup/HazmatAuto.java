@@ -12,7 +12,7 @@ import dev.nextftc.robot.opmode.NextOpMode;
 @NextAutonomous(name = "Test Auto")
 public class HazmatAuto extends NextOpMode {
     protected final HazmatRobot robot;
-    protected final Runners runners;
+    protected final Runnables runnables;
     protected final Pose startingPose;
     protected Command autoCommand;
 
@@ -20,7 +20,7 @@ public class HazmatAuto extends NextOpMode {
         super(robot);
         this.robot = robot;
         this.startingPose = startingPose;
-        runners = new Runners(robot);
+        runnables = new Runnables(robot);
 
         Alliance.currentAlliance = alliance;
         PathsAndPoses.mirror();

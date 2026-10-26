@@ -7,15 +7,14 @@ import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Ha
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.HazPaths.startingPose_To_leavePose;
 
 import com.pedropathing.ivy.Command;
-import com.pedropathing.ivy.commands.Commands;
 
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
-public class Runners {
+public class Runnables {
 
     private final HazmatRobot robot;
 
-    public Runners(HazmatRobot robot) {
+    public Runnables(HazmatRobot robot) {
         this.robot = robot;
     }
 

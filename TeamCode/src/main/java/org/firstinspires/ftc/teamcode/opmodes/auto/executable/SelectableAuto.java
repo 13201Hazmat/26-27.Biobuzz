@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runners;
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runnables;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
@@ -12,7 +12,7 @@ import dev.nextftc.robot.opmode.NextOpMode;
 @Disabled
 public class SelectableAuto extends NextOpMode {
     private final HazmatRobot robot;
-    private final Runners runners;
+    private final Runnables runnables;
     private int selectedIndex = 0;
     private boolean isSelected = false;
     private boolean lastDpadUp = false;
@@ -22,7 +22,7 @@ public class SelectableAuto extends NextOpMode {
     public SelectableAuto(HazmatRobot robot) {
         super(robot);
         this.robot = robot;
-        this.runners = new Runners(this.robot);
+        this.runnables = new Runnables(this.robot);
     }
 
     @Override
@@ -97,14 +97,14 @@ public class SelectableAuto extends NextOpMode {
 
         switch (selectedOption) {
             case LEAVE_AUTO:
-                runners.leaveAuto().schedule();
+                runnables.leaveAuto().schedule();
                 break;
             case PRELOAD_AUTO:
-                runners.preloadAuto().schedule();
+                runnables.preloadAuto().schedule();
                 break;
             case AUDIENCE_FLOWER_AUTO:
             default:
-                runners.basicFlowerAuto().schedule();
+                runnables.basicFlowerAuto().schedule();
                 break;
         }
     }
