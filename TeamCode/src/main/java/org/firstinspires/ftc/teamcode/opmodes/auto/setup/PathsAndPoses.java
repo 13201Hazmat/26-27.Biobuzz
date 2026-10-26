@@ -27,6 +27,15 @@ public class PathsAndPoses {
 		return Paths.curve(p1, control, p2).linear(p1, p2);
 	}
 
+	public static class TurretPoses {
+		public static Pose targetPose = factory.of(0, 0, 0);
+
+		public static Pose redAudienceHive = factory.of(58, 53, 0);
+		public static Pose redFarHive = factory.of(58, 88, 0);
+		public static Pose blueAudienceHive = factory.of(84, 53, 0);
+		public static Pose blueFarHive = factory.of(84, 88, 0);
+	}
+
 	public static class LeavePoses {
 		public static final Pose startingPose = factory.of(30.43, 7.48, 180);
 		public static final Pose midPose = factory.of(9.24, 7.30, 180);
@@ -39,7 +48,10 @@ public class PathsAndPoses {
 		public static Path startingPose_To_leavePose = createLinearPath(LeavePoses.startingPose, LeavePoses.leavePose);
 		public static Path startingPose_To_midPose = createLinearPath(LeavePoses.startingPose, LeavePoses.midPose);
 		// Uses control point from the mid point
-		public static Path midPose_To_leavePose = createCurvyPath(LeavePoses.midPose, LeavePoses.control,
-				LeavePoses.leavePose);
+		public static Path midPose_To_leavePose = createCurvyPath(
+				LeavePoses.midPose,
+				LeavePoses.control,
+				LeavePoses.leavePose
+		);
 	}
 }

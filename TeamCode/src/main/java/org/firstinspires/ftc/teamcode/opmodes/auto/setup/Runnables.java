@@ -25,8 +25,11 @@ public class Runnables {
 	}
 
 	public Command preloadAuto() {
-		return sequential(robot.moveToPoint(startingPose_To_midPose), waitMs(1000),
-				robot.moveToPoint(midPose_To_leavePose));
+		return sequential(
+				robot.moveToPoint(startingPose_To_midPose),
+				waitMs(1000),
+				robot.moveToPoint(midPose_To_leavePose)
+		);
 	}
 
 	public Command basicFlowerAuto() {
