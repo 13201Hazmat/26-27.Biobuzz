@@ -81,12 +81,33 @@ public class Transfer implements Mechanism {
 	}
 
 	/**
+	 * Sets the transfer motor state to FORWARD.
+	 */
+	public void forward() {
+		setState(TransferMotorState.FORWARD);
+	}
+
+	/**
+	 * Sets the transfer motor state to BACKWARD.
+	 */
+	public void reverse() {
+		setState(TransferMotorState.BACKWARD);
+	}
+
+	/**
+	 * Sets the transfer motor state to STOPPED.
+	 */
+	public void off() {
+		setState(TransferMotorState.STOPPED);
+	}
+
+	/**
 	 * Command to set the transfer motor state to move forward.
 	 *
 	 * @return Command triggering state change to FORWARD.
 	 */
 	public Command setForward() {
-		return instant(() -> setState(TransferMotorState.FORWARD));
+		return instant(this::forward);
 	}
 
 	/**
@@ -95,7 +116,7 @@ public class Transfer implements Mechanism {
 	 * @return Command triggering state change to BACKWARD.
 	 */
 	public Command setReverse() {
-		return instant(() -> setState(TransferMotorState.BACKWARD));
+		return instant(this::reverse);
 	}
 
 	/**
@@ -104,9 +125,8 @@ public class Transfer implements Mechanism {
 	 * @return Command triggering state change to STOPPED.
 	 */
 	public Command setOff() {
-		return instant(() -> setState(TransferMotorState.STOPPED));
+		return instant(this::off);
 	}
-
 	/**
 	 * Logs current transfer state and throttle speed to Telemetry for debugging.
 	 */

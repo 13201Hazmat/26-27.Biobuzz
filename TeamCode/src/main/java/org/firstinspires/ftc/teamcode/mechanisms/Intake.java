@@ -69,11 +69,32 @@ public class Intake implements Mechanism {
 
 	/**
 	 * Sets the intake state to FORWARD.
+	 */
+	public void forward() {
+		setState(IntakeState.FORWARD);
+	}
+
+	/**
+	 * Sets the intake state to OFF.
+	 */
+	public void off() {
+		setState(IntakeState.OFF);
+	}
+
+	/**
+	 * Sets the intake state to REVERSE.
+	 */
+	public void reverse() {
+		setState(IntakeState.REVERSE);
+	}
+
+	/**
+	 * Sets the intake state to FORWARD.
 	 *
 	 * @return an instant Command to set the state to FORWARD
 	 */
 	public Command setForward() {
-		return instant(() -> setState(IntakeState.FORWARD));
+		return instant(this::forward);
 	}
 
 	/**
@@ -82,7 +103,7 @@ public class Intake implements Mechanism {
 	 * @return an instant Command to set the state to OFF
 	 */
 	public Command setOff() {
-		return instant(() -> setState(IntakeState.OFF));
+		return instant(this::off);
 	}
 
 	/**
@@ -91,7 +112,7 @@ public class Intake implements Mechanism {
 	 * @return an instant Command to set the state to REVERSE
 	 */
 	public Command setReverse() {
-		return instant(() -> setState(IntakeState.REVERSE));
+		return instant(this::reverse);
 	}
 
 	/**
