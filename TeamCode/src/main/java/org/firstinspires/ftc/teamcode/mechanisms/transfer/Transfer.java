@@ -80,13 +80,23 @@ public class Transfer implements Mechanism {
 		this.transferMotorState = transferMotorState;
 	}
 
+	public void forward(){
+		setState(TransferMotorState.FORWARD);
+	}
+	public void reverse(){
+		setState(TransferMotorState.BACKWARD);
+	}
+	public void off(){
+		setState(TransferMotorState.STOPPED);
+	}
+
 	/**
 	 * Command to set the transfer motor state to move forward.
 	 *
 	 * @return Command triggering state change to FORWARD.
 	 */
 	public Command setForward() {
-		return instant(() -> setState(TransferMotorState.FORWARD));
+		return instant(this::forward);
 	}
 
 	/**
@@ -95,7 +105,7 @@ public class Transfer implements Mechanism {
 	 * @return Command triggering state change to BACKWARD.
 	 */
 	public Command setReverse() {
-		return instant(() -> setState(TransferMotorState.BACKWARD));
+		return instant(this::reverse);
 	}
 
 	/**
@@ -104,7 +114,7 @@ public class Transfer implements Mechanism {
 	 * @return Command triggering state change to STOPPED.
 	 */
 	public Command setOff() {
-		return instant(() -> setState(TransferMotorState.STOPPED));
+		return instant(this::off);
 	}
 
 	/**
