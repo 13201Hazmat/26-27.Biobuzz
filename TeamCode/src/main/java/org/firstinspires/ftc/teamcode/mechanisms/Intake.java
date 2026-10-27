@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import static com.pedropathing.ivy.commands.Commands.conditional;
+
 import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.data.Config;
@@ -128,6 +130,21 @@ public class Intake implements Mechanism {
 	 */
 	public Command setRampDown() {
 		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
+	}
+
+	/**
+	 * Toggles the ramp servo between its raised and lowered positions. If the servo
+	 * is at the raised position when the command starts it is lowered, otherwise it
+	 * is raised.
+	 *
+	 * @return a Command that moves the ramp servo to the opposite position
+	 */
+	public Command toggleRamp() {
+		return conditional(
+			() -> intakeRampServo.getPosition() == RAMP_UP_POS,
+			setRampDown(),
+			setRampUp()
+		);
 	}
 
 	/**

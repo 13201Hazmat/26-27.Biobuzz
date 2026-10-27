@@ -132,7 +132,11 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	private Command setHoodFor(BallType type) {
-		return conditional(() -> type == BallType.POLLEN, launcherHood.setPollenPos(), launcherHood.setNectarPos());
+		return conditional(
+			() -> type == BallType.POLLEN,
+			launcherHood.setPollenPos(),
+			launcherHood.setNectarPos()
+		);
 	}
 
 	private Command cycleHood() {
@@ -156,9 +160,15 @@ public class HazmatRobot implements NextRobot {
 
 	public Command launch() {
 		return sequential(
-			instant(() -> isLaunching = true), setHoodForFirst(),
-			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)), transfer.setForward(), launcher.openGate(),
-			cycleHood(), waitMs(1000), launcher.closeGate(), instant(() -> isLaunching = false)
+			instant(() -> isLaunching = true),
+			setHoodForFirst(),
+			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
+			transfer.setForward(),
+			launcher.openGate(),
+			cycleHood(),
+			waitMs(1000),
+			launcher.closeGate(),
+			instant(() -> isLaunching = false)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
 			launcher.closeGate().schedule();
