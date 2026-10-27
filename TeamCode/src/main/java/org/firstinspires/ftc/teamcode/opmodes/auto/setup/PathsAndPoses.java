@@ -8,11 +8,13 @@ public class PathsAndPoses {
 	private static final PoseFactory factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 	public static Pose currentPose = factory.of(67, 67, 67);
 
-	public static Pose targetPose = factory.of(0, 0, 0);
+	public static class TurretPoses {
+		public static Pose targetPose = factory.of(0, 0, 0);
 
-	public static Pose redAudienceHive = factory.of(58, 53, 0);
-	public static Pose redFarHive = factory.of(58, 88, 0);
-	public static Pose blueAudienceHive = factory.of(84, 53, 0);
-	public static Pose blueFarHive = factory.of(84, 88, 0);
+		public static Pose redAudienceHive = factory.of(58, 53, 0);
+		public static Pose redFarHive = factory.of(58, 88, 0);
+		public static Pose blueAudienceHive = factory.of(84, 53, 0);
+		public static Pose blueFarHive = factory.of(84, 88, 0);
+	}
 
 }

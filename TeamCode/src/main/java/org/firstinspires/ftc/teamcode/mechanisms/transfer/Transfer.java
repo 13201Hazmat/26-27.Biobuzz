@@ -67,6 +67,9 @@ public class Transfer implements Mechanism {
 		return this.transferTracking;
 	}
 
+	public TransferSensingState getTransferSensingState() {
+		return transferSensingState;
+	}
 	/**
 	 * Sets the internal motor state.
 	 *
@@ -78,12 +81,33 @@ public class Transfer implements Mechanism {
 	}
 
 	/**
+	 * Sets the transfer motor state to FORWARD.
+	 */
+	public void forward() {
+		setState(TransferMotorState.FORWARD);
+	}
+
+	/**
+	 * Sets the transfer motor state to BACKWARD.
+	 */
+	public void reverse() {
+		setState(TransferMotorState.BACKWARD);
+	}
+
+	/**
+	 * Sets the transfer motor state to STOPPED.
+	 */
+	public void off() {
+		setState(TransferMotorState.STOPPED);
+	}
+
+	/**
 	 * Command to set the transfer motor state to move forward.
 	 *
 	 * @return Command triggering state change to FORWARD.
 	 */
 	public Command setForward() {
-		return instant(() -> setState(TransferMotorState.FORWARD));
+		return instant(this::forward);
 	}
 
 	/**
@@ -92,7 +116,7 @@ public class Transfer implements Mechanism {
 	 * @return Command triggering state change to BACKWARD.
 	 */
 	public Command setReverse() {
-		return instant(() -> setState(TransferMotorState.BACKWARD));
+		return instant(this::reverse);
 	}
 
 	/**
@@ -100,10 +124,9 @@ public class Transfer implements Mechanism {
 	 *
 	 * @return Command triggering state change to STOPPED.
 	 */
-	public Command setFull() {
-		return instant(() -> setState(TransferMotorState.STOPPED));
+	public Command setOff() {
+		return instant(this::off);
 	}
-
 	/**
 	 * Logs current transfer state and throttle speed to Telemetry for debugging.
 	 */
@@ -125,7 +148,6 @@ public class Transfer implements Mechanism {
 	@Override
 	public void periodic() {
 		transferTracking.periodic();
-		boolean isTriggered = transferTracking.getIntakeBeamBreak().isTriggered();
 
 		switch (transferTracking.getStoredBalls().size()) {
 			case 0 :
@@ -150,16 +172,6 @@ public class Transfer implements Mechanism {
 				break;
 			case STOPPED :
 				transferMotor.setThrottle(IDLE_SPEED);
-				break;
-		}
-
-		switch (transferSensingState) {
-			case EMPTY :
-			case FILLING :
-				transferMotorState = TransferMotorState.FORWARD;
-				break;
-			case FULL :
-				transferMotorState = TransferMotorState.STOPPED;
 				break;
 		}
 

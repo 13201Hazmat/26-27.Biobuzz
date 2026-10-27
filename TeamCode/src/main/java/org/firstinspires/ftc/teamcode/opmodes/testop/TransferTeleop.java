@@ -21,7 +21,7 @@ public class TransferTeleop extends NextOpMode {
 		gp1.leftBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 		gp1.rightBumper().onTrue(robot.getTransfer().setForward());
 		gp1.triangle().onTrue(robot.getTransfer().setReverse());
-		gp1.circle().onTrue(robot.getTransfer().setFull());
+		gp1.circle().onTrue(robot.getTransfer().setOff());
 		gp1.square().onTrue(instant(() -> robot.getTransfer().getTransferSensing().removeTopBall()));
 	}
 

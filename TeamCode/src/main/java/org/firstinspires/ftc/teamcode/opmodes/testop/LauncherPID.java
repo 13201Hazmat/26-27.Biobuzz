@@ -37,7 +37,7 @@ public class LauncherPID extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		telemetry.addData("Constants", robot.getLauncher().PID());
+		robot.getLauncher().PID();
 		telemetry.addData("Target RPM", robot.getLauncher().getTargetVelocity());
 		telemetry.addData("Current RPM", robot.getLauncher().getCurrentRPM());
 		telemetry.addData("Error", robot.getLauncher().getTargetVelocity() - robot.getLauncher().getCurrentRPM());
