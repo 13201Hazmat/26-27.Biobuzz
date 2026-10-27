@@ -30,4 +30,20 @@ public class Runnables {
 		);
 	}
 
+	public Command basicFlowerAuto() {
+		return sequential(
+				robot.moveToPoint(BasicFlowerAutoPoses.startingPose_To_midPose),
+				waitMs(1000),
+				robot.moveToPoint(BasicFlowerAutoPoses.midPose_To_shootPose),
+				waitMs(1000),
+				robot.moveToPoint(BasicFlowerAutoPoses.shootPose_To_startFlowerPose),
+				waitMs(1000),
+				robot.moveToPoint(BasicFlowerAutoPoses.startFlowerPose_To_endFlowerPose),
+				waitMs(1000),
+				robot.moveToPoint(BasicFlowerAutoPoses.endFlowerPose_To_shootPose),
+				waitMs(1000),
+				robot.moveToPoint(BasicFlowerAutoPoses.shootPose_To_leavePose)
+		);
+	}
+
 }
