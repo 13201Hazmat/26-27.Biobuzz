@@ -43,8 +43,14 @@ public class PathsAndPoses {
 		public static final Pose leavePose = factory.of(9.76, 96.28, 180);
 
 		// Direct path from start to finish
-		public static final Path startingPose_To_leavePose = createLinearPath(LeavePoses.startingPose, LeavePoses.leavePose);
-		public static final Path startingPose_To_midPose = createLinearPath(LeavePoses.startingPose, LeavePoses.midPose);
+		public static final Path startingPose_To_leavePose = createLinearPath(
+				LeavePoses.startingPose,
+				LeavePoses.leavePose
+		);
+		public static final Path startingPose_To_midPose = createLinearPath(
+				LeavePoses.startingPose,
+				LeavePoses.midPose
+		);
 		// Uses control point from the mid point
 		public static final Path midPose_To_leavePose = createCurvyPath(
 				LeavePoses.midPose,
