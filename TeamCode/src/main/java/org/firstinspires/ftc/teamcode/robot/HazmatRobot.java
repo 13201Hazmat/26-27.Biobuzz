@@ -46,11 +46,10 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
-	private Intake intake;
-	private Turret turret;
 	private final Drivetrain drivetrain;
-	private final Intake intake;
+	private Intake intake;
 	private final Transfer transfer;
+	private Turret turret;
 	private final Launcher launcher;
 	private final LauncherHood launcherHood;
 
@@ -130,13 +129,6 @@ public class HazmatRobot implements NextRobot {
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, turret);
-	}
-
-	@Override
-	public void periodic(){
-		getFollower().update();
-//		turret.trackGoal(PathsAndPoses.targetPose, getPose());
 		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
 	}
 
@@ -236,6 +228,7 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
+		getFollower().update();
 		updateStates();
 		updateTelemetry();
 	}
