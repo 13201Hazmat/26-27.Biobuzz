@@ -71,9 +71,14 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
-	public Pose getPose() {
-		return getFollower().pose();
+	public Pose getCurrentPose() {
+		return follower.pose();
 	}
+
+	public double getHeading() {
+		return follower.pose().heading();
+	}
+
 	public double getOmega() {
 		return getFollower().velocity().omega;
 	}
@@ -99,14 +104,6 @@ public class HazmatRobot implements NextRobot {
 
 	public LauncherHood getLauncherHood() {
 		return launcherHood;
-	}
-
-	public Pose getCurrentPose() {
-		return follower.pose();
-	}
-
-	public double getHeading() {
-		return follower.pose().heading();
 	}
 
 	public void setTargetPose(Alliance a, Pose current) {
@@ -229,6 +226,7 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public void periodic() {
 		getFollower().update();
+		turret.trackGoal(TurretPoses.targetPose, getCurrentPose());
 		updateStates();
 		updateTelemetry();
 	}
