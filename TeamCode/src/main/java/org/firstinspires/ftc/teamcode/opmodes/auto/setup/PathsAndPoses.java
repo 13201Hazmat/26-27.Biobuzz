@@ -62,17 +62,14 @@ public class PathsAndPoses {
 	public static class BasicFlowerAutoPoses {
 		public static final Pose startingPose = LeavePoses.startingPose;
 		public static final Pose midPose = factory.of(9.24, 7.30, 180);
-		public static final Pose control = factory.of(25.96, 56.11, 180);
-		public static final Pose shootPose = factory.of(8.39, 132.67, 180);
-		public static final Pose startFlowerPose = factory.of(15.51, 47.35, 180);
-		public static final Pose endFlowerPose = factory.of(10.55, 47.29, 180);
-		public static final Pose leavePose = factory.of(9.76, 96.28, 180);
+		public static final Pose control = factory.of(21.36, 86.38, 90);
+		public static final Pose shootPose = factory.of(47.16, 123, 90);
+		public static final Pose endFlowerPose = factory.of(47.16, 129, 90);
+		public static final Pose leavePose = factory.of(9.76, 96.28, 90);
 
 		public static final Path startingPose_To_midPose = createLinearPath(startingPose, midPose);
 		public static final Path midPose_To_shootPose = createCurvyPath(midPose, control, shootPose);
-		public static final Path shootPose_To_startFlowerPose = createLinearPath(shootPose, startFlowerPose);
-		public static final Path startFlowerPose_To_endFlowerPose = createLinearPath(startFlowerPose, endFlowerPose);
-		public static final Path endFlowerPose_To_shootPose = createLinearPath(endFlowerPose, shootPose);
-		public static final Path shootPose_To_leavePose = createLinearPath(shootPose, leavePose);
+		public static final Path shootPose_To_endFlowerPose = createLinearPath(shootPose, endFlowerPose);
+		public static final Path endFlowerPose_To_leavePose = createLinearPath(endFlowerPose, leavePose);
 	}
 }

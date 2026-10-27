@@ -36,13 +36,9 @@ public class Runnables {
 				waitMs(1000),
 				robot.moveToPoint(BasicFlowerAutoPoses.midPose_To_shootPose),
 				waitMs(1000),
-				robot.moveToPoint(BasicFlowerAutoPoses.shootPose_To_startFlowerPose),
+				robot.moveToPoint(BasicFlowerAutoPoses.shootPose_To_endFlowerPose),
 				waitMs(1000),
-				robot.moveToPoint(BasicFlowerAutoPoses.startFlowerPose_To_endFlowerPose),
-				waitMs(1000),
-				robot.moveToPoint(BasicFlowerAutoPoses.endFlowerPose_To_shootPose),
-				waitMs(1000),
-				robot.moveToPoint(BasicFlowerAutoPoses.shootPose_To_leavePose)
+				robot.moveToPoint(BasicFlowerAutoPoses.endFlowerPose_To_leavePose)
 		);
 	}
 
