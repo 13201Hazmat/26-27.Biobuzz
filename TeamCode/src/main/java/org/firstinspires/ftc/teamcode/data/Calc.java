@@ -11,7 +11,10 @@ import dev.nextftc.control.util.InterpolatingMap;
 
 public class Calc {
 	public static double distance(Pose current) {
-		return Math.hypot(PathsAndPoses.targetPose.x() - current.x(), PathsAndPoses.targetPose.y() - current.y()) / 12;
+		return Math.hypot(
+			PathsAndPoses.TurretPoses.targetPose.x() - current.x(),
+			PathsAndPoses.TurretPoses.targetPose.y() - current.y()
+		) / 12;
 	}
 
 	private static final InterpolatingMap<Double> velocity = buildVelocity();
