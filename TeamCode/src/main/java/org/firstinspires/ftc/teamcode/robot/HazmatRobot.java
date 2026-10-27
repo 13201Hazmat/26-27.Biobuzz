@@ -130,7 +130,11 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command init() {
-		return parallel(intake.setRampDown());
+		return parallel(
+				intake.setRampDown(),
+				launcherHood.setPollenPos(),
+				launcher.closeGate()
+		);
 	}
 
 	public Command moveToPoint(Path path) {
@@ -140,12 +144,7 @@ public class HazmatRobot implements NextRobot {
 	private Command setHoodForFirst() {
 		return lazy(() -> {
 			BallType front = transfer.getTransferSensing().getTopBall();
-			if (front == BallType.POLLEN)
-				return launcherHood.setPollenPos();
-			if (front == BallType.RED_NECTAR || front == BallType.BLUE_NECTAR)
-				return launcherHood.setNectarPos();
-			return instant(() -> {
-			});
+			return setHoodFor(front);
 		});
 	}
 
@@ -160,12 +159,8 @@ public class HazmatRobot implements NextRobot {
 	private Command cycleHood() {
 		return lazy(() -> {
 			List<BallType> balls = new ArrayList<>(transfer.getTransferSensing().getStoredBalls());
-			if (balls.isEmpty())
-				return instant(() -> {
-				});
 			List<Command> commands = new ArrayList<>();
 
-			commands.add(waitMs(250));
 			for (BallType ballType : balls.subList(1, balls.size())) {
 				if (ballType == null || ballType == BallType.NOTHING)
 					break;
@@ -183,6 +178,7 @@ public class HazmatRobot implements NextRobot {
 			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 			transfer.setForward(),
 			launcher.openGate(),
+			waitMs(200),
 			cycleHood(),
 			waitMs(1000),
 			launcher.closeGate(),
