@@ -16,6 +16,15 @@ import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Tu
 
 import androidx.annotation.NonNull;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
+
+import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.Turret;
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
+
+import java.util.Set;
+
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
@@ -38,8 +47,9 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
 	private final Drivetrain drivetrain;
-	private final Intake intake;
+	private Intake intake;
 	private final Transfer transfer;
+	private Turret turret;
 	private final Launcher launcher;
 	private final LauncherHood launcherHood;
 
@@ -48,6 +58,7 @@ public class HazmatRobot implements NextRobot {
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
 		intake = new Intake();
+		turret = new Turret(RobotController.hardwareMap());
 		transfer = new Transfer();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
@@ -60,6 +71,13 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
+	public Pose getPose() {
+		return getFollower().pose();
+	}
+	public double getOmega() {
+		return getFollower().velocity().omega;
+	}
+
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
 	}
@@ -68,6 +86,9 @@ public class HazmatRobot implements NextRobot {
 		return intake;
 	}
 
+	public Turret getTurret() {
+		return turret;
+	}
 	public Transfer getTransfer() {
 		return transfer;
 	}
@@ -207,6 +228,7 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
+		getFollower().update();
 		updateStates();
 		updateTelemetry();
 	}
