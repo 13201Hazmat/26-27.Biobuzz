@@ -10,9 +10,11 @@ import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.pedropathing.revhub.drivetrains.MecanumConfig;
 import com.pedropathing.revhub.localizers.OctoQuadConfig;
 import com.pedropathing.revhub.localizers.OctoQuadLocalizer;
+import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 public class Constants {
@@ -31,11 +33,20 @@ public class Constants {
             }
     );
 
-    public static OctoQuadConfig octoQuadConfig = new OctoQuadConfig(
-            o -> {
-
-            }
-    );
+    public static OctoQuadConfig octoQuadConfig = new OctoQuadConfig(c -> {
+        c.name.set("oq");
+        c.xPodPort.set(1);
+        c.yPodPort.set(0);
+        c.ticksPerUnit.set(505.316944406);
+        c.xPodOffset.set(-0.45275590551181105);
+        c.yPodOffset.set(-1.3188976377952757);
+        c.xPodDirection.set(OctoQuad.EncoderDirection.FORWARD);
+        c.yPodDirection.set(OctoQuad.EncoderDirection.FORWARD);
+        c.globalDistanceUnit.set(DistanceUnit.INCH);
+        c.offsetUnits.set(DistanceUnit.INCH);
+        c.i2cRecoveryMode.set(OctoQuad.I2cRecoveryMode.MODE_1_PERIPH_RST_ON_FRAME_ERR);
+        c.headingScalar.set(1.333819966281649);
+    });
 
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
