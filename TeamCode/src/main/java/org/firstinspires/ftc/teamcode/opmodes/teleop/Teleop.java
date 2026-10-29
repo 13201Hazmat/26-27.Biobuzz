@@ -11,7 +11,7 @@ import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
 @NextTeleop(name = "Main")
-public abstract class Teleop extends BaseTeleop {
+public class Teleop extends BaseTeleop {
 	public Teleop(HazmatRobot robot) {
 		super(robot);
 
@@ -21,7 +21,7 @@ public abstract class Teleop extends BaseTeleop {
 
 	@Override
 	public void start() {
-		robot.getDrivetrain().startDrive(gamepad1, robot.getHeading());
+		robot.getDrivetrain().startDrive(gamepad1);
 	}
 
 	@Override

@@ -18,9 +18,9 @@ public class Drivetrain implements Mechanism {
 
 	public Drivetrain() {
 
-		frontLeft.setDirection(NextMotor.Direction.REVERSE);
+		frontLeft.setDirection(NextMotor.Direction.FORWARD);
 		frontRight.setDirection(NextMotor.Direction.FORWARD);
-		backLeft.setDirection(NextMotor.Direction.REVERSE);
+		backLeft.setDirection(NextMotor.Direction.FORWARD);
 		backRight.setDirection(NextMotor.Direction.FORWARD);
 
 	}
@@ -32,8 +32,7 @@ public class Drivetrain implements Mechanism {
 		Telemetry.log("BR -", backRight.getThrottle());
 	}
 
-	public void startDrive(Gamepad gamepad, double heading) {
-		DriveCommands.mecanumDriveFieldCentric(frontLeft, frontRight, backLeft, backRight, gamepad, () -> heading)
-				.schedule();
+	public void startDrive(Gamepad gamepad) {
+		DriveCommands.mecanumDrive(frontLeft, frontRight, backLeft, backRight, gamepad).schedule();
 	}
 }

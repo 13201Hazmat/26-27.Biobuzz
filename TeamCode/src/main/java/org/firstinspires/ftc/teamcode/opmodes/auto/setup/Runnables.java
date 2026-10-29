@@ -24,11 +24,7 @@ public class Runnables {
 	}
 
 	public Command leaveAuto(boolean isFront) {
-		return decidePath(
-				isFront,
-				paths.leavePoses.startingPose_To_frontLeavePose,
-				paths.leavePoses.startingPose_To_backLeavePose
-		);
+		return robot.moveToPoint(paths.leavePoses.startingPose_To_frontLeavePose);
 	}
 
 	public Command preloadAuto(boolean isFront) {
