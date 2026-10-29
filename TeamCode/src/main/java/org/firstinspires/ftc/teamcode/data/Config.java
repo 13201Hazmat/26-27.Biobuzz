@@ -20,6 +20,9 @@ public class Config {
 
 	public static NextLynxModule intakeRampServoModule = RobotController.controlHub();
 	public static int intakeRampServoPort = 1;
+
+	public static NextLynxModule launcherHoodServoModule = RobotController.controlHub();
+	public static int launcherHoodServoPort = 2;
 	/* EXPANSION HUB MOTORS */
 
 	public static NextLynxModule transferMotorModule = RobotController.expansionHub();

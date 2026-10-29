@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
+import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.*;
@@ -54,4 +55,9 @@ public class Runnables {
 		);
 	}
 
+	public Command doubleFlowerAuto(boolean inMiddle, boolean inFrontPark) {
+		return sequential(
+
+		);
+	}
 }

@@ -33,7 +33,9 @@ public class BaseAuto extends NextOpMode {
 	@Override
 	public void start() {
 		robot.getFollower().setPose(startingPose);
-		autoCommand.schedule();
+		if (autoCommand != null) {
+			autoCommand.schedule();
+		}
 	}
 
 	@Override
