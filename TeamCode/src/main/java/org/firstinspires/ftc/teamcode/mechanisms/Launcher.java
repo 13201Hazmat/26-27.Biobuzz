@@ -33,6 +33,7 @@ public class Launcher implements Mechanism {
 	private final double CLOSE_POS = 0.0;
 
 	private double targetVelocity = 0.0;
+	private double offset = 0.0;
 	private double error = 0.0;
 
 	private boolean powerMode = false;
@@ -106,6 +107,20 @@ public class Launcher implements Mechanism {
 	}
 	public void decreaseKP() {
 		setKP(Math.max(0, kP - 0.0001));
+	}
+
+	private void increaseOffset(){
+		this.offset = offset + 25;
+	}
+	private void decreaseOffset(){
+		this.offset = offset - 25;
+	}
+
+	public void adjustOffset(boolean increase){
+		if (increase){
+			increaseOffset();
+		}
+		decreaseOffset();
 	}
 
 	public boolean isAtVelocity() {

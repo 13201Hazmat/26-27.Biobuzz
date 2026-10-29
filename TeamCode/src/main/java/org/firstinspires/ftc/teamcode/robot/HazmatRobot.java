@@ -54,6 +54,7 @@ public class HazmatRobot implements NextRobot {
 	private final LauncherHood launcherHood;
 
 	private boolean isLaunching = false;
+	private boolean isHoodAutomate = true;
 
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
@@ -104,6 +105,17 @@ public class HazmatRobot implements NextRobot {
 
 	public LauncherHood getLauncherHood() {
 		return launcherHood;
+	}
+
+	private void setHoodAutomate(boolean hoodAutomate) {
+		isHoodAutomate = hoodAutomate;
+	}
+
+	public void toggleHoodAutomate(){
+		if (isHoodAutomate){
+			isHoodAutomate = false;
+		}
+		isHoodAutomate = true;
 	}
 
 	public void setTargetPose(Alliance a, Pose current) {
@@ -174,12 +186,12 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			setHoodForFirst(),
+			conditional(()->!isHoodAutomate, setHoodForFirst(), instant(()->{})),
 			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 			transfer.setForward(),
 			launcher.openGate(),
 			waitMs(200),
-			cycleHood(),
+			conditional(()->!isHoodAutomate, cycleHood(), instant(()->{})),
 			waitMs(1000),
 			launcher.closeGate(),
 			instant(() -> isLaunching = false)
@@ -222,6 +234,7 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public void periodic() {
 		getFollower().update();
+		setTargetPose(Alliance.currentAlliance, getCurrentPose());
 		turret.trackGoal(TurretPoses.targetPose, getCurrentPose());
 		updateStates();
 		updateTelemetry();
