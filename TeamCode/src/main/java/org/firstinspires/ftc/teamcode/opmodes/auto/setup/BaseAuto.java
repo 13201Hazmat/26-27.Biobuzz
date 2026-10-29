@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
 
-@NextAutonomous(name = "Test Auto")
 public class BaseAuto extends NextOpMode {
 	protected final HazmatRobot robot;
 	protected Runnables runnables;

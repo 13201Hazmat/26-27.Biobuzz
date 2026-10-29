@@ -78,11 +78,11 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Pose getCurrentPose() {
-		return follower.pose();
+		return getFollower().pose();
 	}
 
 	public double getHeading() {
-		return follower.pose().heading();
+		return getFollower().pose().heading();
 	}
 
 	public void setTargetPose(Alliance a, Pose current) {
@@ -113,7 +113,7 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command moveToPoint(Path path) {
-		return follow(follower, path);
+		return follow(getFollower(), path);
 	}
 
 	private Command setHoodForFirst() {

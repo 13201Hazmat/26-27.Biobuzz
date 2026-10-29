@@ -26,15 +26,15 @@ public class Constants {
                 c.frontRightName.set(Config.fR);
                 c.backRightName.set(Config.bR);
 
-                c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
-                c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+                c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+                c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
                 c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
                 c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
             }
     );
 
     public static OctoQuadConfig octoQuadConfig = new OctoQuadConfig(c -> {
-        c.name.set("oq");
+        c.name.set("octoquad");
         c.xPodPort.set(1);
         c.yPodPort.set(0);
         c.ticksPerUnit.set(505.316944406);
