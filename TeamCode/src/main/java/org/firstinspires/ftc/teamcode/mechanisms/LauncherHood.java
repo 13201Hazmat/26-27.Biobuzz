@@ -9,7 +9,9 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class LauncherHood implements Mechanism {
-	private final NextServo launcherHoodServo = new NextServo(Config.launcherHoodServoModule, Config.launcherHoodServoPort, 0.01);
+	private final NextServo launcherHoodServo = new NextServo(
+			Config.launcherHoodServoModule, Config.launcherHoodServoPort, 0.01
+	);
 
 	private final double POLLEN_POS = 0.0;
 	private final double NECTAR_POS = 0.0;

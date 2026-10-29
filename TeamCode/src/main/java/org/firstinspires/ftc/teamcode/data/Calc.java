@@ -4,6 +4,8 @@ import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Tu
 
 import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
+
 import dev.nextftc.control.util.InterpolatingMap;
 
 public class Calc {

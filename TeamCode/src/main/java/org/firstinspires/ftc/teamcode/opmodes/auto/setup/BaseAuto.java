@@ -12,18 +12,18 @@ import dev.nextftc.robot.opmode.NextOpMode;
 @NextAutonomous(name = "Test Auto")
 public class BaseAuto extends NextOpMode {
 	protected final HazmatRobot robot;
-	protected final Runnables runnables;
-	protected final Pose startingPose;
+	protected Runnables runnables;
+	protected Pose startingPose;
 	protected Command autoCommand;
 
-	protected BaseAuto(HazmatRobot robot, Alliance alliance, Pose startingPose) {
+	protected BaseAuto(HazmatRobot robot, Alliance alliance) {
 		super(robot);
 		this.robot = robot;
-		this.startingPose = startingPose;
-		runnables = new Runnables(robot);
 
 		Alliance.currentAlliance = alliance;
-		PathsAndPoses.mirror();
+
+		this.runnables = new Runnables(robot);
+		this.startingPose = runnables.pathsAndPoses.leavePoses.startingPose;
 	}
 
 	public void setAutoCommand(Command command) {
