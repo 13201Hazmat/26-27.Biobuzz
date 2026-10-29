@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
 
-@NextAutonomous(name = "Leave Auto")
-public class ExampleAuto extends BaseAuto {
-	public ExampleAuto(HazmatRobot robot) {
-		super(robot, Alliance.BLUE);
-		setAutoCommand(runnables.preloadAuto(true));
-	}
+@NextAutonomous(name = "Double Flower Auto")
+public class DoubleFlowerAuto extends BaseAuto {
+    public DoubleFlowerAuto(HazmatRobot robot) {
+        super(robot, Alliance.RED);
+        setAutoCommand(runnables.doubleFlowerAuto(true));
+    }
 }

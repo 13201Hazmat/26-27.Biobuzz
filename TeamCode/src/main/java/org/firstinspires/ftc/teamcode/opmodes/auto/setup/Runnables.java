@@ -12,11 +12,11 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 public class Runnables {
 
 	private final HazmatRobot robot;
-	public final PathsAndPoses pathsAndPoses;
+	public final PathsAndPoses paths;
 
 	public Runnables(HazmatRobot robot) {
 		this.robot = robot;
-		this.pathsAndPoses = new PathsAndPoses();
+		this.paths = new PathsAndPoses();
 	}
 
 	public Command decidePath(boolean condition, Path option1, Path option2) {
@@ -26,44 +26,53 @@ public class Runnables {
 	public Command leaveAuto(boolean isFront) {
 		return decidePath(
 				isFront,
-				pathsAndPoses.leavePoses.startingPose_To_frontLeavePose,
-				pathsAndPoses.leavePoses.startingPose_To_backLeavePose
+				paths.leavePoses.startingPose_To_frontLeavePose,
+				paths.leavePoses.startingPose_To_backLeavePose
 		);
 	}
 
 	public Command preloadAuto(boolean isFront) {
 		return sequential(
-				robot.moveToPoint(pathsAndPoses.leavePoses.startingPose_To_midPose),
+				robot.moveToPoint(paths.leavePoses.startingPose_To_midPose),
 				waitMs(1000),
 				decidePath(
 						isFront,
-						pathsAndPoses.leavePoses.midPose_To_frontLeavePose,
-						pathsAndPoses.leavePoses.midPose_To_backLeavePose
+						paths.leavePoses.midPose_To_frontLeavePose,
+						paths.leavePoses.midPose_To_backLeavePose
 				)
 		);
 	}
 
 	public Command basicFlowerAuto(boolean inMiddle, boolean inFrontPark) {
 		return sequential(
-				robot.moveToPoint(pathsAndPoses.basicFlowerAutoPoses.startingPose_To_midPose),
+				robot.moveToPoint(paths.basicFlowerAutoPoses.startingPose_To_midPose),
 				waitMs(1000),
 				decidePath(
 						inMiddle,
-						pathsAndPoses.basicFlowerAutoPoses.midPose_To_shootPose_MID,
-						pathsAndPoses.basicFlowerAutoPoses.midPose_To_shootPose
+						paths.basicFlowerAutoPoses.midPose_To_shootPose_MID,
+						paths.basicFlowerAutoPoses.midPose_To_shootPose
 				),
 				waitMs(1000),
-				robot.moveToPoint(pathsAndPoses.basicFlowerAutoPoses.shootPose_To_endFlowerPose),
+				robot.moveToPoint(paths.basicFlowerAutoPoses.shootPose_To_endFlowerPose),
 				waitMs(1000),
 				decidePath(
 						inFrontPark,
-						pathsAndPoses.basicFlowerAutoPoses.endFlowerPose_To_frontLeavePose,
-						pathsAndPoses.basicFlowerAutoPoses.endFlowerPose_To_backLeavePose
+						paths.basicFlowerAutoPoses.endFlowerPose_To_frontLeavePose,
+						paths.basicFlowerAutoPoses.endFlowerPose_To_backLeavePose
 				)
 		);
 	}
 
-	public Command doubleFlowerAuto(boolean inMiddle, boolean inFrontPark) {
-		return sequential();
+	public Command doubleFlowerAuto(boolean inFrontPark) {
+		return sequential(
+				robot.moveToPoint(paths.doubleFlowerAutoPoses.startingPose_To_firstFlowerPose),
+				robot.moveToPoint(paths.doubleFlowerAutoPoses.firstFlowerPose_To_startSecondFlowerPose),
+				robot.moveToPoint(paths.doubleFlowerAutoPoses.startSecondFlowerPose_To_endSecondFlowerPose),
+				decidePath(
+						inFrontPark,
+						paths.doubleFlowerAutoPoses.endSecondFlowerPose_To_frontLeavePose,
+						paths.doubleFlowerAutoPoses.endSecondFlowerPose_To_backLeavePose
+				)
+		);
 	}
 }

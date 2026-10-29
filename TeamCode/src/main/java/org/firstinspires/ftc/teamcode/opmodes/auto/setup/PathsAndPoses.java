@@ -14,7 +14,6 @@ public class PathsAndPoses {
 	public final LeavePoses leavePoses;
 	public final BasicFlowerAutoPoses basicFlowerAutoPoses;
 	public final DoubleFlowerAutoPoses doubleFlowerAutoPoses;
-
 	public PathsAndPoses() {
 		factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 		if (Alliance.currentAlliance == Alliance.BLUE) {
@@ -78,7 +77,27 @@ public class PathsAndPoses {
 
 	public class DoubleFlowerAutoPoses {
 		public final Pose startingPose = factory.of(30.43, 7.48, 180);
+		public final Pose firstFlowerControlPose = factory.of(50.89, 52.02, 180);
+		public final Pose firstFlowerPose = factory.of(11.7, 46.57, 180);
+		public final Pose startSecondFlowerPose = factory.of(47.16, 123, 90);
+		public final Pose endSecondFlowerPose = factory.of(47.16, 129, 90);
 		public final Pose frontLeavePose = factory.of(10.34, 117.81, 180);
 		public final Pose backLeavePose = factory.of(10.11, 95.7, 90);
+
+		public final Path startingPose_To_firstFlowerPose = createCurvyPath(
+				startingPose,
+				firstFlowerControlPose,
+				firstFlowerPose
+		);
+		public final Path firstFlowerPose_To_startSecondFlowerPose = createLinearPath(
+				firstFlowerPose,
+				startSecondFlowerPose
+		);
+		public final Path startSecondFlowerPose_To_endSecondFlowerPose = createLinearPath(
+				startSecondFlowerPose,
+				endSecondFlowerPose
+		);
+		public final Path endSecondFlowerPose_To_frontLeavePose = createLinearPath(endSecondFlowerPose, frontLeavePose);
+		public final Path endSecondFlowerPose_To_backLeavePose = createLinearPath(endSecondFlowerPose, backLeavePose);
 	}
 }

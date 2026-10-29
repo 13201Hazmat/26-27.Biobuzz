@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.BaseAuto;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runnables;
@@ -8,6 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 
 @NextAutonomous(name = "Interactive Flower Auto")
+@Disabled
 public class InteractiveFlowerAuto extends BaseAuto {
 
 	private Alliance alliance = Alliance.RED;
@@ -26,7 +29,7 @@ public class InteractiveFlowerAuto extends BaseAuto {
 	private void updateConfiguration() {
 		Alliance.currentAlliance = alliance;
 		runnables = new Runnables(robot);
-		startingPose = runnables.pathsAndPoses.basicFlowerAutoPoses.startingPose;
+		startingPose = runnables.paths.basicFlowerAutoPoses.startingPose;
 		setAutoCommand(runnables.basicFlowerAuto(inMiddle, inFrontPark));
 	}
 

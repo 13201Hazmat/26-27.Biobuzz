@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.BaseAuto;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runnables;
@@ -8,6 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 
 @NextAutonomous(name = "Interactive Leave Auto")
+@Disabled
 public class InteractiveLeaveAuto extends BaseAuto {
 
 	private Alliance alliance = Alliance.RED;
@@ -24,7 +27,7 @@ public class InteractiveLeaveAuto extends BaseAuto {
 	private void updateConfiguration() {
 		Alliance.currentAlliance = alliance;
 		runnables = new Runnables(robot);
-		startingPose = runnables.pathsAndPoses.leavePoses.startingPose;
+		startingPose = runnables.paths.leavePoses.startingPose;
 		setAutoCommand(runnables.preloadAuto(isFront));
 	}
 
