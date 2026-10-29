@@ -12,6 +12,6 @@ import dev.nextftc.robot.opmode.NextAutonomous;
 public class ExampleAuto extends BaseAuto {
 	public ExampleAuto(HazmatRobot robot) {
 		super(robot, Alliance.BLUE, LeavePoses.startingPose);
-		setAutoCommand(runnables.preloadAuto());
+		setAutoCommand(runnables.preloadAuto(true));
 	}
 }

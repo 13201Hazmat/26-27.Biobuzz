@@ -15,9 +15,13 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Launcher implements Mechanism {
-	private final NextMotor rightLauncher = new NextMotor(Config.bModule, Config.bPort, Degrees.of(360.0 / 28.0));
-	private final NextMotor leftLauncher = new NextMotor(Config.aModule, Config.aPort, Degrees.of(360.0 / 28.0));
-	private final NextServo launcherGate = new NextServo(Config.mModule, Config.mPort);
+	private final NextMotor rightLauncher = new NextMotor(
+			Config.rightLauncherModule, Config.rightLauncherPort, Degrees.of(360.0 / 28.0)
+	);
+	private final NextMotor leftLauncher = new NextMotor(
+			Config.leftLauncherModule, Config.leftLauncherPort, Degrees.of(360.0 / 28.0)
+	);
+	private final NextServo launcherGate = new NextServo(Config.launcherGateServoModule, Config.launcherGateServoPort);
 	private double kV = 0.0;
 	private double kS = 0.0;
 	private double kP = 0.0;

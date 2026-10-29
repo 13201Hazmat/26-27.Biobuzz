@@ -32,7 +32,7 @@ public class Transfer implements Mechanism {
 		FORWARD, BACKWARD, STOPPED
 	}
 
-	private final NextMotor transferMotor = new NextMotor(Config.cModule, Config.cPort);
+	private final NextMotor transferMotor = new NextMotor(Config.transferMotorModule, Config.transferMotorPort);
 	private TransferMotorState transferMotorState;
 	private TransferSensingState transferSensingState;
 	private final TransferTracking transferTracking;
@@ -80,13 +80,13 @@ public class Transfer implements Mechanism {
 		this.transferMotorState = transferMotorState;
 	}
 
-	public void forward(){
+	public void forward() {
 		setState(TransferMotorState.FORWARD);
 	}
-	public void reverse(){
+	public void reverse() {
 		setState(TransferMotorState.BACKWARD);
 	}
-	public void off(){
+	public void off() {
 		setState(TransferMotorState.STOPPED);
 	}
 

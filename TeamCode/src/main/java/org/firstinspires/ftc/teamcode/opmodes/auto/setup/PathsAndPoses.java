@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
+import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
@@ -40,22 +41,34 @@ public class PathsAndPoses {
 		public static final Pose startingPose = factory.of(30.43, 7.48, 180);
 		public static final Pose midPose = factory.of(9.24, 7.30, 180);
 		public static final Pose control = factory.of(25.96, 56.11, 180);
-		public static final Pose leavePose = factory.of(9.76, 96.28, 180);
+		public static final Pose frontLeavePose = factory.of(10.34, 117.81, 180);
+		public static final Pose backLeavePose = factory.of(10.11, 95.7, 90);
 
 		// Direct path from start to finish
-		public static final Path startingPose_To_leavePose = createLinearPath(
+		public static final Path startingPose_To_frontLeavePose = createLinearPath(
 				LeavePoses.startingPose,
-				LeavePoses.leavePose
+				LeavePoses.frontLeavePose
 		);
+
+		public static final Path startingPose_To_backLeavePose = createLinearPath(
+				LeavePoses.startingPose,
+				LeavePoses.backLeavePose
+		);
+
 		public static final Path startingPose_To_midPose = createLinearPath(
 				LeavePoses.startingPose,
 				LeavePoses.midPose
 		);
 		// Uses control point from the mid point
-		public static final Path midPose_To_leavePose = createCurvyPath(
+		public static final Path midPose_To_frontLeavePose = createCurvyPath(
 				LeavePoses.midPose,
 				LeavePoses.control,
-				LeavePoses.leavePose
+				LeavePoses.frontLeavePose
+		);
+		public static final Path midPose_To_backLeavePose = createCurvyPath(
+				LeavePoses.midPose,
+				LeavePoses.control,
+				LeavePoses.backLeavePose
 		);
 	}
 
@@ -63,13 +76,17 @@ public class PathsAndPoses {
 		public static final Pose startingPose = LeavePoses.startingPose;
 		public static final Pose midPose = factory.of(9.24, 7.30, 180);
 		public static final Pose control = factory.of(21.36, 86.38, 90);
+		public static final Pose midControl = factory.of(95.96, 51.82, 90);
 		public static final Pose shootPose = factory.of(47.16, 123, 90);
 		public static final Pose endFlowerPose = factory.of(47.16, 129, 90);
-		public static final Pose leavePose = factory.of(9.76, 96.28, 90);
+		public static final Pose frontLeavePose = factory.of(10.34, 117.81, 90);
+		public static final Pose backLeavePose = factory.of(10.11, 95.7, 90);
 
 		public static final Path startingPose_To_midPose = createLinearPath(startingPose, midPose);
+		public static final Path midPose_To_shootPose_MID = createCurvyPath(midPose, midControl, shootPose);
 		public static final Path midPose_To_shootPose = createCurvyPath(midPose, control, shootPose);
 		public static final Path shootPose_To_endFlowerPose = createLinearPath(shootPose, endFlowerPose);
-		public static final Path endFlowerPose_To_leavePose = createLinearPath(endFlowerPose, leavePose);
+		public static final Path endFlowerPose_To_frontLeavePose = createLinearPath(endFlowerPose, frontLeavePose);
+		public static final Path endFlowerPose_To_backLeavePose = createLinearPath(endFlowerPose, backLeavePose);
 	}
 }

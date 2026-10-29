@@ -22,8 +22,8 @@ public class Intake implements Mechanism {
 
 	private double powerValue = 0;
 
-	NextMotor intakeMotor = new NextMotor(Config.mModule, Config.mPort);
-	NextServo intakeRampServo = new NextServo(Config.mModule, Config.mPort);
+	NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
+	NextServo intakeRampServo = new NextServo(Config.intakeRampServoModule, Config.intakeRampServoPort);
 	private IntakeState intakeState;
 
 	public enum IntakeState {
@@ -67,13 +67,13 @@ public class Intake implements Mechanism {
 		this.intakeState = intakeState;
 	}
 
-	public void forward(){
+	public void forward() {
 		setState(IntakeState.FORWARD);
 	}
-	public void reverse(){
+	public void reverse() {
 		setState(IntakeState.REVERSE);
 	}
-	public void off(){
+	public void off() {
 		setState(IntakeState.OFF);
 	}
 	/**
