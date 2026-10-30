@@ -17,41 +17,42 @@ public abstract class TeleOp extends NextOpMode {
 		this.robot = robot;
 		Alliance.currentAlliance = alliance;
 
-        Trigger.Companion.getDefaultEventLoop().clear();
+		Trigger.Companion.getDefaultEventLoop().clear();
 	}
 
 	@Override
-	public void start(){
+	public void start() {
 		robot.getFollower().setPose(PoseStorage.get());
 
 		gp1();
 		gp2();
 	}
 
-	protected void gp1(){
+	protected void gp1() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		robot.getDrivetrain().startDrive(gamepad1,robot.getHeading());
-
-		gp1.rightBumper().onTrue(instant(()->robot.getIntake().cycle()));
+		robot.getDrivetrain().startDrive(gamepad1, robot.getHeading());
+		//TODO wont work because of updateState
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
 
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
 	}
 
-	protected void gp2(){
+	protected void gp2() {
 		CommandGamepad gp2 = new CommandGamepad(gamepad2);
 
-		gp2.rightBumper().onTrue(instant(()-> robot.getLauncher().adjustOffset(true)));
-		gp2.leftBumper().onTrue(instant(()-> robot.getLauncher().adjustOffset(false)));
+		gp2.rightBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(true)));
+		gp2.leftBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(false)));
 
 		gp2.rightTrigger().isOver(0.2).onTrue(robot.getLauncher().closeGate());
 		gp2.dpadRight().onTrue(robot.getLauncherHood().setPollenPos());
 		gp2.dpadLeft().onTrue(robot.getLauncherHood().setNectarPos());
-		gp2.x().onTrue(instant(()-> robot.getTransfer().cycle()));
+		gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));
 
 		gp2.dpadUp().onTrue(instant(robot::toggleHoodAutomate));
 
+		gp2.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
 
 	}
 

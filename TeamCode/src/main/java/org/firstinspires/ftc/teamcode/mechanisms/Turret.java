@@ -46,8 +46,12 @@ public class Turret implements Mechanism {
 		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);
 	}
 
-	public void autoAim(boolean on) {
+	private void setAutoAim(boolean on) {
 		AUTO_AIM = on;
+	}
+
+	public void toggleAutoAim() {
+		AUTO_AIM = !AUTO_AIM;
 	}
 
 	private int readPulse() {

@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextTeleop;
 
 @NextTeleop(name = "Red TeleOp")
-public class RedTeleOp extends TeleOp{
-    public RedTeleOp() {
-        super(new HazmatRobot(), Alliance.RED);
-    }
+public class RedTeleOp extends TeleOp {
+	public RedTeleOp() {
+		super(new HazmatRobot(), Alliance.RED);
+	}
 }

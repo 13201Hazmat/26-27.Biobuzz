@@ -109,15 +109,15 @@ public class Launcher implements Mechanism {
 		setKP(Math.max(0, kP - 0.0001));
 	}
 
-	private void increaseOffset(){
+	private void increaseOffset() {
 		this.offset = offset + 25;
 	}
-	private void decreaseOffset(){
+	private void decreaseOffset() {
 		this.offset = offset - 25;
 	}
 
-	public void adjustOffset(boolean increase){
-		if (increase){
+	public void adjustOffset(boolean increase) {
+		if (increase) {
 			increaseOffset();
 		}
 		decreaseOffset();
