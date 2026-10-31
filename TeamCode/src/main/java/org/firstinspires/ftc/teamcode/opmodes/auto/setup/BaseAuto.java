@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -9,6 +10,8 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
 
+@NextAutonomous(name = "Base Auto")
+@Disabled
 public class BaseAuto extends NextOpMode {
 	protected final HazmatRobot robot;
 	protected Runnables runnables;

@@ -8,8 +8,8 @@ import dev.nextftc.robot.opmode.NextAutonomous;
 
 @NextAutonomous(name = "Double Flower Auto")
 public class DoubleFlowerAuto extends BaseAuto {
-    public DoubleFlowerAuto(HazmatRobot robot) {
-        super(robot, Alliance.RED);
-        setAutoCommand(runnables.doubleFlowerAuto(true));
-    }
+	public DoubleFlowerAuto(HazmatRobot robot) {
+		super(robot, Alliance.RED);
+		setAutoCommand(runnables.doubleFlowerAuto(true));
+	}
 }

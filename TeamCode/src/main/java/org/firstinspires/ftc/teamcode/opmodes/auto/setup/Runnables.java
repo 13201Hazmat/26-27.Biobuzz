@@ -14,17 +14,19 @@ public class Runnables {
 	private final HazmatRobot robot;
 	public final PathsAndPoses paths;
 
+	public Command decidePath(boolean condition, Path option1, Path option2) {
+		return conditional(() -> condition, robot.moveToPoint(option1), robot.moveToPoint(option2));
+	}
+
 	public Runnables(HazmatRobot robot) {
 		this.robot = robot;
 		this.paths = new PathsAndPoses();
 	}
 
-	public Command decidePath(boolean condition, Path option1, Path option2) {
-		return conditional(() -> condition, robot.moveToPoint(option1), robot.moveToPoint(option2));
-	}
+	/* FRONT AUTOS (We are shooting first) */
 
 	public Command leaveAuto(boolean isFront) {
-		return robot.moveToPoint(paths.leavePoses.startingPose_To_frontLeavePose);
+		return decidePath(isFront, paths.leavePoses.startingPose_To_frontLeavePose, paths.leavePoses.startingPose_To_backLeavePose);
 	}
 
 	public Command preloadAuto(boolean isFront) {
@@ -62,8 +64,11 @@ public class Runnables {
 	public Command doubleFlowerAuto(boolean inFrontPark) {
 		return sequential(
 				robot.moveToPoint(paths.doubleFlowerAutoPoses.startingPose_To_firstFlowerPose),
+				waitMs(1000),
 				robot.moveToPoint(paths.doubleFlowerAutoPoses.firstFlowerPose_To_startSecondFlowerPose),
+				waitMs(1000),
 				robot.moveToPoint(paths.doubleFlowerAutoPoses.startSecondFlowerPose_To_endSecondFlowerPose),
+				waitMs(1000),
 				decidePath(
 						inFrontPark,
 						paths.doubleFlowerAutoPoses.endSecondFlowerPose_To_frontLeavePose,
