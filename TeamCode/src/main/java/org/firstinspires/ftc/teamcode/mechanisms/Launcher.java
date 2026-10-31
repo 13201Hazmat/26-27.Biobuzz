@@ -133,7 +133,7 @@ public class Launcher implements Mechanism {
 	public void test() {
 		setPowerMode(true);
 		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
-		rightLauncher.setThrottle(1.0);
+		rightLauncher.setThrottle(0.5);
 	}
 	public void updateState() {
 		if (isIdle())

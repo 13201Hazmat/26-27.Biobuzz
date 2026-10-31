@@ -22,6 +22,10 @@ public class IntakeTransferLauncher extends NextOpMode {
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 		gp1.rightTrigger().isOver(0.6).onTrue(instant(() -> robot.getLauncher().test()));
+		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
+		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
+		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementUp()));
+		gp1.dpadLeft().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));
 
 	}
 

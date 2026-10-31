@@ -21,7 +21,7 @@ import com.pedropathing.math.Pose;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+//import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
 
@@ -42,7 +42,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+//import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
@@ -70,24 +70,24 @@ public class HazmatRobot implements NextRobot {
 		launcherHood = new LauncherHood();
 	}
 
-	public Follower getFollower() {
-		if (follower == null) {
-			follower = Constants.create(RobotController.hardwareMap());
-		}
-		return follower;
-	}
+//	public Follower getFollower() {
+//		if (follower == null) {
+////			follower = Constants.create(RobotController.hardwareMap());
+//		}
+//		return follower;
+//	}
 
-	public Pose getCurrentPose() {
-		return follower.pose();
-	}
+//	public Pose getCurrentPose() {
+//		return follower.pose();
+//	}
 
-	public double getHeading() {
-		return follower.pose().heading();
-	}
+//	public double getHeading() {
+//		return follower.pose().heading();
+//	}
 
-	public double getOmega() {
-		return getFollower().velocity().omega;
-	}
+//	public double getOmega() {
+////		return getFollower().velocity().omega;
+//	}
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -154,9 +154,9 @@ public class HazmatRobot implements NextRobot {
 		);
 	}
 
-	public Command moveToPoint(Path path) {
-		return follow(follower, path);
-	}
+//	public Command moveToPoint(Path path) {
+//		return follow(follower, path);
+//	}
 
 	private Command setHoodForFirst() {
 		return lazy(() -> {
@@ -227,7 +227,7 @@ public class HazmatRobot implements NextRobot {
 				break;
 			case FILLING :
 			case FULL :
-				launcher.autoSetVelocity(getCurrentPose());
+//				launcher.autoSetVelocity(getCurrentPose());
 				break;
 		}
 
@@ -249,11 +249,11 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		getFollower().update();
-		setTargetPose(Alliance.currentAlliance, getCurrentPose());
-		if (getTurret() != null) {
-			getTurret().trackGoal(TurretPoses.targetPose, getCurrentPose());
-		}
+//		getFollower().update();
+//		setTargetPose(Alliance.currentAlliance, getCurrentPose());
+//		if (getTurret() != null) {
+//			getTurret().trackGoal(TurretPoses.targetPose, getCurrentPose());
+//		}
 		updateStates();
 		updateTelemetry();
 	}

@@ -26,8 +26,7 @@ public class Config {
 	public static NextLynxModule intakeRampServoModule = RobotController.controlHub();
 	public static int intakeRampServoPort = 1;
 
-	public static NextLynxModule launcherHoodServoModule = RobotController.controlHub();
-	public static int launcherHoodServoPort = 2;
+
 
 	private static NextLynxModule expansionHub() {
 		try {
@@ -49,5 +48,8 @@ public class Config {
 	public static int leftTurretPort = 1;
 	public static NextLynxModule rightTurretModule = expansionHub();
 	public static int rightTurretPort = 2;
+
+	public static NextLynxModule launcherHoodServoModule = RobotController.expansionHub();
+	public static int launcherHoodServoPort = 5;
 
 }
