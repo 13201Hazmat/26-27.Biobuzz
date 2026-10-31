@@ -22,8 +22,8 @@ public class Intake implements Mechanism {
 
 	private double powerValue = 0;
 
-	NextMotor intakeMotor = new NextMotor(Config.mModule, Config.mPort);
-	NextServo intakeRampServo = new NextServo(Config.mModule, Config.mPort);
+	NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
+	NextServo intakeRampServo = new NextServo(Config.intakeRampServoModule, Config.intakeRampServoPort);
 	private IntakeState intakeState;
 
 	public enum IntakeState {

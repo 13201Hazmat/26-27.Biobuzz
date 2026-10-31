@@ -14,8 +14,8 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Turret implements Mechanism {
-	private final NextServo leftTurretServo = new NextServo(Config.eModule, Config.ePort);
-	private final NextServo rightTurretServo = new NextServo(Config.eModule, Config.ePort);
+	private final NextServo leftTurretServo = new NextServo(Config.leftTurretModule, Config.leftTurretPort);
+	private final NextServo rightTurretServo = new NextServo(Config.rightTurretModule, Config.rightTurretPort);
 	private final OctoQuad oq;
 
 	public static double targetTurretAng = 0.0;
@@ -35,12 +35,22 @@ public class Turret implements Mechanism {
 	private final double ABS_ZERO_DEG = 0;
 
 	public Turret(HardwareMap hw) {
-		oq = hw.get(OctoQuad.class, "oq");
-		oq.setChannelBankConfig(OctoQuad.ChannelBankConfig.BANK1_QUADRATURE_BANK2_PULSE_WIDTH);
-		oq.setSingleChannelPulseWidthParams(
-			ABS_CHANNEL,
-			new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX)
-		);
+		OctoQuad tempOq = null;
+		try {
+			if (hw != null) {
+				tempOq = hw.get(OctoQuad.class, "oq");
+				if (tempOq != null) {
+					tempOq.setChannelBankConfig(OctoQuad.ChannelBankConfig.BANK1_QUADRATURE_BANK2_PULSE_WIDTH);
+					tempOq.setSingleChannelPulseWidthParams(
+						ABS_CHANNEL,
+						new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX)
+					);
+				}
+			}
+		} catch (Throwable t) {
+			tempOq = null;
+		}
+		this.oq = tempOq;
 		updateAngle();
 		targetTurretAng = curAngle;
 		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);
@@ -55,7 +65,12 @@ public class Turret implements Mechanism {
 	}
 
 	private int readPulse() {
-		return oq.readSinglePosition_Caching(ABS_CHANNEL);
+		if (oq == null) return 0;
+		try {
+			return oq.readSinglePosition_Caching(ABS_CHANNEL);
+		} catch (Throwable t) {
+			return 0;
+		}
 	}
 
 	private double pulseToDeg(int pulse) {

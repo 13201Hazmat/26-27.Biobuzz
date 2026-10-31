@@ -33,7 +33,7 @@ public class Transfer implements Mechanism {
 		FORWARD, BACKWARD, STOPPED
 	}
 
-	private final NextMotor transferMotor = new NextMotor(Config.cModule, Config.cPort);
+	private final NextMotor transferMotor = new NextMotor(Config.transferMotorModule, Config.transferMotorPort);
 	private TransferMotorState transferMotorState;
 	private TransferSensingState transferSensingState;
 	private final TransferTracking transferTracking;

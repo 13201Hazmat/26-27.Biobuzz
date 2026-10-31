@@ -60,7 +60,11 @@ public class HazmatRobot implements NextRobot {
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
 		intake = new Intake();
-		turret = new Turret(RobotController.hardwareMap());
+		try {
+			turret = new Turret(RobotController.hardwareMap());
+		} catch (Throwable t) {
+			turret = null;
+		}
 		transfer = new Transfer();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
@@ -115,7 +119,7 @@ public class HazmatRobot implements NextRobot {
 		isHoodAutomate = !isHoodAutomate;
 	}
 
-	public void toggleManualTransfer(){
+	public void toggleManualTransfer() {
 		isManualTransfer = !isManualTransfer;
 	}
 
@@ -201,7 +205,7 @@ public class HazmatRobot implements NextRobot {
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
 			launcher.closeGate().schedule();
-		})).unless(()->transfer.getTransferSensing().getStoredBalls().isEmpty());
+		})).unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
 
 	public void updateTelemetry() {
@@ -214,27 +218,29 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public void updateStates() {
-		if (isLaunching) return;
+		if (isLaunching)
+			return;
 
 		switch (transfer.getTransferSensingState()) {
-			case EMPTY:
+			case EMPTY :
 				launcher.setIdle();
 				break;
-			case FILLING:
-			case FULL:
+			case FILLING :
+			case FULL :
 				launcher.autoSetVelocity(getCurrentPose());
 				break;
 		}
 
-		if (isManualTransfer) return;
+		if (isManualTransfer)
+			return;
 
 		switch (transfer.getTransferSensingState()) {
-			case EMPTY:
-			case FILLING:
+			case EMPTY :
+			case FILLING :
 				intake.forward();
 				transfer.forward();
 				break;
-			case FULL:
+			case FULL :
 				intake.off();
 				transfer.off();
 				break;
@@ -245,7 +251,9 @@ public class HazmatRobot implements NextRobot {
 	public void periodic() {
 		getFollower().update();
 		setTargetPose(Alliance.currentAlliance, getCurrentPose());
-		turret.trackGoal(TurretPoses.targetPose, getCurrentPose());
+		if (getTurret() != null) {
+			getTurret().trackGoal(TurretPoses.targetPose, getCurrentPose());
+		}
 		updateStates();
 		updateTelemetry();
 	}

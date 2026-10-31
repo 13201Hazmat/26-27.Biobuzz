@@ -18,9 +18,9 @@ public class Drivetrain implements Mechanism {
 
 	public Drivetrain() {
 
-		frontLeft.setDirection(NextMotor.Direction.REVERSE);
+		frontLeft.setDirection(NextMotor.Direction.FORWARD);
 		frontRight.setDirection(NextMotor.Direction.FORWARD);
-		backLeft.setDirection(NextMotor.Direction.REVERSE);
+		backLeft.setDirection(NextMotor.Direction.FORWARD);
 		backRight.setDirection(NextMotor.Direction.FORWARD);
 
 	}
