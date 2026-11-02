@@ -21,7 +21,7 @@ public class Launcher implements Mechanism {
 	private final NextMotor leftLauncher = new NextMotor(
 		Config.leftLauncherModule, Config.leftLauncherPort, Degrees.of(360.0 / 28.0)
 	);
-	private final NextServo launcherGate = new NextServo(Config.launcherGateServoModule, Config.launcherGateServoPort);
+	private final NextServo launcherGate = new NextServo(Config.launcherGateServoModule, Config.launcherGateServoPort, 0.0);
 	private double kV = 0.0;
 	private double kS = 0.0;
 	private double kP = 0.0;
@@ -83,6 +83,10 @@ public class Launcher implements Mechanism {
 
 	public double getPower() {
 		return rightLauncher.getThrottle();
+	}
+
+	public double getLauncherGatePos() {
+		return launcherGate.getPosition();
 	}
 	public double getTargetVelocity() {
 		return targetVelocity;
@@ -174,6 +178,14 @@ public class Launcher implements Mechanism {
 		return setGatePosition(CLOSE_POS);
 	}
 
+	public Command incrementGate() {
+		return instant(() -> launcherGate.setPosition(launcherGate.getPosition() + 0.01));
+	}
+
+	public Command decrementGate() {
+		return instant(() -> launcherGate.setPosition(launcherGate.getPosition() - 0.01));
+	}
+
 	public void incrementRPM() {
 		setTargetVelocity(targetVelocity + 25);
 	}
@@ -184,13 +196,11 @@ public class Launcher implements Mechanism {
 
 	public void increasePower() {
 		setPowerMode(true);
-		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.min(1.0, getPower() + 0.1));
 	}
 
 	public void decreasePower() {
 		setPowerMode(true);
-		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.max(-1.0, getPower() - 0.1));
 	}
 

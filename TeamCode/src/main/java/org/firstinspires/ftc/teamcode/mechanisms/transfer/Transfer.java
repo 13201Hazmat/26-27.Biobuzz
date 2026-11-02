@@ -32,6 +32,7 @@ public class Transfer implements Mechanism {
 	public enum TransferMotorState {
 		FORWARD, BACKWARD, STOPPED
 	}
+	// TODO IF MOTOR STALLS STOP TRANSFER + KEEP MOVING INTAKE
 
 	private final NextMotor transferMotor = new NextMotor(Config.transferMotorModule, Config.transferMotorPort);
 	private TransferMotorState transferMotorState;

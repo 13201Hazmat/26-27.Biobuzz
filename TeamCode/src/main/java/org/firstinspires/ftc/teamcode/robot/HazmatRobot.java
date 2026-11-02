@@ -123,6 +123,10 @@ public class HazmatRobot implements NextRobot {
 		isManualTransfer = !isManualTransfer;
 	}
 
+	public void setManualTransferTrue() {
+		isManualTransfer = true;
+	}
+
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
 			if (current.y() > 70.5) {
