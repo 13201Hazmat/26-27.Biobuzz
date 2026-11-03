@@ -48,7 +48,8 @@ public class Config {
 	public static int launcherBeamBreakPort = 5;
 
 	// right launcher hood servo
-//	public static NextLynxModule flowerHoodServoModule = RobotController.expansionHub();
-//	public static int flowerHoodServoPort = 4;
+	// public static NextLynxModule flowerHoodServoModule =
+	// RobotController.expansionHub();
+	// public static int flowerHoodServoPort = 4;
 
 }

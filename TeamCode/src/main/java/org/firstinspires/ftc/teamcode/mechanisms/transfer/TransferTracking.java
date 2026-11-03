@@ -19,8 +19,12 @@ import dev.nextftc.robot.Telemetry;
  * sensors.
  */
 public class TransferTracking implements Mechanism {
-	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(Config.intakeBeamBreakModule, Config.intakeBeamBreakPort);
-	private final NextDigitalSensor launcherBeamBreak = new NextDigitalSensor(Config.launcherBeamBreakModule, Config.launcherBeamBreakPort);
+	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(
+		Config.intakeBeamBreakModule, Config.intakeBeamBreakPort
+	);
+	private final NextDigitalSensor launcherBeamBreak = new NextDigitalSensor(
+		Config.launcherBeamBreakModule, Config.launcherBeamBreakPort
+	);
 	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
 	private final ArrayDeque<BallType> storedBalls;
 

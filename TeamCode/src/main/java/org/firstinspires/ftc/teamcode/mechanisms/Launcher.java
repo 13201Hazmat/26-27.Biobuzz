@@ -21,7 +21,9 @@ public class Launcher implements Mechanism {
 	private final NextMotor leftLauncher = new NextMotor(
 		Config.leftLauncherModule, Config.leftLauncherPort, Degrees.of(360.0 / 28.0)
 	);
-	private final NextServo launcherGate = new NextServo(Config.launcherGateServoModule, Config.launcherGateServoPort, 0.0);
+	private final NextServo launcherGate = new NextServo(
+		Config.launcherGateServoModule, Config.launcherGateServoPort, 0.0
+	);
 	private double kV = 0.0;
 	private double kS = 0.0;
 	private double kP = 0.0;

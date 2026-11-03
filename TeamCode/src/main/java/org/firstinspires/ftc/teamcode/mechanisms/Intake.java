@@ -25,7 +25,9 @@ public class Intake implements Mechanism {
 
 	private NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
 	private NextServo leftIntakeRampServo = new NextServo(Config.leftIntakeRampServo, Config.intakeRampServoPort, 0.0);
-	private NextServo rightIntakeRampServo = new NextServo(Config.rightIntakeRampModule, Config.rightIntakeRampPort, 0.0);
+	private NextServo rightIntakeRampServo = new NextServo(
+		Config.rightIntakeRampModule, Config.rightIntakeRampPort, 0.0
+	);
 	private IntakeState intakeState;
 
 	public enum IntakeState {
@@ -39,7 +41,7 @@ public class Intake implements Mechanism {
 	public Intake() {
 		intakeMotor.setDirection(NextMotor.Direction.REVERSE);
 		intakeState = IntakeState.OFF;
-		//TODO Check ts
+		// TODO Check ts
 		rightIntakeRampServo.setDirection(NextMotor.Direction.REVERSE);
 	}
 
