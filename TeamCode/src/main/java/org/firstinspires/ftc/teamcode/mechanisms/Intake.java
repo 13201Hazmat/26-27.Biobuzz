@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 
 import com.pedropathing.ivy.Command;
 
@@ -22,8 +23,9 @@ public class Intake implements Mechanism {
 
 	private double powerValue = 0;
 
-	NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
-	NextServo intakeRampServo = new NextServo(Config.intakeRampServoModule, Config.intakeRampServoPort);
+	private NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
+	private NextServo leftIntakeRampServo = new NextServo(Config.leftIntakeRampServo, Config.intakeRampServoPort, 0.0);
+	private NextServo rightIntakeRampServo = new NextServo(Config.rightIntakeRampModule, Config.rightIntakeRampPort, 0.0);
 	private IntakeState intakeState;
 
 	public enum IntakeState {
@@ -37,6 +39,8 @@ public class Intake implements Mechanism {
 	public Intake() {
 		intakeMotor.setDirection(NextMotor.Direction.REVERSE);
 		intakeState = IntakeState.OFF;
+		//TODO Check ts
+		rightIntakeRampServo.setDirection(NextMotor.Direction.REVERSE);
 	}
 
 	/**
@@ -45,7 +49,7 @@ public class Intake implements Mechanism {
 	 * @return the servo position as a double
 	 */
 	public double getPosition() {
-		return intakeRampServo.getPosition();
+		return leftIntakeRampServo.getPosition();
 	}
 
 	/**
@@ -114,13 +118,18 @@ public class Intake implements Mechanism {
 	public Command setReverse() {
 		return instant(this::reverse);
 	}
+
+	public void setRampPosition(double pos) {
+		rightIntakeRampServo.setPosition(pos);
+		leftIntakeRampServo.setPosition(pos);
+	}
 	/**
 	 * Moves the ramp servo up to its raised position.
 	 *
 	 * @return an instant Command to raise the ramp servo
 	 */
 	public Command setRampUp() {
-		return instant(() -> intakeRampServo.setPosition(RAMP_UP_POS));
+		return instant(() -> setRampPosition(RAMP_UP_POS));
 	}
 
 	/**
@@ -129,7 +138,15 @@ public class Intake implements Mechanism {
 	 * @return an instant Command to lower the ramp servo
 	 */
 	public Command setRampDown() {
-		return instant(() -> intakeRampServo.setPosition(RAMP_DOWN_POS));
+		return instant(() -> setRampPosition(RAMP_DOWN_POS));
+	}
+
+	public Command incrementRamp() {
+		return instant(() -> setRampPosition(getPosition() + 0.01));
+	}
+
+	public Command decrementRamp() {
+		return instant(() -> setRampPosition(getPosition() - 0.01));
 	}
 
 	/**
@@ -141,7 +158,7 @@ public class Intake implements Mechanism {
 	 */
 	public Command toggleRamp() {
 		return conditional(
-			() -> intakeRampServo.getPosition() == RAMP_UP_POS,
+			() -> leftIntakeRampServo.getPosition() == RAMP_UP_POS,
 			setRampDown(),
 			setRampUp()
 		);
@@ -196,7 +213,7 @@ public class Intake implements Mechanism {
 	public void debug() {
 		Telemetry.log("INTAKE STATE", intakeState);
 		Telemetry.log("INTAKE MOTOR SPEED:", intakeMotor.getThrottle());
-		Telemetry.log("RAMP POSITION", intakeRampServo.getPosition());
+		Telemetry.log("RAMP POSITION", leftIntakeRampServo.getPosition());
 	}
 
 	/**

@@ -14,6 +14,7 @@ public class IntakeTestOp extends NextOpMode {
 	public IntakeTestOp(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
+		robot.setManualTransferTrue();
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
