@@ -224,6 +224,8 @@ public class HazmatRobot implements NextRobot {
 	public void updateStates() {
 		if (isLaunching)
 			return;
+		if (launcher.isPowerMode())
+			return;
 
 		switch (transfer.getTransferSensingState()) {
 			case EMPTY :

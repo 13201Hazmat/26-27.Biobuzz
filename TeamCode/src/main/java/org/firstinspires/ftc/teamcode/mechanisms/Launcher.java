@@ -48,6 +48,9 @@ public class Launcher implements Mechanism {
 		this.powerMode = powerMode;
 	}
 
+	public boolean isPowerMode (){
+		return powerMode;
+	}
 	public enum LauncherState {
 		IDLE, SPINUP, READY
 	}
