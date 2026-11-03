@@ -141,7 +141,9 @@ public class Launcher implements Mechanism {
 	}
 	public void test() {
 		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(0.5);
+		leftLauncher.update();
 	}
 	public void updateState() {
 		if (isIdle())
@@ -163,6 +165,7 @@ public class Launcher implements Mechanism {
 		if (RPM == targetVelocity)
 			return;
 		targetVelocity = RPM;
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(RPM));
 		if (RPM == IDLE_SPEED) {
 			setIdle();
@@ -199,12 +202,16 @@ public class Launcher implements Mechanism {
 
 	public void increasePower() {
 		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.min(1.0, getPower() + 0.1));
+		leftLauncher.update();
 	}
 
 	public void decreasePower() {
 		setPowerMode(true);
+		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.max(-1.0, getPower() - 0.1));
+		leftLauncher.update();
 	}
 
 	public void setClosePose() {
@@ -234,6 +241,9 @@ public class Launcher implements Mechanism {
 		if (isIdle() && !powerMode) {
 			setTargetVelocity(IDLE_SPEED);
 		}
+
+		rightLauncher.update();
+		leftLauncher.update();
 	}
 
 }
