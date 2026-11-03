@@ -27,14 +27,20 @@ public class LauncherTest extends NextOpMode {
 
 		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
-		gp1.triangle().onTrue(instant(() -> robot.getLauncher().test()));
+
+		gp1.square().onTrue(instant(() -> robot.getLauncher().test()));
 
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 
-		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementUp()));
-		gp1.dpadLeft().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));
+		gp1.dpadRight().onTrue(robot.getLauncherHood().incrementUp());
+		gp1.dpadLeft().onTrue(robot.getLauncherHood().incrementDown());
 
+		gp1.cross().onTrue(robot.getLauncherHood().setServoPos(0));
+		gp1.triangle().onTrue(robot.getLauncherHood().setServoPos(1));
+
+		gp1.rightTrigger().isOver(0.3).onTrue(robot.getLauncher().incrementGate());
+		gp1.leftTrigger().isOver(0.3).onTrue(robot.getLauncher().decrementGate());
 	}
 
 	@Override
@@ -43,13 +49,17 @@ public class LauncherTest extends NextOpMode {
 		telemetry.addLine("Cycle Transfer: LEFT BUMPER");
 		telemetry.addLine("Cycle Intake: RIGHT BUMPER");
 		telemetry.addLine("---------------------------------------------");
-		telemetry.addLine("Start Launcher: TRIANGLE");
+		telemetry.addLine("Start Launcher: SQUARE");
 		telemetry.addLine("Increase Launcher Speed: DPAD-UP");
 		telemetry.addLine("Decrease Launcher Speed: DPAD-DOWN");
 		telemetry.addLine("---------------------------------------------");
 		telemetry.addLine("Increase Launcher Hood Position: DPAD-RIGHT");
 		telemetry.addLine("Decrease Launcher Hood Position: DPAD-LEFT");
+		telemetry.addLine("Set Launcher Hood Position 0: CROSS");
+		telemetry.addLine("Set Launcher Hood Position 1: TRIANGLE");
 		telemetry.addLine("---------------------------------------------");
+		telemetry.addLine("Increment Launcher Gate Position: RIGHT TRIGGER");
+		telemetry.addLine("Decrement Launcher Gate Position: LEFT TRIGGER");
 		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
 		telemetry.addData("Launcher Speed:", robot.getLauncher().getPower());
 		telemetry.addData("Launcher Hood Position", robot.getLauncherHood().getServoPos());

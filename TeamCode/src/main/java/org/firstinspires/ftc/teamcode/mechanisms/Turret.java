@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static org.firstinspires.ftc.teamcode.data.Calc.clamp;
 
+import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -80,6 +81,20 @@ public class Turret implements Mechanism {
 	public void setPositions(double p) {
 		rightTurretServo.setPosition(p);
 		leftTurretServo.setPosition(p);
+	}
+
+	public Command incrementTurret() {
+		return instant(() -> {
+			rightTurretServo.setPosition(rightTurretServo.getPosition() + 0.01);
+			leftTurretServo.setPosition(leftTurretServo.getPosition() + 0.01);
+		});
+	}
+
+	public Command decrementTurret() {
+		return instant(() -> {
+			rightTurretServo.setPosition(rightTurretServo.getPosition() - 0.01);
+			leftTurretServo.setPosition(leftTurretServo.getPosition() - 0.01);
+		});
 	}
 
 	public void trackGoal(Pose goal, Pose robot) {

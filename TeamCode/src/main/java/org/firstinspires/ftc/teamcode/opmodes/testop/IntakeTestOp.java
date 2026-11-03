@@ -27,6 +27,9 @@ public class IntakeTestOp extends NextOpMode {
 
 		gp1.dpadRight().onTrue(robot.getIntake().setRampUp());
 		gp1.dpadLeft().onTrue(robot.getIntake().setRampDown());
+
+		gp1.dpadLeft().onTrue(instant(() -> robot.getIntake().setRampPosition(0.0)));
+		gp1.dpadRight().onTrue(instant(() -> robot.getIntake().setRampPosition(1.0)));
 	}
 
 	@Override
@@ -39,6 +42,9 @@ public class IntakeTestOp extends NextOpMode {
 		telemetry.addLine("---------------------------------------------");
 		telemetry.addLine("Increase Intake Ramp Position: DPAD-RIGHT");
 		telemetry.addLine("Decrease Intake Ramp Position: DPAD-LEFT");
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addLine("Set Intake Ramp Position 0: DPAD-LEFT");
+		telemetry.addLine("Set Intake Ramp Position 1: DPAD-RIGHT");
 		telemetry.addLine("---------------------------------------------");
 		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
 		telemetry.addData("Intake Ramp Position:", robot.getIntake().getPosition());

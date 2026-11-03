@@ -15,7 +15,7 @@ public class LauncherHood implements Mechanism {
 	);
 
 	private final double POLLEN_POS = 0.0;
-	private final double NECTAR_POS = 0.0;
+	private final double NECTAR_POS = 1.0;
 
 	public LauncherHood() {
 	}
