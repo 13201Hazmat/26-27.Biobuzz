@@ -14,8 +14,12 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Turret implements Mechanism {
-	private final NextServo leftTurretServo = new NextServo(Config.leftTurretModule, Config.leftTurretPort, 0.0);
-	private final NextServo rightTurretServo = new NextServo(Config.rightTurretModule, Config.rightTurretPort, 0.0);
+	private final NextServo leftTurretServo = new NextServo(
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
+	);
+	private final NextServo rightTurretServo = new NextServo(
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.0
+	);
 	private final OctoQuad oq;
 
 	public static double targetTurretAng = 0.0;

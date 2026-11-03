@@ -25,7 +25,9 @@ public class TransferTracking implements Mechanism {
 	private final NextDigitalSensor launcherBeamBreak = new NextDigitalSensor(
 		Config.launcherBeamBreakModule, Config.launcherBeamBreakPort
 	);
-	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor("startColorSensor");
+	private final NextColorDistanceSensor transferColorSensor = new NextColorDistanceSensor(
+		Config.intakeColorSensorName
+	);
 	private final ArrayDeque<BallType> storedBalls;
 
 	private boolean lastIntakeBeamState = false;

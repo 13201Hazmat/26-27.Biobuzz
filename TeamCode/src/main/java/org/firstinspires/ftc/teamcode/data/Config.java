@@ -12,10 +12,10 @@ public class Config {
 	public static String bR = "backRight";
 
 	/* CONTROL HUB MOTORS */
-	public static NextLynxModule leftLauncherModule = RobotController.controlHub();
-	public static int leftLauncherPort = 1;
-	public static NextLynxModule rightLauncherModule = RobotController.controlHub();
-	public static int rightLauncherPort = 2;
+	public static NextLynxModule leftLauncherMotorModule = RobotController.controlHub();
+	public static int leftLauncherMotorPort = 1;
+	public static NextLynxModule rightLauncherMotorModule = RobotController.controlHub();
+	public static int rightLauncherMotorPort = 2;
 
 	/* EXPANSION HUB MOTORS */
 	public static NextLynxModule intakeMotorModule = RobotController.expansionHub();
@@ -26,19 +26,18 @@ public class Config {
 	/* CONTROL HUB SERVOS */
 	public static NextLynxModule launcherBackPlateServoModule = RobotController.controlHub();
 	public static int launcherBackPlateServoPort = 0;
-	public static NextLynxModule leftIntakeRampServo = RobotController.controlHub();
-	public static int intakeRampServoPort = 2;
-
+	public static NextLynxModule leftIntakeRampServoModule = RobotController.controlHub();
+	public static int leftIntakeRampServoPort = 2;
 	public static NextLynxModule launcherGateServoModule = RobotController.controlHub();
 	public static int launcherGateServoPort = 5;
 
 	/* EXPANSION HUB SERVOS */
-	public static NextLynxModule leftTurretModule = RobotController.expansionHub();
-	public static int leftTurretPort = 0;
-	public static NextLynxModule rightIntakeRampModule = RobotController.expansionHub();
-	public static int rightIntakeRampPort = 2;
-	public static NextLynxModule rightTurretModule = RobotController.expansionHub();
-	public static int rightTurretPort = 3;
+	public static NextLynxModule leftTurretServoModule = RobotController.expansionHub();
+	public static int leftTurretServoPort = 0;
+	public static NextLynxModule rightIntakeRampServoModule = RobotController.expansionHub();
+	public static int rightIntakeRampServoPort = 2;
+	public static NextLynxModule rightTurretServoModule = RobotController.expansionHub();
+	public static int rightTurretServoPort = 3;
 
 	/* CONTROL HUB DIGITAL SENSORS */
 	public static NextLynxModule intakeBeamBreakModule = RobotController.controlHub();
@@ -47,9 +46,6 @@ public class Config {
 	public static NextLynxModule launcherBeamBreakModule = RobotController.controlHub();
 	public static int launcherBeamBreakPort = 5;
 
-	// right launcher hood servo
-	// public static NextLynxModule flowerHoodServoModule =
-	// RobotController.expansionHub();
-	// public static int flowerHoodServoPort = 4;
+	public static String intakeColorSensorName = "startColorSensor";
 
 }

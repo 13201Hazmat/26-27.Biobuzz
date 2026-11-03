@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
-import static com.pedropathing.ivy.groups.Groups.parallel;
 
 import com.pedropathing.ivy.Command;
 
@@ -24,9 +23,11 @@ public class Intake implements Mechanism {
 	private double powerValue = 0;
 
 	private NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
-	private NextServo leftIntakeRampServo = new NextServo(Config.leftIntakeRampServo, Config.intakeRampServoPort, 0.0);
+	private NextServo leftIntakeRampServo = new NextServo(
+		Config.leftIntakeRampServoModule, Config.leftIntakeRampServoPort, 0.0
+	);
 	private NextServo rightIntakeRampServo = new NextServo(
-		Config.rightIntakeRampModule, Config.rightIntakeRampPort, 0.0
+		Config.rightIntakeRampServoModule, Config.rightIntakeRampServoPort, 0.0
 	);
 	private IntakeState intakeState;
 
