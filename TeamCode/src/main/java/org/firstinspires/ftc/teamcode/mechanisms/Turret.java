@@ -14,6 +14,12 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Turret implements Mechanism {
+
+	public static double targetTurretAng = 0.0;
+	public static double KP = 0.0002;
+	public static double TOLERANCE_DEG = 0.5;
+	public static boolean AUTO_AIM = true;
+
 	private final NextServo leftTurretServo = new NextServo(
 		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
 	);
@@ -22,14 +28,6 @@ public class Turret implements Mechanism {
 	);
 	private final OctoQuad oq;
 
-	public static double targetTurretAng = 0.0;
-	public static double KP = 0.0002;
-	public static double TOLERANCE_DEG = 0.5;
-	public static boolean AUTO_AIM = true;
-
-	private double curAngle = 0.0;
-	private double servoPos = 0.5;
-
 	private final double GEAR_RATIO = 0.9923076923;
 	private final double SERVO_RANGE = 326;
 
@@ -37,6 +35,9 @@ public class Turret implements Mechanism {
 	private final int PWM_MIN = 1;
 	private final int PWM_MAX = 1024;
 	private final double ABS_ZERO_DEG = 0;
+
+	private double curAngle = 0.0;
+	private double servoPos = 0.5;
 
 	public Turret(HardwareMap hw) {
 		OctoQuad tempOq = null;
@@ -60,12 +61,46 @@ public class Turret implements Mechanism {
 		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);
 	}
 
-	private void setAutoAim(boolean on) {
-		AUTO_AIM = on;
+	public double getAngle() {
+		return curAngle;
 	}
 
 	public void toggleAutoAim() {
 		AUTO_AIM = !AUTO_AIM;
+	}
+
+	private void setAutoAim(boolean on) {
+		AUTO_AIM = on;
+	}
+
+	public void setTurretAngle(double angle) {
+		targetTurretAng = normalizeAngle(angle);
+	}
+
+	public void setPositions(double p) {
+		rightTurretServo.setPosition(p);
+		leftTurretServo.setPosition(p);
+	}
+
+	public void trackGoal(Pose goal, Pose robot) {
+		track(goal, robot);
+	}
+
+	private void track(Pose g, Pose r) {
+		targetTurretAng = normalizeAngle(Calc.turretKinematics(g, r));
+	}
+
+	public double normalizeAngle(double angDeg) {
+		return ((angDeg % 360.0) + 360.0) % 360.0;
+	}
+
+	private double turretAngleToServo(double angle) {
+		return angle * (GEAR_RATIO / SERVO_RANGE);
+	}
+
+	private double pulseToDeg(int pulse) {
+		double frac = (pulse - PWM_MIN) / (double) (PWM_MAX - PWM_MIN);
+		return normalizeAngle(frac * 360.0 + ABS_ZERO_DEG);
 	}
 
 	private int readPulse() {
@@ -78,44 +113,10 @@ public class Turret implements Mechanism {
 		}
 	}
 
-	private double pulseToDeg(int pulse) {
-		double frac = (pulse - PWM_MIN) / (double) (PWM_MAX - PWM_MIN);
-		return normalizeAngle(frac * 360.0 + ABS_ZERO_DEG);
-	}
-
 	private void updateAngle() {
 		int pulse = readPulse();
 		if (pulse > 0)
 			curAngle = pulseToDeg(pulse);
-	}
-
-	public double getAngle() {
-		return curAngle;
-	}
-
-	public double normalizeAngle(double angDeg) {
-		return ((angDeg % 360.0) + 360.0) % 360.0;
-	}
-
-	private double turretAngleToServo(double angle) {
-		return angle * (GEAR_RATIO / SERVO_RANGE);
-	}
-
-	public void setTurretAngle(double angle) {
-		targetTurretAng = normalizeAngle(angle);
-	}
-
-	private void track(Pose g, Pose r) {
-		targetTurretAng = normalizeAngle(Calc.turretKinematics(g, r));
-	}
-
-	public void trackGoal(Pose goal, Pose robot) {
-		track(goal, robot);
-	}
-
-	public void setPositions(double p) {
-		rightTurretServo.setPosition(p);
-		leftTurretServo.setPosition(p);
 	}
 
 	private void update() {

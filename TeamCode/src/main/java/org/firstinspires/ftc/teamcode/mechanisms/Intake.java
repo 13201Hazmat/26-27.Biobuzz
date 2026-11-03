@@ -12,15 +12,20 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class Intake implements Mechanism {
+
+	public enum IntakeState {
+		FORWARD, REVERSE, OFF, CALIB
+	}
+
 	private static final double FORWARD = 1.0;
 	private static final double REVERSE = -1.0;
 	private static final double OFF = 0.0;
 	private static final double CALIB_DELTA = 0.1;
 
 	private final double RAMP_UP_POS = 1.0;
-	private final double RAMP_DOWN_POS = 0;
+	private final double RAMP_DOWN_POS = 0.0;
 
-	private double powerValue = 0;
+	private double powerValue = 0.0;
 
 	private NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
 	private NextServo leftIntakeRampServo = new NextServo(
@@ -31,117 +36,67 @@ public class Intake implements Mechanism {
 	);
 	private IntakeState intakeState;
 
-	public enum IntakeState {
-		FORWARD, REVERSE, OFF, CALIB
-	}
-
-	/**
-	 * Constructs the Intake subsystem, sets the motor direction to reversed, and
-	 * initializes the state to OFF.
-	 */
 	public Intake() {
 		intakeMotor.setDirection(NextMotor.Direction.REVERSE);
 		intakeState = IntakeState.OFF;
-		// TODO Check ts
 		rightIntakeRampServo.setDirection(NextMotor.Direction.REVERSE);
 	}
 
-	/**
-	 * Gets the current position of the intake ramp servo.
-	 *
-	 * @return the servo position as a double
-	 */
 	public double getPosition() {
 		return leftIntakeRampServo.getPosition();
 	}
 
-	/**
-	 * Gets the current throttle speed of the intake motor.
-	 *
-	 * @return the current motor throttle value
-	 */
 	public double getSpeed() {
 		return intakeMotor.getThrottle();
 	}
 
-	/**
-	 * Helper method to set the internal state of the intake.
-	 *
-	 * @param intakeState
-	 *            the new IntakeState to apply
-	 */
 	private void setState(IntakeState intakeState) {
 		this.intakeState = intakeState;
 	}
 
-	/**
-	 * Sets the intake state to FORWARD.
-	 */
 	public void forward() {
 		setState(IntakeState.FORWARD);
 	}
 
-	/**
-	 * Sets the intake state to OFF.
-	 */
-	public void off() {
-		setState(IntakeState.OFF);
-	}
-
-	/**
-	 * Sets the intake state to REVERSE.
-	 */
 	public void reverse() {
 		setState(IntakeState.REVERSE);
 	}
 
-	/**
-	 * Sets the intake state to FORWARD.
-	 *
-	 * @return an instant Command to set the state to FORWARD
-	 */
-	public Command setForward() {
-		return instant(this::forward);
-	}
-
-	/**
-	 * Sets the intake state to OFF.
-	 *
-	 * @return an instant Command to set the state to OFF
-	 */
-	public Command setOff() {
-		return instant(this::off);
-	}
-
-	/**
-	 * Sets the intake state to REVERSE.
-	 *
-	 * @return an instant Command to set the state to REVERSE
-	 */
-	public Command setReverse() {
-		return instant(this::reverse);
+	public void off() {
+		setState(IntakeState.OFF);
 	}
 
 	public void setRampPosition(double pos) {
 		rightIntakeRampServo.setPosition(pos);
 		leftIntakeRampServo.setPosition(pos);
 	}
-	/**
-	 * Moves the ramp servo up to its raised position.
-	 *
-	 * @return an instant Command to raise the ramp servo
-	 */
+
+	public Command setForward() {
+		return instant(this::forward);
+	}
+
+	public Command setReverse() {
+		return instant(this::reverse);
+	}
+
+	public Command setOff() {
+		return instant(this::off);
+	}
+
 	public Command setRampUp() {
 		return instant(() -> setRampPosition(RAMP_UP_POS));
 	}
 
-	/**
-	 * Moves the ramp servo down to its lowered position.
-	 *
-	 * @return an instant Command to lower the ramp servo
-	 */
 	public Command setRampDown() {
 		return instant(() -> setRampPosition(RAMP_DOWN_POS));
+	}
+
+	public Command toggleRamp() {
+		return conditional(
+			() -> leftIntakeRampServo.getPosition() == RAMP_UP_POS,
+			setRampDown(),
+			setRampUp()
+		);
 	}
 
 	public Command incrementRamp() {
@@ -152,25 +107,22 @@ public class Intake implements Mechanism {
 		return instant(() -> setRampPosition(getPosition() - 0.01));
 	}
 
-	/**
-	 * Toggles the ramp servo between its raised and lowered positions. If the servo
-	 * is at the raised position when the command starts it is lowered, otherwise it
-	 * is raised.
-	 *
-	 * @return a Command that moves the ramp servo to the opposite position
-	 */
-	public Command toggleRamp() {
-		return conditional(
-			() -> leftIntakeRampServo.getPosition() == RAMP_UP_POS,
-			setRampDown(),
-			setRampUp()
-		);
+	public Command increasePower() {
+		return instant(() -> {
+			intakeState = IntakeState.CALIB;
+			powerValue += CALIB_DELTA;
+			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
+		});
 	}
 
-	/**
-	 * Cycles through intake states in sequence: FORWARD -> REVERSE -> OFF ->
-	 * FORWARD.
-	 */
+	public Command decreasePower() {
+		return instant(() -> {
+			intakeState = IntakeState.CALIB;
+			powerValue -= CALIB_DELTA;
+			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
+		});
+	}
+
 	public void cycle() {
 		if (intakeState == IntakeState.FORWARD) {
 			intakeState = IntakeState.REVERSE;
@@ -181,48 +133,12 @@ public class Intake implements Mechanism {
 		}
 	}
 
-	/**
-	 * Increases the intake power by the calibration delta value (0.1) and clamps it
-	 * between REVERSE and FORWARD.
-	 *
-	 * @return an instant Command to increase power
-	 */
-	public Command increasePower() {
-		return instant(() -> {
-			intakeState = IntakeState.CALIB;
-			powerValue += CALIB_DELTA;
-			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
-		});
-	}
-
-	/**
-	 * Decreases the intake power by the calibration delta value (0.1) and clamps it
-	 * between REVERSE and FORWARD.
-	 *
-	 * @return an instant Command to decrease power
-	 */
-	public Command decreasePower() {
-		return instant(() -> {
-			intakeState = IntakeState.CALIB;
-			powerValue -= CALIB_DELTA;
-			powerValue = Math.min(FORWARD, Math.max(powerValue, REVERSE));
-		});
-	}
-
-	/**
-	 * Logs the current motor speed and intake state to telemetry for debugging
-	 * purposes.
-	 */
 	public void debug() {
 		Telemetry.log("INTAKE STATE", intakeState);
 		Telemetry.log("INTAKE MOTOR SPEED:", intakeMotor.getThrottle());
 		Telemetry.log("RAMP POSITION", leftIntakeRampServo.getPosition());
 	}
 
-	/**
-	 * Periodic method that runs repeatedly during TeleOp. Updates the power value
-	 * based on the current intake state and applies it to the motor throttle.
-	 */
 	@Override
 	public void periodic() {
 		switch (intakeState) {

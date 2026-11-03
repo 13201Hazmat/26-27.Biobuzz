@@ -8,43 +8,34 @@ import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static com.pedropathing.ivy.pedro.PedroCommands.follow;
-import static org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer.TransferSensingState.EMPTY;
-import static org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer.TransferSensingState.FILLING;
-import static org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer.TransferSensingState.FULL;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
+
 import com.pedropathing.follower.Follower;
-import com.pedropathing.math.Pose;
-
-import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.Turret;
-import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
-//import org.firstinspires.ftc.teamcode.pedro.Constants;
-
-import java.util.Set;
-
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
-import com.pedropathing.paths.Path;
-import dev.nextftc.hardware.RobotController;
-import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.NextRobot;
-import dev.nextftc.robot.Telemetry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
+import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-//import org.firstinspires.ftc.teamcode.pedro.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import dev.nextftc.hardware.RobotController;
+import dev.nextftc.robot.Mechanism;
+import dev.nextftc.robot.NextRobot;
+import dev.nextftc.robot.Telemetry;
 
 public class HazmatRobot implements NextRobot {
+
 	private Follower follower;
 	private final Drivetrain drivetrain;
 	private Intake intake;
@@ -70,25 +61,6 @@ public class HazmatRobot implements NextRobot {
 		launcherHood = new LauncherHood();
 	}
 
-	// public Follower getFollower() {
-	// if (follower == null) {
-	////			follower = Constants.create(RobotController.hardwareMap());
-	// }
-	// return follower;
-	// }
-
-	// public Pose getCurrentPose() {
-	// return follower.pose();
-	// }
-
-	// public double getHeading() {
-	// return follower.pose().heading();
-	// }
-
-	// public double getOmega() {
-	////		return getFollower().velocity().omega;
-	// }
-
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
 	}
@@ -99,10 +71,15 @@ public class HazmatRobot implements NextRobot {
 
 	public Turret getTurret() {
 		if (turret == null) {
-			turret = new Turret(RobotController.hardwareMap());
+			try {
+				turret = new Turret(RobotController.hardwareMap());
+			} catch (Throwable t) {
+				turret = null;
+			}
 		}
 		return turret;
 	}
+
 	public Transfer getTransfer() {
 		return transfer;
 	}
@@ -113,6 +90,12 @@ public class HazmatRobot implements NextRobot {
 
 	public LauncherHood getLauncherHood() {
 		return launcherHood;
+	}
+
+	@NonNull
+	@Override
+	public Set<Mechanism> getMechanisms() {
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
 	}
 
 	public void toggleHoodAutomate() {
@@ -144,12 +127,6 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
-	@NonNull
-	@Override
-	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
-	}
-
 	public Command init() {
 		return parallel(
 			intake.setRampDown(),
@@ -157,10 +134,6 @@ public class HazmatRobot implements NextRobot {
 			launcher.closeGate()
 		);
 	}
-
-	// public Command moveToPoint(Path path) {
-	// return follow(follower, path);
-	// }
 
 	private Command setHoodForFirst() {
 		return lazy(() -> {
@@ -233,7 +206,6 @@ public class HazmatRobot implements NextRobot {
 				break;
 			case FILLING :
 			case FULL :
-				// launcher.autoSetVelocity(getCurrentPose());
 				break;
 		}
 
@@ -255,11 +227,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		// getFollower().update();
-		// setTargetPose(Alliance.currentAlliance, getCurrentPose());
-		// if (getTurret() != null) {
-		// getTurret().trackGoal(TurretPoses.targetPose, getCurrentPose());
-		// }
 		updateStates();
 		updateTelemetry();
 	}

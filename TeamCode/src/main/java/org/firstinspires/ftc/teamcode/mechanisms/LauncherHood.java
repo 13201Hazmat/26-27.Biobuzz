@@ -9,6 +9,7 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
 
 public class LauncherHood implements Mechanism {
+
 	private final NextServo launcherHood = new NextServo(
 		Config.launcherBackPlateServoModule, Config.launcherBackPlateServoPort, 0.0
 	);
@@ -19,12 +20,12 @@ public class LauncherHood implements Mechanism {
 	public LauncherHood() {
 	}
 
-	public void init() {
-		launcherHood.setPosition(POLLEN_POS);
-	}
-
 	public double getServoPos() {
 		return launcherHood.getPosition();
+	}
+
+	public void init() {
+		launcherHood.setPosition(POLLEN_POS);
 	}
 
 	public Command setServoPos(double pos) {
@@ -45,6 +46,7 @@ public class LauncherHood implements Mechanism {
 		}
 		return setServoPos(getServoPos() + 0.01);
 	}
+
 	public Command incrementDown() {
 		if (getServoPos() - 0.01 <= 0.0) {
 			return setServoPos(0.0);
