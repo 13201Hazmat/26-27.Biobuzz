@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.testop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
@@ -11,6 +13,7 @@ import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
 @NextUtility(name = "Intake Transfer Launcher Test")
+@Disabled
 public class IntakeTransferLauncher extends NextOpMode {
 	private final HazmatRobot robot;
 	public IntakeTransferLauncher(HazmatRobot robot) {

@@ -29,17 +29,31 @@ public class LauncherTest extends NextOpMode {
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
 		gp1.triangle().onTrue(instant(() -> robot.getLauncher().test()));
 
-		gp1.rightBumper().onTrue(robot.getTransfer().setForward());
-		gp1.circle().onTrue(robot.getTransfer().setOff());
+		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 
 		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementUp()));
-		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));
+		gp1.dpadLeft().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));
 
 	}
 
 	@Override
 	public void periodic() {
-		robot.updateTelemetry();
+		telemetry.addLine("---TELEMETRY---");
+		telemetry.addLine("Cycle Transfer: LEFT BUMPER");
+		telemetry.addLine("Cycle Intake: RIGHT BUMPER");
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addLine("Start Launcher: TRIANGLE");
+		telemetry.addLine("Increase Launcher Speed: DPAD-UP");
+		telemetry.addLine("Decrease Launcher Speed: DPAD-DOWN");
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addLine("Increase Launcher Hood Position: DPAD-RIGHT");
+		telemetry.addLine("Decrease Launcher Hood Position: DPAD-LEFT");
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
+		telemetry.addData("Launcher Speed:", robot.getLauncher().getPower());
+		telemetry.addData("Launcher Hood Position", robot.getLauncherHood().getServoPos());
+		telemetry.update();
 	}
 
 }

@@ -18,16 +18,26 @@ public class TransferTeleop extends NextOpMode {
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		gp1.leftBumper().onTrue(instant(() -> robot.getIntake().cycle()));
-		gp1.rightBumper().onTrue(robot.getTransfer().setForward());
-		gp1.triangle().onTrue(robot.getTransfer().setReverse());
-		gp1.circle().onTrue(robot.getTransfer().setOff());
-		gp1.square().onTrue(instant(() -> robot.getTransfer().getTransferSensing().removeTopBall()));
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+
+		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
+
+		gp1.rightTrigger().isOver(0.6).onTrue(instant(() -> robot.getTransfer().getTransferSensing().removeTopBall()));
 	}
 
 	@Override
 	public void periodic() {
-		robot.updateTelemetry();
+		telemetry.addLine("---TELEMETRY---");
+		telemetry.addLine("Cycle Intake: RIGHT BUMPER");
+		telemetry.addLine("Cycle Transfer: LEFT BUMPER");
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addLine("Remove Top Ball From Queue: RIGHT TRIGGER");
+		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
+		telemetry.addData("Transfer Speed:", robot.getIntake().getSpeed());
+		telemetry.addLine("---------------------------------------------");
+		telemetry.addData("Current Ball Type", robot.getTransfer().getTransferSensing().getBallType());
+		robot.getTransfer().getTransferSensing().debug();
+		telemetry.addData("Queue elements:", robot.getTransfer().getTransferSensing().getStoredBalls());
 		telemetry.update();
 	}
 }

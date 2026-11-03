@@ -42,4 +42,14 @@ public class Drivetrain implements Mechanism {
 			() -> heading
 		).schedule();
 	}
+
+	public void startDrive(Gamepad gamepad) {
+		DriveCommands.mecanumDrive(
+			frontLeft,
+			frontRight,
+			backLeft,
+			backRight,
+			gamepad
+		).schedule();
+	}
 }
