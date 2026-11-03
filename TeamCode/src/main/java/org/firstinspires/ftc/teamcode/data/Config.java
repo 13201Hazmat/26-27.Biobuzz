@@ -26,8 +26,6 @@ public class Config {
 	public static NextLynxModule intakeRampServoModule = RobotController.controlHub();
 	public static int intakeRampServoPort = 1;
 
-
-
 	private static NextLynxModule expansionHub() {
 		try {
 			return RobotController.expansionHub();

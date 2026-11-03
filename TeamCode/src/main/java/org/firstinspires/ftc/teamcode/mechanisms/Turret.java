@@ -65,7 +65,8 @@ public class Turret implements Mechanism {
 	}
 
 	private int readPulse() {
-		if (oq == null) return 0;
+		if (oq == null)
+			return 0;
 		try {
 			return oq.readSinglePosition_Caching(ABS_CHANNEL);
 		} catch (Throwable t) {
