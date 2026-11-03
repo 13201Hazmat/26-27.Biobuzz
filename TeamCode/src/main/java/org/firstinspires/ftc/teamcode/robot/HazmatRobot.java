@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.pedropathing.follower.Follower;
 
+import org.firstinspires.ftc.teamcode.mechanisms.Arducam;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -12,9 +13,10 @@ import dev.nextftc.robot.NextRobot;
 
 public class HazmatRobot implements NextRobot {
 	private Follower follower;
+	private Arducam arducam;
 
 	public HazmatRobot() {
-
+		this.arducam = new Arducam();
 	}
 
 	public Follower getFollower() {
@@ -26,6 +28,6 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of();
+		return Set.of(arducam);
 	}
 }
