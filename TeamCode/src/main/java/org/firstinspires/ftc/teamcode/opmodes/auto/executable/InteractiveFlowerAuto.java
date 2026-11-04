@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 
 @NextAutonomous(name = "Interactive Flower Auto")
-@Disabled
 public class InteractiveFlowerAuto extends BaseAuto {
 
 	private Alliance alliance = Alliance.RED;

@@ -43,6 +43,9 @@ public class PathsAndPoses {
 		public static final Pose blueFarHive = new Pose(84, 88, 0);
 	}
 
+	/* Auto Path Poses */
+
+	/* Starting at Open Hive */
 	public class LeavePoses {
 		public final Pose startingPose = factory.of(30.43, 7.48, 180);
 		public final Pose midPose = factory.of(9.24, 7.30, 180);
@@ -99,5 +102,11 @@ public class PathsAndPoses {
 		);
 		public final Path endSecondFlowerPose_To_frontLeavePose = createLinearPath(endSecondFlowerPose, frontLeavePose);
 		public final Path endSecondFlowerPose_To_backLeavePose = createLinearPath(endSecondFlowerPose, backLeavePose);
+	}
+
+	/* Starting at Closed Hive */
+
+	public class BasicClosedHiveAuto {
+
 	}
 }

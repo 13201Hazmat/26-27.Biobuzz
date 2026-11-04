@@ -10,7 +10,7 @@ import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextTeleop(name = "Main")
+//@NextTeleop(name = "Main")
 public abstract class BaseTeleop extends NextOpMode {
 	protected final HazmatRobot robot;
 	protected CommandGamepad gp1 = new CommandGamepad(gamepad1);
