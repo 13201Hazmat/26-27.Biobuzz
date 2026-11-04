@@ -28,19 +28,20 @@ public class LauncherTest extends NextOpMode {
 		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
 
-		gp1.square().onTrue(instant(() -> robot.getLauncher().test()));
-
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 
-		gp1.dpadRight().onTrue(robot.getLauncherHood().incrementUp());
-		gp1.dpadLeft().onTrue(robot.getLauncherHood().incrementDown());
+		// Launcher Hood Controls
+		gp1.dpadRight().onTrue(robot.getLauncherHood().incremen(0.01));
+		gp1.dpadLeft().onTrue(robot.getLauncherHood().incremen(-0.01));
+		gp1.cross().onTrue(robot.getLauncherHood().setServoPos(0.0));
+		gp1.triangle().onTrue(robot.getLauncherHood().setServoPos(1.0));
 
-		gp1.cross().onTrue(robot.getLauncherHood().setServoPos(0));
-		gp1.triangle().onTrue(robot.getLauncherHood().setServoPos(1));
-
-		gp1.rightTrigger().isOver(0.3).onTrue(robot.getLauncher().incrementGate());
-		gp1.leftTrigger().isOver(0.3).onTrue(robot.getLauncher().decrementGate());
+		// Launcher Gate Controls
+		gp1.rightTrigger().isOver(0.3).onTrue(robot.getLauncher().incremen(0.01));
+		gp1.leftTrigger().isOver(0.3).onTrue(robot.getLauncher().incremen(-0.01));
+		gp1.circle().onTrue(robot.getLauncher().openGate());
+		gp1.square().onTrue(robot.getLauncher().closeGate());
 	}
 
 	@Override
@@ -63,6 +64,7 @@ public class LauncherTest extends NextOpMode {
 		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
 		telemetry.addData("Launcher Speed:", robot.getLauncher().getPower());
 		telemetry.addData("Launcher Hood Position", robot.getLauncherHood().getServoPos());
+		telemetry.addData("Launcher Gate Position", robot.getLauncher().getLauncherGatePos());
 		telemetry.update();
 	}
 

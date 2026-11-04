@@ -28,6 +28,7 @@ public class Config {
 	public static int launcherBackPlateServoPort = 0;
 	public static NextLynxModule leftIntakeRampServoModule = RobotController.controlHub();
 	public static int leftIntakeRampServoPort = 2;
+	//TODO add leftFlowerHood = 4;
 	public static NextLynxModule launcherGateServoModule = RobotController.controlHub();
 	public static int launcherGateServoPort = 5;
 
@@ -38,6 +39,7 @@ public class Config {
 	public static int rightIntakeRampServoPort = 2;
 	public static NextLynxModule rightTurretServoModule = RobotController.expansionHub();
 	public static int rightTurretServoPort = 3;
+	// TODO add flowerHoodRight=4
 
 	/* CONTROL HUB DIGITAL SENSORS */
 	public static NextLynxModule intakeBeamBreakModule = RobotController.controlHub();

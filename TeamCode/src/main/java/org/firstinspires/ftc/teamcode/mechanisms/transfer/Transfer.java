@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechanisms.transfer;
 import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.data.Config;
+import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
@@ -69,7 +70,7 @@ public class Transfer implements Mechanism {
 		} else if (transferMotorState == TransferMotorState.BACKWARD) {
 			transferMotorState = TransferMotorState.STOPPED;
 		} else {
-			transferMotorState = TransferMotorState.BACKWARD;
+			transferMotorState = TransferMotorState.FORWARD;
 		}
 	}
 

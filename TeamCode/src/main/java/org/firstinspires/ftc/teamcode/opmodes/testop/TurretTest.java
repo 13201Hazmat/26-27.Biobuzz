@@ -10,7 +10,7 @@ import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
-@NextUtility(name = "Launcher Test")
+@NextUtility(name = "Turret Test")
 public class TurretTest extends NextOpMode {
 	private final HazmatRobot robot;
 

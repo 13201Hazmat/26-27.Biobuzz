@@ -164,12 +164,20 @@ public class Launcher implements Mechanism {
 		return setGatePosition(CLOSE_POS);
 	}
 
-	public Command incrementGate() {
-		return instant(() -> launcherGate.setPosition(launcherGate.getPosition() + 0.01));
+	public double getServoPos() {
+		return launcherGate.getPosition();
 	}
 
-	public Command decrementGate() {
-		return instant(() -> launcherGate.setPosition(launcherGate.getPosition() - 0.01));
+	public Command incremen(double i) {
+		return instant(() -> launcherGate.setPosition(Math.min(1.0, Math.max(0.0, getServoPos() + i))));
+	}
+
+	public Command incrementUp() {
+		return incremen(0.01);
+	}
+
+	public Command incrementDown() {
+		return incremen(-0.01);
 	}
 
 	public void increaseKS() {
@@ -256,6 +264,7 @@ public class Launcher implements Mechanism {
 		Telemetry.log("Launcher RPM", getCurrentRPM());
 		Telemetry.log("Right Power", rightLauncher.getThrottle());
 		Telemetry.log("Left Power", leftLauncher.getThrottle());
+		Telemetry.log("Launcher Gate Position", launcherGate.getPosition());
 	}
 
 	@Override

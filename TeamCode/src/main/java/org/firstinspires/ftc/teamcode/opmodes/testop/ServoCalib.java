@@ -20,8 +20,8 @@ public class ServoCalib extends NextOpMode {
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		gp1.dpadUp().onTrue(robot.getLauncher().incrementGate());
-		gp1.dpadDown().onTrue(robot.getLauncher().decrementGate());
+		gp1.dpadUp().onTrue(robot.getLauncher().incrementUp());
+		gp1.dpadDown().onTrue(robot.getLauncher().incrementDown());
 
 		gp1.dpadRight().onTrue(robot.getLauncherHood().incrementUp());
 		gp1.dpadLeft().onTrue(robot.getLauncherHood().incrementDown());
