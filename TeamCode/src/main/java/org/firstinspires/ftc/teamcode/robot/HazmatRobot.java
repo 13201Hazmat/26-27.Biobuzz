@@ -191,6 +191,7 @@ public class HazmatRobot implements NextRobot {
 		intake.debug();
 		launcher.debug();
 		launcherHood.debug();
+		turret.debug();
 		Telemetry.update();
 	}
 

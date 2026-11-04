@@ -37,7 +37,7 @@ public class Launcher implements Mechanism {
 	private final double CLOSE_SPEED = 0.0;
 	private final double FAR_SPEED = 0.0;
 
-	private final double OPEN_POS = 1.0;
+	private final double OPEN_POS = 0.31;
 	private final double CLOSE_POS = 0.0;
 
 	private double kV = 0.0;
@@ -170,6 +170,10 @@ public class Launcher implements Mechanism {
 
 	public Command incremen(double i) {
 		return instant(() -> launcherGate.setPosition(Math.min(1.0, Math.max(0.0, getServoPos() + i))));
+	}
+
+	public Command setZero() {
+		return instant(() -> launcherGate.setPosition(0));
 	}
 
 	public Command incrementUp() {
