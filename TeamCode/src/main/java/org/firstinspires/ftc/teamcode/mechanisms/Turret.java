@@ -83,6 +83,10 @@ public class Turret implements Mechanism {
 		leftTurretServo.setPosition(p);
 	}
 
+	public Command incremen(double i) {
+		return instant(() -> setPositions(Math.min(1.0, Math.max(0.0, rightTurretServo.getPosition() + i))));
+	}
+
 	public Command incrementTurret() {
 		return instant(() -> {
 			rightTurretServo.setPosition(rightTurretServo.getPosition() + 0.01);
