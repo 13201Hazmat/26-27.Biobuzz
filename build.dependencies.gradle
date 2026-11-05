@@ -17,9 +17,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // PEDRO + IVY
-    implementation 'com.pedropathing:revhub:3.0.1'
-    implementation 'com.pedropathing:tuning:1.0.2'
+    implementation 'com.pedropathing:revhub:3.0.2'
+    implementation 'com.pedropathing:tuning:1.0.3'
     implementation 'com.pedropathing.ivy:pedro:1.1.1'
+
+    // HIVE VISION
+    implementation 'io.github.sidhuharjas:core:1.0.0'
+    implementation 'io.github.sidhuharjas:weaver:1.0.0'
+    implementation 'com.skeletonarmyftc.marrow:core:1.2.3'
 
     // NEXTFTC
     implementation 'dev.nextftc.v2:robot:0.3.0'
