@@ -5,7 +5,6 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
-import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
@@ -17,6 +16,7 @@ public class LauncherTest extends NextOpMode {
 	public LauncherTest(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
+		robot.setUtilityOpMode(true);
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}
@@ -32,8 +32,8 @@ public class LauncherTest extends NextOpMode {
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 
 		// Launcher Hood Controls
-		gp1.dpadRight().onTrue(robot.getLauncherHood().incremen(0.01));
-		gp1.dpadLeft().onTrue(robot.getLauncherHood().incremen(-0.01));
+		gp1.dpadRight().onTrue(robot.getLauncherHood().increment(0.01));
+		gp1.dpadLeft().onTrue(robot.getLauncherHood().increment(-0.01));
 		gp1.cross().onTrue(robot.getLauncherHood().setServoPos(0.0));
 		gp1.triangle().onTrue(robot.getLauncherHood().setServoPos(1.0));
 

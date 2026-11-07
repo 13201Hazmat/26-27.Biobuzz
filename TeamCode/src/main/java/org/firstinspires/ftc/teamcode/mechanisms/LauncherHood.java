@@ -40,16 +40,16 @@ public class LauncherHood implements Mechanism {
 		return setServoPos(NECTAR_POS);
 	}
 
-	public Command incremen(double i) {
+	public Command increment(double i) {
 		return instant(() -> launcherHood.setPosition(Math.min(1.0, Math.max(0.0, getServoPos() + i))));
 	}
 
 	public Command incrementUp() {
-		return incremen(0.01);
+		return increment(0.01);
 	}
 
 	public Command incrementDown() {
-		return incremen(-0.01);
+		return increment(-0.01);
 	}
 
 	public void debug() {

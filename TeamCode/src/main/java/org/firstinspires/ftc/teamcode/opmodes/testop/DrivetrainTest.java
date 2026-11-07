@@ -17,7 +17,7 @@ public class DrivetrainTest extends NextOpMode {
 	public DrivetrainTest(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
-
+		robot.setUtilityOpMode(true);
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}
 

@@ -48,6 +48,9 @@ public class HazmatRobot implements NextRobot {
 	private boolean isHoodAutomate = true;
 	private boolean isManualTransfer = false;
 
+	private boolean utilityOpMode = false;
+
+
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
 		intake = new Intake();
@@ -108,6 +111,9 @@ public class HazmatRobot implements NextRobot {
 
 	public void setManualTransferTrue() {
 		isManualTransfer = true;
+	}
+	public void setUtilityOpMode(boolean on){
+		utilityOpMode = on;
 	}
 
 	public void setTargetPose(Alliance a, Pose current) {
@@ -228,7 +234,9 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		updateStates();
+		if (!utilityOpMode) {
+			updateStates();
+		}
 		updateTelemetry();
 	}
 }

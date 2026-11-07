@@ -4,7 +4,6 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.Telemetry;
 import dev.nextftc.robot.opmode.NextOpMode;
-import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
@@ -16,6 +15,7 @@ public class ServoCalib extends NextOpMode {
 		super(robot);
 		this.robot = robot;
 		robot.setManualTransferTrue();
+		robot.setUtilityOpMode(true);
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
@@ -23,8 +23,8 @@ public class ServoCalib extends NextOpMode {
 		gp1.dpadUp().onTrue(robot.getLauncher().incremen(0.01));
 		gp1.dpadDown().onTrue(robot.getLauncher().setZero());
 
-		gp1.dpadRight().onTrue(robot.getLauncherHood().incremen(0.01));
-		gp1.dpadLeft().onTrue(robot.getLauncherHood().incremen(-0.01));
+		gp1.dpadRight().onTrue(robot.getLauncherHood().increment(0.01));
+		gp1.dpadLeft().onTrue(robot.getLauncherHood().increment(-0.01));
 		gp1.leftStickButton().onTrue(robot.getLauncherHood().setServoPos(0));
 
 		gp1.rightTrigger().isOver(0.3).onTrue(robot.getIntake().incremen(0.01));

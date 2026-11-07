@@ -17,6 +17,8 @@ public class IntakeTestOp extends NextOpMode {
 		super(robot);
 		this.robot = robot;
 		robot.setManualTransferTrue();
+		robot.setUtilityOpMode(true);
+
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
