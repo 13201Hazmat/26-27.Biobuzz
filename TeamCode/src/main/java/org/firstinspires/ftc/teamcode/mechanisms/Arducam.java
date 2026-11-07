@@ -17,7 +17,7 @@ import java.util.Locale;
 
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 
 public class Arducam implements Mechanism {
     private AprilTagProcessor processor;
@@ -54,6 +54,22 @@ public class Arducam implements Mechanism {
         return detectedTags;
     }
 
+    public boolean seesAnyTag() {
+        return detectedTags != null && !detectedTags.isEmpty();
+    }
+
+    public boolean isAnyTagDetected() {
+        return seesAnyTag();
+    }
+
+    public int getDetectedTagCount() {
+        return (detectedTags != null) ? detectedTags.size() : 0;
+    }
+
+    public AprilTagDetection getFirstDetectedTag() {
+        return seesAnyTag() ? detectedTags.get(0) : null;
+    }
+
     public static int getTagId(AprilTagDetection detection) {
         if (detection instanceof AprilTagSingleDetection) {
             return ((AprilTagSingleDetection) detection).id;
@@ -84,9 +100,9 @@ public class Arducam implements Mechanism {
         return (pose != null) ? pose.range : -1.0;
     }
 
-    public double getBearingToTag(int targetId) {
+    public double getPitchToTag(int targetId) {
         AprilTagPoseFtc pose = getFtcPose(targetId);
-        return (pose != null) ? pose.bearing : 0.0;
+        return (pose != null) ? pose.pitch : 0.0;
     }
 
     public double getYawToTag(int targetId) {
