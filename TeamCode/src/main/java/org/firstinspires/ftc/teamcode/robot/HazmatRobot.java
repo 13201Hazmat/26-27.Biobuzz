@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
+import com.pedropathing.math.Velocity;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,18 +64,20 @@ public class HazmatRobot implements NextRobot {
 		this.activeOpMode = activeOpMode;
 	}
 
+	public Alliance getAlliance(){
+		return Alliance.currentAlliance;
+	}
+
+
+
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
 		intake = new Intake();
-		try {
-			turret = new Turret(RobotController.hardwareMap());
-		} catch (Throwable t) {
-			turret = null;
-		}
 		transfer = new Transfer();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
 	}
+
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -85,11 +89,7 @@ public class HazmatRobot implements NextRobot {
 
 	public Turret getTurret() {
 		if (turret == null) {
-			try {
-				turret = new Turret(RobotController.hardwareMap());
-			} catch (Throwable t) {
-				turret = null;
-			}
+			turret = new Turret(RobotController.hardwareMap());
 		}
 		return turret;
 	}
@@ -106,10 +106,29 @@ public class HazmatRobot implements NextRobot {
 		return launcherHood;
 	}
 
+	public Follower getFollower() {
+		if (follower == null) {
+			follower = Constants.create(RobotController.hardwareMap());
+		}
+		return follower;
+	}
+
+	public Pose getPose() {
+		return getFollower().pose();
+	}
+
+	public Velocity getVelocity(){
+		return getFollower().velocity();
+	}
+
+	public void setStartingPose(Pose pose) {
+		getFollower().setPose(pose);
+	}
+
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, getTurret());
 	}
 
 	public void toggleHoodAutomate() {
@@ -208,7 +227,7 @@ public class HazmatRobot implements NextRobot {
 		intake.debug();
 		launcher.debug();
 		launcherHood.debug();
-		turret.debug();
+		getTurret().debug();
 	}
 
 	public void updateStates() {
@@ -250,6 +269,10 @@ public class HazmatRobot implements NextRobot {
 	public void periodic() {
 		if (!isUtilityOpMode()) {
 			updateStates();
+		}
+		setTargetPose(getAlliance(),getPose());
+		if(Turret.AUTO_AIM){
+			getTurret().trackGoal(TurretPoses.targetPose, getPose());
 		}
 		updateTelemetry();
 	}

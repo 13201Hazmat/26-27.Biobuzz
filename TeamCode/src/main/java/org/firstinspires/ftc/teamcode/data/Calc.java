@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.data;
 
 import com.pedropathing.math.Pose;
+import com.pedropathing.math.Velocity;
 
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
 
@@ -37,7 +38,13 @@ public class Calc {
 		return (Math.toDegrees(fieldAngle - h));
 	}
 
+	public static Pose predict(Pose r, Velocity velo, double lead) {
+		return new Pose(r.x() + velo.vx * lead, r.y() + velo.vy * lead, r.heading() + velo.omega * lead);
+	}
+
 	public static double clamp(double value, double lo, double hi) {
 		return Math.max(lo, Math.min(hi, value));
 	}
+
+
 }

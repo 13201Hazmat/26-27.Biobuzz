@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.PoseStorage;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
+import dev.nextftc.robot.opmode.BulkReadHook;
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
@@ -13,7 +14,7 @@ import dev.nextftc.robot.triggers.Trigger;
 public abstract class TeleOp extends NextOpMode {
 	private final HazmatRobot robot;
 	public TeleOp(HazmatRobot robot, Alliance alliance) {
-		super(robot);
+		super(robot, BulkReadHook.INSTANCE);
 		this.robot = robot;
 
 		robot.setActiveOpMode(this);
@@ -21,12 +22,12 @@ public abstract class TeleOp extends NextOpMode {
 		Alliance.currentAlliance = alliance;
 
 		Trigger.Companion.getDefaultEventLoop().clear();
+
+		robot.setStartingPose(PoseStorage.get());
 	}
 
 	@Override
 	public void start() {
-		// robot.getFollower().setPose(PoseStorage.get());
-
 		gp1();
 		gp2();
 	}

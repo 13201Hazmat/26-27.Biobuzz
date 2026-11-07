@@ -21,16 +21,23 @@ public class Turret implements Mechanism {
 	public static double TOLERANCE_DEG = 0.5;
 	public static boolean AUTO_AIM = true;
 
+
+	public static double CENTER_POS = 0.5;
+
 	private final NextServo leftTurretServo = new NextServo(
-		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
+			Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
 	);
 	private final NextServo rightTurretServo = new NextServo(
-		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.0
+			Config.rightTurretServoModule, Config.rightTurretServoPort, 0.0
 	);
 	private final OctoQuad oq;
 
 	private final double GEAR_RATIO = 0.9923076923;
 	private final double SERVO_RANGE = 326;
+
+	private final double TURRET_MAX_ANGLE = 175;
+	private final double TURRET_MIN_ANGLE = -175;
+
 
 	private final int ABS_CHANNEL = 4;
 	private final int PWM_MIN = 1;
@@ -38,28 +45,24 @@ public class Turret implements Mechanism {
 	private final double ABS_ZERO_DEG = 0;
 
 	private double curAngle = 0.0;
-	private double servoPos = 0.5;
+	private double servoPos = CENTER_POS;
 
 	public Turret(HardwareMap hw) {
 		OctoQuad tempOq = null;
-		try {
-			if (hw != null) {
+		if (hw != null) {
+			try {
 				tempOq = hw.get(OctoQuad.class, "oq");
-				if (tempOq != null) {
-					tempOq.setChannelBankConfig(OctoQuad.ChannelBankConfig.BANK1_QUADRATURE_BANK2_PULSE_WIDTH);
-					tempOq.setSingleChannelPulseWidthParams(
+				tempOq.setChannelBankConfig(OctoQuad.ChannelBankConfig.BANK1_QUADRATURE_BANK2_PULSE_WIDTH);
+				tempOq.setSingleChannelPulseWidthParams(
 						ABS_CHANNEL,
 						new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX)
-					);
-				}
+				);
+			} catch (Exception e) {
+				tempOq = null;
 			}
-		} catch (Throwable t) {
-			tempOq = null;
 		}
 		this.oq = tempOq;
-		/*updateAngle();
 		targetTurretAng = curAngle;
-		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);*/
 
 		rightTurretServo.setPwmRange(500, 2500);
 		leftTurretServo.setPwmRange(500, 2500);
@@ -86,9 +89,6 @@ public class Turret implements Mechanism {
 		leftTurretServo.setPosition(p);
 	}
 
-	public Command incremen(double i) {
-		return instant(() -> setPositions(Math.min(1.0, Math.max(0.0, rightTurretServo.getPosition() + i))));
-	}
 
 	public Command zeroTurretServo() {
 		return instant(() -> setPositions(0));
@@ -108,35 +108,35 @@ public class Turret implements Mechanism {
 		});
 	}
 
-	public void trackGoal(Pose goal, Pose robot) {
-		track(goal, robot);
-	}
-
 	private void track(Pose g, Pose r) {
 		targetTurretAng = normalizeAngle(Calc.turretKinematics(g, r));
 	}
 
+	public void trackGoal(Pose goal, Pose robot) {
+		track(goal, robot);
+	}
+
 	public double normalizeAngle(double angDeg) {
-		return ((angDeg % 360.0) + 360.0) % 360.0;
+		double a = ((angDeg % 360.0) + 360.0) % 360.0;
+		return a > 180 ? a - 360 : a;
 	}
 
 	private double turretAngleToServo(double angle) {
-		return angle * (GEAR_RATIO / SERVO_RANGE);
-	}
 
-	private double pulseToDeg(int pulse) {
-		double frac = (pulse - PWM_MIN) / (double) (PWM_MAX - PWM_MIN);
-		return normalizeAngle(frac * 360.0 + ABS_ZERO_DEG);
+		return CENTER_POS - angle * (GEAR_RATIO / SERVO_RANGE);
 	}
-
 	private int readPulse() {
 		if (oq == null)
 			return 0;
 		try {
 			return oq.readSinglePosition_Caching(ABS_CHANNEL);
-		} catch (Throwable t) {
+		} catch (Exception e) {
 			return 0;
 		}
+	}
+	private double pulseToDeg(int pulse) {
+		double frac = (pulse - PWM_MIN) / (double) (PWM_MAX - PWM_MIN);
+		return normalizeAngle(frac * 360.0 + ABS_ZERO_DEG);
 	}
 
 	private void updateAngle() {
@@ -145,12 +145,18 @@ public class Turret implements Mechanism {
 			curAngle = pulseToDeg(pulse);
 	}
 
-	private void update() {
-		double error = targetTurretAng - curAngle;
-		if (Math.abs(error) > TOLERANCE_DEG) {
-			servoPos = clamp(servoPos + KP * error, 0, 1);
+	private void update(boolean useOQ) {
+		if (useOQ) {
+			updateAngle();
+			double error = targetTurretAng - curAngle;
+			if (Math.abs(error) > TOLERANCE_DEG) {
+				servoPos = clamp(servoPos - KP * error, turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE));
+			}
+			setPositions(servoPos);
+		} else {
+			servoPos = clamp(turretAngleToServo(targetTurretAng), turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE));
+			setPositions(servoPos);
 		}
-		setPositions(servoPos);
 	}
 
 	public void debug() {
@@ -162,9 +168,6 @@ public class Turret implements Mechanism {
 
 	@Override
 	public void periodic() {
-		/*updateAngle();
-		if (AUTO_AIM) {
-			update();
-		}*/
+		update(false);
 	}
 }
