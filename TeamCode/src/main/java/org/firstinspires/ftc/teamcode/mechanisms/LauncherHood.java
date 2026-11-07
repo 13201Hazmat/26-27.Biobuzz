@@ -14,10 +14,11 @@ public class LauncherHood implements Mechanism {
 		Config.launcherBackPlateServoModule, Config.launcherBackPlateServoPort, 0.0
 	);
 
-	private final double POLLEN_POS = 0.74;
-	private final double NECTAR_POS = 1.0;
+	private final double POLLEN_POS = 0.8;
+	private final double NECTAR_POS = 0.48;
 
 	public LauncherHood() {
+		launcherHood.setPwmRange(500, 2500);
 	}
 
 	public double getServoPos() {
