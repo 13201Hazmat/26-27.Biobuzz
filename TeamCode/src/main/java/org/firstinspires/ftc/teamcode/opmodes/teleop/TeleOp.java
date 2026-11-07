@@ -15,6 +15,9 @@ public abstract class TeleOp extends NextOpMode {
 	public TeleOp(HazmatRobot robot, Alliance alliance) {
 		super(robot);
 		this.robot = robot;
+
+		robot.setActiveOpMode(this);
+
 		Alliance.currentAlliance = alliance;
 
 		Trigger.Companion.getDefaultEventLoop().clear();

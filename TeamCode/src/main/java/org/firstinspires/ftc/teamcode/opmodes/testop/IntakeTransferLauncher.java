@@ -19,7 +19,7 @@ public class IntakeTransferLauncher extends NextOpMode {
 	public IntakeTransferLauncher(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
-		robot.setUtilityOpMode(true);
+		robot.setActiveOpMode(this);
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
