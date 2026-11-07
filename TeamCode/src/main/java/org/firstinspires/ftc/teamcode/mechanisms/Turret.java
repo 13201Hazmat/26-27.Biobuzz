@@ -57,9 +57,9 @@ public class Turret implements Mechanism {
 			tempOq = null;
 		}
 		this.oq = tempOq;
-		updateAngle();
+		/*updateAngle();
 		targetTurretAng = curAngle;
-		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);
+		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);*/
 
 		rightTurretServo.setPwmRange(500, 2500);
 		leftTurretServo.setPwmRange(500, 2500);
@@ -162,9 +162,9 @@ public class Turret implements Mechanism {
 
 	@Override
 	public void periodic() {
-		updateAngle();
+		/*updateAngle();
 		if (AUTO_AIM) {
 			update();
-		}
+		}*/
 	}
 }

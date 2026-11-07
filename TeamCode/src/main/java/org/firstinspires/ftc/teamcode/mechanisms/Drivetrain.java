@@ -8,7 +8,6 @@ import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.robot.drive.DriveCommands;
-import dev.nextftc.robot.opmode.NextTeleop;
 
 public class Drivetrain implements Mechanism {
 	public final NextMotor frontLeft = new NextMotor(Config.fl);
@@ -17,7 +16,6 @@ public class Drivetrain implements Mechanism {
 	public final NextMotor backRight = new NextMotor(Config.bR);
 
 	public Drivetrain() {
-
 		frontLeft.setDirection(NextMotor.Direction.FORWARD);
 		frontRight.setDirection(NextMotor.Direction.FORWARD);
 		backLeft.setDirection(NextMotor.Direction.FORWARD);
@@ -44,7 +42,6 @@ public class Drivetrain implements Mechanism {
 	}
 
 	public void startDrive(Gamepad gamepad) {
-		///TODO switch to field centric
 		DriveCommands.mecanumDrive(
 			frontLeft,
 			frontRight,
