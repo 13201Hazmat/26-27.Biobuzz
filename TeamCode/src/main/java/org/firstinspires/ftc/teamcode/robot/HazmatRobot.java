@@ -35,7 +35,6 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
-import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextUtility;
 
@@ -50,8 +49,10 @@ public class HazmatRobot implements NextRobot {
 	private final LauncherHood launcherHood;
 
 	private boolean isLaunching = false;
-	private boolean isHoodAutomate = true;
-	private boolean isManualTransfer = false;
+	private boolean isHoodAutomated = true;
+	private boolean isTransferManual = false;
+
+	private boolean debugEnabled = false;
 
 	private NextOpMode activeOpMode = null;
 
@@ -132,15 +133,15 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public void toggleHoodAutomate() {
-		isHoodAutomate = !isHoodAutomate;
+		isHoodAutomated = !isHoodAutomated;
 	}
 
 	public void toggleManualTransfer() {
-		isManualTransfer = !isManualTransfer;
+		isTransferManual = !isTransferManual;
 	}
 
 	public void setManualTransferTrue() {
-		isManualTransfer = true;
+		isTransferManual = true;
 	}
 	public boolean isUtilityOpMode() {
 		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
@@ -204,13 +205,13 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			conditional(() -> !isHoodAutomate, setHoodForFirst(), instant(() -> {
+			conditional(() -> !isHoodAutomated, setHoodForFirst(), instant(() -> {
 			})),
 			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 			transfer.setForward(),
 			launcher.openGate(),
 			waitMs(200),
-			conditional(() -> !isHoodAutomate, cycleHood(), instant(() -> {
+			conditional(() -> !isHoodAutomated, cycleHood(), instant(() -> {
 			})),
 			waitMs(1000),
 			launcher.closeGate(),
@@ -221,7 +222,7 @@ public class HazmatRobot implements NextRobot {
 		})).unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
 
-	public void updateTelemetry() {
+	public void debugAll() {
 		transfer.debug();
 		drivetrain.debug();
 		intake.debug();
@@ -249,7 +250,7 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	private void setIntakeAndTransfer(boolean on) {
-		if (isManualTransfer)
+		if (isTransferManual)
 			return;
 
 		if (on) {
@@ -267,13 +268,18 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
+		setTargetPose(getAlliance(),getPose());
+
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
-		setTargetPose(getAlliance(),getPose());
+
 		if(Turret.AUTO_AIM){
 			getTurret().trackGoal(TurretPoses.targetPose, getPose());
 		}
-		updateTelemetry();
+
+		if (debugEnabled) {
+			debugAll();
+		}
 	}
 }

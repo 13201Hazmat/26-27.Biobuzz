@@ -72,6 +72,16 @@ public class Turret implements Mechanism {
 		return curAngle;
 	}
 
+
+	public double getRightTurretServoPos() {
+		return rightTurretServo.getPosition();
+	}
+
+	public double getLeftTurretServoPos() {
+		return leftTurretServo.getPosition();
+	}
+
+
 	public void toggleAutoAim() {
 		AUTO_AIM = !AUTO_AIM;
 	}
@@ -94,17 +104,10 @@ public class Turret implements Mechanism {
 		return instant(() -> setPositions(0));
 	}
 
-	public Command incrementTurret() {
+	public Command increment(double i) {
 		return instant(() -> {
-			rightTurretServo.setPosition(rightTurretServo.getPosition() + 0.01);
-			leftTurretServo.setPosition(leftTurretServo.getPosition() + 0.01);
-		});
-	}
-
-	public Command decrementTurret() {
-		return instant(() -> {
-			rightTurretServo.setPosition(rightTurretServo.getPosition() - 0.01);
-			leftTurretServo.setPosition(leftTurretServo.getPosition() - 0.01);
+			rightTurretServo.setPosition(getRightTurretServoPos() + i);
+			leftTurretServo.setPosition(getLeftTurretServoPos() + i);
 		});
 	}
 
@@ -160,7 +163,9 @@ public class Turret implements Mechanism {
 	}
 
 	public void debug() {
-		Telemetry.log("Servo Position", rightTurretServo.getPosition());
+
+		Telemetry.log("Right Turret Servo Position", getRightTurretServoPos());
+		Telemetry.log("Left Turret Servo Position", getLeftTurretServoPos());
 		Telemetry.log("Target Angle", targetTurretAng);
 		Telemetry.log("Current Angle", curAngle);
 		Telemetry.log("Error", targetTurretAng - curAngle);

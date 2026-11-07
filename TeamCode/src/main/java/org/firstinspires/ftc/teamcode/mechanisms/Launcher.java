@@ -176,14 +176,6 @@ public class Launcher implements Mechanism {
 		return instant(() -> launcherGate.setPosition(0));
 	}
 
-	public Command incrementUp() {
-		return increment(0.01);
-	}
-
-	public Command incrementDown() {
-		return increment(-0.01);
-	}
-
 	public void increaseKS() {
 		setKS(kS + 0.001);
 	}
