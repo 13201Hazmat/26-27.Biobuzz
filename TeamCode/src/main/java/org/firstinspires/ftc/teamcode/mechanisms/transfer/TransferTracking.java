@@ -10,7 +10,7 @@ import java.util.Queue;
 import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 
 public class TransferTracking implements Mechanism {
 

@@ -20,7 +20,6 @@ public class TurretTest extends NextOpMode {
 
 		robot.setActiveOpMode(this);
 
-
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}
 

@@ -19,7 +19,6 @@ public class IntakeTestOp extends NextOpMode {
 		robot.setManualTransferTrue();
 		robot.setActiveOpMode(this);
 
-
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));

@@ -33,7 +33,7 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextUtility;
 
@@ -54,7 +54,7 @@ public class HazmatRobot implements NextRobot {
 	private NextOpMode activeOpMode = null;
 
 	@Nullable
-	public NextOpMode getActiveOpMode(){
+	public NextOpMode getActiveOpMode() {
 		return activeOpMode;
 	}
 
@@ -123,7 +123,7 @@ public class HazmatRobot implements NextRobot {
 	public void setManualTransferTrue() {
 		isManualTransfer = true;
 	}
-	public boolean isUtilityOpMode(){
+	public boolean isUtilityOpMode() {
 		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
 	}
 
@@ -209,7 +209,6 @@ public class HazmatRobot implements NextRobot {
 		launcher.debug();
 		launcherHood.debug();
 		turret.debug();
-		Telemetry.update();
 	}
 
 	public void updateStates() {
@@ -217,14 +216,14 @@ public class HazmatRobot implements NextRobot {
 			return;
 
 		switch (transfer.getTransferSensingState()) {
-			case EMPTY:
+			case EMPTY :
 				launcher.setIdle();
 				setIntakeAndTransfer(true);
 				break;
-			case FILLING:
+			case FILLING :
 				setIntakeAndTransfer(true);
 				break;
-			case FULL:
+			case FULL :
 				setIntakeAndTransfer(false);
 				break;
 		}
@@ -236,11 +235,11 @@ public class HazmatRobot implements NextRobot {
 
 		if (on) {
 			intake.forward();
-//			if (transfer.isStalling()) {
-				transfer.off();
-//			} else {
-				transfer.forward();
-//			}
+			// if (transfer.isStalling()) {
+			transfer.off();
+			// } else {
+			transfer.forward();
+			// }
 		} else {
 			intake.off();
 			transfer.off();

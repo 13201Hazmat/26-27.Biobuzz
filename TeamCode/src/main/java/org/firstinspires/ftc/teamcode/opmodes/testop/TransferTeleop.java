@@ -18,7 +18,6 @@ public class TransferTeleop extends NextOpMode {
 
 		robot.setActiveOpMode(this);
 
-
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 

@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 
 public class LauncherHood implements Mechanism {
 
@@ -53,6 +53,6 @@ public class LauncherHood implements Mechanism {
 	}
 
 	public void debug() {
-		Telemetry.log("Hood Servo Pos" + getServoPos());
+		Telemetry.log("Hood Servo Pos", getServoPos());
 	}
 }

@@ -83,11 +83,16 @@ public class ServoCalib extends NextOpMode {
 
 	private double getSelectedPos() {
 		switch (selectedIndex) {
-			case 0 : return robot.getLauncher().getLauncherGatePos();
-			case 1 : return robot.getLauncherHood().getServoPos();
-			case 2 : return robot.getIntake().getPosition();
-			case 3 : return robot.getTurret().getAngle();
-			default : return 0.0;
+			case 0 :
+				return robot.getLauncher().getLauncherGatePos();
+			case 1 :
+				return robot.getLauncherHood().getServoPos();
+			case 2 :
+				return robot.getIntake().getPosition();
+			case 3 :
+				return robot.getTurret().getAngle();
+			default :
+				return 0.0;
 		}
 	}
 
@@ -100,7 +105,10 @@ public class ServoCalib extends NextOpMode {
 		telemetry.addLine("  CROSS / TRI   : Preset 0.0 / 1.0");
 		telemetry.addLine("  SQUARE        : Preset 0.5");
 		telemetry.addLine("---------------------------------------------");
-		telemetry.addData("SELECTED SERVO", String.format("[%d/%d] %s", selectedIndex + 1, servoNames.length, servoNames[selectedIndex]));
+		telemetry.addData(
+			"SELECTED SERVO",
+			String.format("[%d/%d] %s", selectedIndex + 1, servoNames.length, servoNames[selectedIndex])
+		);
 		telemetry.addData("SELECTED POSITION", String.format("%.4f", getSelectedPos()));
 		telemetry.addLine("---------------------------------------------");
 		telemetry.addData("1. Launcher Gate", String.format("%.4f", robot.getLauncher().getLauncherGatePos()));
