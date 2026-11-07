@@ -168,7 +168,7 @@ public class Launcher implements Mechanism {
 		return launcherGate.getPosition();
 	}
 
-	public Command incremen(double i) {
+	public Command increment(double i) {
 		return instant(() -> launcherGate.setPosition(Math.min(1.0, Math.max(0.0, getServoPos() + i))));
 	}
 
@@ -177,11 +177,11 @@ public class Launcher implements Mechanism {
 	}
 
 	public Command incrementUp() {
-		return incremen(0.01);
+		return increment(0.01);
 	}
 
 	public Command incrementDown() {
-		return incremen(-0.01);
+		return increment(-0.01);
 	}
 
 	public void increaseKS() {

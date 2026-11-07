@@ -99,7 +99,7 @@ public class Intake implements Mechanism {
 		);
 	}
 
-	public Command incremen(double i) {
+	public Command increment(double i) {
 		return instant(() -> setRampPosition(Math.min(1.0, Math.max(0.0, getPosition() + i))));
 	}
 

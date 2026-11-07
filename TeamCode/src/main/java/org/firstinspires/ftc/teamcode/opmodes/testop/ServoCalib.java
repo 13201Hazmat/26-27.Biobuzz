@@ -19,15 +19,15 @@ public class ServoCalib extends NextOpMode {
 		Trigger.Companion.getDefaultEventLoop().clear();
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		gp1.dpadUp().onTrue(robot.getLauncher().incremen(0.01));
+		gp1.dpadUp().onTrue(robot.getLauncher().increment(0.01));
 		gp1.dpadDown().onTrue(robot.getLauncher().setZero());
 
 		gp1.dpadRight().onTrue(robot.getLauncherHood().increment(0.01));
 		gp1.dpadLeft().onTrue(robot.getLauncherHood().increment(-0.01));
 		gp1.leftStickButton().onTrue(robot.getLauncherHood().setServoPos(0));
 
-		gp1.rightTrigger().isOver(0.3).onTrue(robot.getIntake().incremen(0.01));
-		gp1.leftTrigger().isOver(0.3).onTrue(robot.getIntake().incremen(-0.01));
+		gp1.rightTrigger().isOver(0.3).onTrue(robot.getIntake().increment(0.01));
+		gp1.leftTrigger().isOver(0.3).onTrue(robot.getIntake().increment(-0.01));
 
 		gp1.rightBumper().onTrue(robot.getTransfer().setOff());
 		gp1.leftBumper().onTrue(robot.getIntake().setOff());

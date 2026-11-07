@@ -38,8 +38,8 @@ public class LauncherTest extends NextOpMode {
 		gp1.triangle().onTrue(robot.getLauncherHood().setServoPos(1.0));
 
 		// Launcher Gate Controls
-		gp1.rightTrigger().isOver(0.3).onTrue(robot.getLauncher().incremen(0.01));
-		gp1.leftTrigger().isOver(0.3).onTrue(robot.getLauncher().incremen(-0.01));
+		gp1.rightTrigger().isOver(0.3).onTrue(robot.getLauncher().increment(0.01));
+		gp1.leftTrigger().isOver(0.3).onTrue(robot.getLauncher().increment(-0.01));
 		gp1.circle().onTrue(robot.getLauncher().openGate());
 		gp1.square().onTrue(robot.getLauncher().closeGate());
 	}
