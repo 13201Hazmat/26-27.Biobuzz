@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.mechanisms.transfer;
 
+import static dev.nextftc.units.Units.Amperes;
+
 import com.pedropathing.ivy.Command;
 
 import org.firstinspires.ftc.teamcode.data.Config;
-import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.Telemetry;
+import dev.nextftc.units.measuretypes.Current;
 
 public class Transfer implements Mechanism {
 
@@ -23,6 +25,8 @@ public class Transfer implements Mechanism {
 	private static final double BACKWARD_SPEED = -1.0;
 	private static final double IDLE_SPEED = 0.0;
 
+	private final Current currentLimit = Amperes.of(5.0);
+
 	private final NextMotor transferMotor = new NextMotor(Config.transferMotorModule, Config.transferMotorPort);
 	private TransferMotorState transferMotorState;
 	private TransferSensingState transferSensingState;
@@ -33,6 +37,9 @@ public class Transfer implements Mechanism {
 		transferTracking = new TransferTracking();
 		transferMotorState = TransferMotorState.FORWARD;
 		transferSensingState = TransferSensingState.EMPTY;
+
+		transferMotor.setCurrentAlert(currentLimit);
+
 		transferTracking.init();
 	}
 
@@ -50,6 +57,10 @@ public class Transfer implements Mechanism {
 
 	private void setState(TransferMotorState transferMotorState) {
 		this.transferMotorState = transferMotorState;
+	}
+
+	public boolean isStalling(){
+		return transferMotor.isOverCurrent();
 	}
 
 	public void forward() {

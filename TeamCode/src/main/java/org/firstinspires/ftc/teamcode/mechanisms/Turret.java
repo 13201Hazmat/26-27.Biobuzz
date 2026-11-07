@@ -60,6 +60,9 @@ public class Turret implements Mechanism {
 		updateAngle();
 		targetTurretAng = curAngle;
 		servoPos = clamp(turretAngleToServo(curAngle), 0, 1);
+
+		rightTurretServo.setPwmRange(500,2500);
+		leftTurretServo.setPwmRange(500, 2500);
 	}
 
 	public double getAngle() {

@@ -11,6 +11,7 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
@@ -33,6 +34,8 @@ import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
 import dev.nextftc.robot.Telemetry;
+import dev.nextftc.robot.opmode.NextOpMode;
+import dev.nextftc.robot.opmode.NextUtility;
 
 public class HazmatRobot implements NextRobot {
 
@@ -48,8 +51,16 @@ public class HazmatRobot implements NextRobot {
 	private boolean isHoodAutomate = true;
 	private boolean isManualTransfer = false;
 
-	private boolean utilityOpMode = false;
+	private NextOpMode activeOpMode = null;
 
+	@Nullable
+	public NextOpMode getActiveOpMode(){
+		return activeOpMode;
+	}
+
+	public void setActiveOpMode(@Nullable NextOpMode activeOpMode) {
+		this.activeOpMode = activeOpMode;
+	}
 
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
@@ -112,8 +123,8 @@ public class HazmatRobot implements NextRobot {
 	public void setManualTransferTrue() {
 		isManualTransfer = true;
 	}
-	public void setUtilityOpMode(boolean on){
-		utilityOpMode = on;
+	public boolean isUtilityOpMode(){
+		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
 	}
 
 	public void setTargetPose(Alliance a, Pose current) {
@@ -202,39 +213,43 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public void updateStates() {
-		if (isLaunching)
-			return;
-		if (launcher.isPowerMode())
+		if (isLaunching || launcher.isPowerMode())
 			return;
 
 		switch (transfer.getTransferSensingState()) {
-			case EMPTY :
+			case EMPTY:
 				launcher.setIdle();
+				setIntakeAndTransfer(true);
 				break;
-			case FILLING :
-			case FULL :
+			case FILLING:
+				setIntakeAndTransfer(true);
+				break;
+			case FULL:
+				setIntakeAndTransfer(false);
 				break;
 		}
+	}
 
+	private void setIntakeAndTransfer(boolean on) {
 		if (isManualTransfer)
 			return;
 
-		switch (transfer.getTransferSensingState()) {
-			case EMPTY :
-			case FILLING :
-				intake.forward();
-				transfer.forward();
-				break;
-			case FULL :
-				intake.off();
+		if (on) {
+			intake.forward();
+//			if (transfer.isStalling()) {
 				transfer.off();
-				break;
+//			} else {
+				transfer.forward();
+//			}
+		} else {
+			intake.off();
+			transfer.off();
 		}
 	}
 
 	@Override
 	public void periodic() {
-		if (!utilityOpMode) {
+		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 		updateTelemetry();

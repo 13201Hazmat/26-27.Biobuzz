@@ -248,14 +248,12 @@ public class Launcher implements Mechanism {
 		setPowerMode(true);
 		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.min(1.0, getPower() + 0.1));
-		leftLauncher.update();
 	}
 
 	public void decreasePower() {
 		setPowerMode(true);
 		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
 		rightLauncher.setThrottle(Math.max(-1.0, getPower() - 0.1));
-		leftLauncher.update();
 	}
 
 	public void PID() {

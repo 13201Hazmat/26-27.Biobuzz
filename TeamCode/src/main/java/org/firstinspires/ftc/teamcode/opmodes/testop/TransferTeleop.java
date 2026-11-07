@@ -16,7 +16,7 @@ public class TransferTeleop extends NextOpMode {
 		super(robot);
 		this.robot = robot;
 
-		robot.setUtilityOpMode(true);
+		robot.setActiveOpMode(this);
 
 
 		Trigger.Companion.getDefaultEventLoop().clear();
