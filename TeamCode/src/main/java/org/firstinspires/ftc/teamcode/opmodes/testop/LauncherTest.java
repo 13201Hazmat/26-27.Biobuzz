@@ -16,7 +16,7 @@ public class LauncherTest extends NextOpMode {
 	public LauncherTest(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
-		robot.setUtilityOpMode(true);
+		robot.setActiveOpMode(this);
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}

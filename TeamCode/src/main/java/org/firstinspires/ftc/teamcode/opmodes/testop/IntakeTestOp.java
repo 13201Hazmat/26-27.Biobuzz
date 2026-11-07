@@ -17,7 +17,7 @@ public class IntakeTestOp extends NextOpMode {
 		super(robot);
 		this.robot = robot;
 		robot.setManualTransferTrue();
-		robot.setUtilityOpMode(true);
+		robot.setActiveOpMode(this);
 
 
 		Trigger.Companion.getDefaultEventLoop().clear();
