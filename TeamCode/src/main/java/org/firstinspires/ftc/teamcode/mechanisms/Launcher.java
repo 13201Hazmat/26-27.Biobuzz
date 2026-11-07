@@ -131,8 +131,7 @@ public class Launcher implements Mechanism {
 		if (RPM == targetVelocity)
 			return;
 		targetVelocity = RPM;
-		leftLauncher.follow(rightLauncher, NextMotor.Direction.REVERSE);
-		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(RPM));
+		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(RPM + offset));
 		if (RPM == IDLE_SPEED) {
 			setIdle();
 			return;
