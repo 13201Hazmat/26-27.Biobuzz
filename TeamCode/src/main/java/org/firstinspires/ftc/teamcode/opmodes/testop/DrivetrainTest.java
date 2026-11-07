@@ -5,10 +5,10 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextOpMode;
-import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
+import dev.nextftc.telemetry.Telemetry;
 
 @NextUtility(name = "Drivetrain Test")
 public class DrivetrainTest extends NextOpMode {
@@ -26,37 +26,19 @@ public class DrivetrainTest extends NextOpMode {
 	@Override
 	public void start() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
+
 		robot.getDrivetrain().startDrive(gamepad1);
 
-		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
-		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
-		gp1.triangle().onTrue(instant(() -> robot.getLauncher().test()));
-
-		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
-		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
-
-		gp1.dpadRight().onTrue(instant(() -> robot.getLauncherHood().incrementUp()));
-		gp1.dpadLeft().onTrue(instant(() -> robot.getLauncherHood().incrementDown()));
-
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
 	}
 
 	@Override
 	public void periodic() {
-		telemetry.addLine("---TELEMETRY---");
-		telemetry.addLine("Cycle Transfer: LEFT BUMPER");
-		telemetry.addLine("Cycle Intake: RIGHT BUMPER");
-		telemetry.addLine("---------------------------------------------");
-		telemetry.addLine("Start Launcher: TRIANGLE");
-		telemetry.addLine("Increase Launcher Speed: DPAD-UP");
-		telemetry.addLine("Decrease Launcher Speed: DPAD-DOWN");
-		telemetry.addLine("---------------------------------------------");
-		telemetry.addLine("Increase Launcher Hood Position: DPAD-RIGHT");
-		telemetry.addLine("Decrease Launcher Hood Position: DPAD-LEFT");
-		telemetry.addLine("---------------------------------------------");
-		telemetry.addData("Intake Speed:", robot.getIntake().getSpeed());
-		telemetry.addData("Launcher Speed:", robot.getLauncher().getPower());
-		telemetry.addData("Launcher Hood Position", robot.getLauncherHood().getServoPos());
-		telemetry.update();
+		Telemetry.log("Right Stick X Value", gamepad1.right_stick_x);
+		Telemetry.log("Right Stick Y Value", gamepad1.right_stick_y);
+		Telemetry.log("Left Stick X Value", gamepad1.left_stick_x);
+		Telemetry.log("Left Stick Y Value", gamepad1.left_stick_y);
+		Telemetry.log("Left Trigger", "Debug");
 	}
 
 }

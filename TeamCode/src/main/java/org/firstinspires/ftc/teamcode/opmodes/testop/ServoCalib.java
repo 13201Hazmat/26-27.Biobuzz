@@ -69,6 +69,8 @@ public class ServoCalib extends NextOpMode {
 
 		gp1.leftBumper().onTrue(goTo(0));
 		gp1.rightBumper().onTrue(goTo(1));
+
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
 	}
 
 	@Override
@@ -88,5 +90,8 @@ public class ServoCalib extends NextOpMode {
 
 		Telemetry.log("Launcher Hood Position", robot.getLauncherHood().getServoPos());
 		Telemetry.log("DPad Right / Left", "Hood +0.01 / -0.01");
+
+		Telemetry.log("Left Trigger", "Debug");
 	}
+
 }

@@ -143,6 +143,10 @@ public class HazmatRobot implements NextRobot {
 	public void setManualTransferTrue() {
 		isTransferManual = true;
 	}
+
+	public void setDebugEnabled(boolean on){
+		debugEnabled = on;
+	}
 	public boolean isUtilityOpMode() {
 		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
 	}
