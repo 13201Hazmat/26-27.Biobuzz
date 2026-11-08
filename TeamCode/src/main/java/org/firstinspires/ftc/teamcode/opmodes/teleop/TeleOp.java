@@ -36,8 +36,9 @@ public abstract class TeleOp extends NextOpMode {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		robot.getDrivetrain().startDrive(gamepad1);
-		// TODO wont work because of updateState
-		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
+		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
 
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
