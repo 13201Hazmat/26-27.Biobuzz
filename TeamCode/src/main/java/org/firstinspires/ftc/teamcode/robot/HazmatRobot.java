@@ -20,6 +20,7 @@ import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
+import org.firstinspires.ftc.teamcode.mechanisms.Arducam;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
@@ -43,6 +44,7 @@ public class HazmatRobot implements NextRobot {
 	private final Transfer transfer;
 	private final Launcher launcher;
 	private final LauncherHood launcherHood;
+	private final Arducam arducam;
 	private boolean isLaunching = false;
 
 	public HazmatRobot() {
@@ -51,6 +53,7 @@ public class HazmatRobot implements NextRobot {
 		transfer = new Transfer();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
+		arducam = new Arducam();
 	}
 
 	public Follower getFollower() {
@@ -75,7 +78,9 @@ public class HazmatRobot implements NextRobot {
 	public LauncherHood getLauncherHood() {
 		return launcherHood;
 	}
-
+	public Arducam getArducam() {
+		return arducam;
+	}
 	public Pose getCurrentPose() {
 		return getFollower().pose();
 	}
@@ -104,7 +109,7 @@ public class HazmatRobot implements NextRobot {
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood);
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, arducam);
 	}
 
 	public Command init() {
