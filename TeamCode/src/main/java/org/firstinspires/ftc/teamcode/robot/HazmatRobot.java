@@ -8,6 +8,7 @@ import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
@@ -130,6 +132,10 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, getTurret());
+	}
+
+	public Command moveToPoint(Path path) {
+		return follow(getFollower(), path);
 	}
 
 	public void toggleHoodAutomate() {

@@ -27,7 +27,6 @@ public class TransferTeleop extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.updateTelemetry();
 		telemetry.update();
 	}
 }
