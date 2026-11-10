@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 
 /**
  * Handles the transfer mechanism for managing ball intake and tracking storage

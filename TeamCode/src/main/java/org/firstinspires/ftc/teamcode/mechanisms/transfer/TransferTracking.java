@@ -10,7 +10,7 @@ import dev.nextftc.hardware.RobotController;
 import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 
 /**
  * Transfer sensing subsystem that detects, tracks, and manages ball types
