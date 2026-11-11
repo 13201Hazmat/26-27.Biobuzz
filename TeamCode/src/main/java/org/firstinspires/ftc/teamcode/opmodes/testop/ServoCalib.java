@@ -9,8 +9,7 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import java.util.EnumMap;
 
-import dev.nextftc.telemetry.Telemetry;
-import dev.nextftc.robot.opmode.NextOpMode;
+import dev.nextftc.robot.Telemetry;import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;

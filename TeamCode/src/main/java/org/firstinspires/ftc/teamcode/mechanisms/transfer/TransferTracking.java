@@ -10,8 +10,7 @@ import java.util.Queue;
 import dev.nextftc.hardware.sensors.NextColorDistanceSensor;
 import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.telemetry.Telemetry;
-
+import dev.nextftc.robot.Telemetry;
 public class TransferTracking implements Mechanism {
 
 	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(
