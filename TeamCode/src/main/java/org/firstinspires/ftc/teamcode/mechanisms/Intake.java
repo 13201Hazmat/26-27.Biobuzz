@@ -21,16 +21,13 @@ public class Intake implements Mechanism {
 	private static final double OFF = 0.0;
 	private static final double CALIB_DELTA = 0.1;
 
-	private final double RAMP_UP_POS = 1.0;
+	private final double RAMP_UP_POS = 0.56;
 	private final double RAMP_DOWN_POS = 0.0;
 
 	private double powerValue = 0.0;
 
 	private NextMotor intakeMotor = new NextMotor(Config.intakeMotorModule, Config.intakeMotorPort);
-	private NextServo leftIntakeRampServo = new NextServo(
-		Config.leftIntakeRampServoModule, Config.leftIntakeRampServoPort, 0.0
-	);
-	private NextServo rightIntakeRampServo = new NextServo(
+	private NextServo intakeRampServo = new NextServo(
 		Config.rightIntakeRampServoModule, Config.rightIntakeRampServoPort, 0.0
 	);
 	private IntakeState intakeState;
@@ -38,11 +35,11 @@ public class Intake implements Mechanism {
 	public Intake() {
 		intakeMotor.setDirection(NextMotor.Direction.REVERSE);
 		intakeState = IntakeState.OFF;
-		rightIntakeRampServo.setDirection(NextMotor.Direction.REVERSE);
+		intakeRampServo.setDirection(NextMotor.Direction.REVERSE);
 	}
 
 	public double getPosition() {
-		return leftIntakeRampServo.getPosition();
+		return intakeRampServo.getPosition();
 	}
 
 	public double getSpeed() {
@@ -66,8 +63,7 @@ public class Intake implements Mechanism {
 	}
 
 	public void setRampPosition(double pos) {
-		rightIntakeRampServo.setPosition(pos);
-		leftIntakeRampServo.setPosition(pos);
+		intakeRampServo.setPosition(pos);
 	}
 
 	public Command setForward() {
@@ -92,7 +88,7 @@ public class Intake implements Mechanism {
 
 	public Command toggleRamp() {
 		return conditional(
-			() -> leftIntakeRampServo.getPosition() == RAMP_UP_POS,
+			() -> intakeRampServo.getPosition() == RAMP_UP_POS,
 			setRampDown(),
 			setRampUp()
 		);
@@ -139,7 +135,7 @@ public class Intake implements Mechanism {
 	public void debug() {
 		Telemetry.log("INTAKE STATE", intakeState);
 		Telemetry.log("INTAKE MOTOR SPEED:", intakeMotor.getThrottle());
-		Telemetry.log("RAMP POSITION", leftIntakeRampServo.getPosition());
+		Telemetry.log("RAMP POSITION", intakeRampServo.getPosition());
 	}
 
 	@Override

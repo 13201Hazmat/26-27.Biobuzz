@@ -63,8 +63,8 @@ public class Turret implements Mechanism {
 		this.oq = tempOq;
 		targetTurretAng = curAngle;
 
-		rightTurretServo.setPwmRange(500, 2500);
-		leftTurretServo.setPwmRange(500, 2500);
+		rightTurretServo.setPwmRange(550, 2450);
+		leftTurretServo.setPwmRange(550, 2450);
 	}
 
 	public double getAngle() {
