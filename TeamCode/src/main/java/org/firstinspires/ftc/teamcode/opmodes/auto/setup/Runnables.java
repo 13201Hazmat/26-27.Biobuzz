@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
@@ -29,50 +30,28 @@ public class Runnables {
 		return decidePath(isFront, paths.leavePoses.startingPose_To_frontLeavePose, paths.leavePoses.startingPose_To_backLeavePose);
 	}
 
-	public Command preloadAuto(boolean isFront) {
-		return sequential(
-				robot.moveToPoint(paths.leavePoses.startingPose_To_midPose),
-				waitMs(1000),
-				decidePath(
-						isFront,
-						paths.leavePoses.midPose_To_frontLeavePose,
-						paths.leavePoses.midPose_To_backLeavePose
-				)
-		);
+	public Command move(Path path) {
+		return robot.moveToPoint(path);
 	}
 
-	public Command basicFlowerAuto(boolean inMiddle, boolean inFrontPark) {
-		return sequential(
-				robot.moveToPoint(paths.basicFlowerAutoPoses.startingPose_To_midPose),
-				waitMs(1000),
-				decidePath(
-						inMiddle,
-						paths.basicFlowerAutoPoses.midPose_To_shootPose_MID,
-						paths.basicFlowerAutoPoses.midPose_To_shootPose
-				),
-				waitMs(1000),
-				robot.moveToPoint(paths.basicFlowerAutoPoses.shootPose_To_endFlowerPose),
-				waitMs(1000),
-				decidePath(
-						inFrontPark,
-						paths.basicFlowerAutoPoses.endFlowerPose_To_frontLeavePose,
-						paths.basicFlowerAutoPoses.endFlowerPose_To_backLeavePose
-				)
-		);
+	public Command intake(Path path) {
+		return sequential(parallel(robot.moveToPoint(path), robot.getIntake().setForward()), robot.getIntake().setOff());
 	}
 
-	public Command doubleFlowerAuto(boolean inFrontPark) {
+	public Command preloadAuto(boolean isFront, boolean goThroughMiddle) {
 		return sequential(
-				robot.moveToPoint(paths.doubleFlowerAutoPoses.startingPose_To_firstFlowerPose),
+				intake(paths.leavePoses.startingPose_To_midPose),
 				waitMs(1000),
-				robot.moveToPoint(paths.doubleFlowerAutoPoses.firstFlowerPose_To_startSecondFlowerPose),
-				waitMs(1000),
-				robot.moveToPoint(paths.doubleFlowerAutoPoses.startSecondFlowerPose_To_endSecondFlowerPose),
-				waitMs(1000),
-				decidePath(
-						inFrontPark,
-						paths.doubleFlowerAutoPoses.endSecondFlowerPose_To_frontLeavePose,
-						paths.doubleFlowerAutoPoses.endSecondFlowerPose_To_backLeavePose
+				conditional(() -> goThroughMiddle,
+						// if true go through the middle
+						sequential(
+								move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose),
+								decidePath(isFront, paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose, paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose)
+						),
+						// if false dont go through middle
+						sequential(
+								decidePath(isFront, paths.leavePoses.midPose_To_frontLeavePose, paths.leavePoses.midPose_To_backLeavePose)
+						)
 				)
 		);
 	}
