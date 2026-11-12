@@ -67,11 +67,9 @@ public class HazmatRobot implements NextRobot {
 		this.activeOpMode = activeOpMode;
 	}
 
-	public Alliance getAlliance(){
+	public Alliance getAlliance() {
 		return Alliance.currentAlliance;
 	}
-
-
 
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
@@ -80,7 +78,6 @@ public class HazmatRobot implements NextRobot {
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
 	}
-
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -120,7 +117,7 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().pose();
 	}
 
-	public Velocity getVelocity(){
+	public Velocity getVelocity() {
 		return getFollower().velocity();
 	}
 
@@ -150,7 +147,7 @@ public class HazmatRobot implements NextRobot {
 		isTransferManual = true;
 	}
 
-	public void setDebugEnabled(boolean on){
+	public void setDebugEnabled(boolean on) {
 		debugEnabled = on;
 	}
 	public boolean isUtilityOpMode() {
@@ -278,13 +275,13 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		setTargetPose(getAlliance(),getPose());
+		setTargetPose(getAlliance(), getPose());
 
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 
-		if(Turret.AUTO_AIM){
+		if (Turret.AUTO_AIM) {
 			getTurret().trackGoal(TurretPoses.targetPose, getPose());
 		}
 

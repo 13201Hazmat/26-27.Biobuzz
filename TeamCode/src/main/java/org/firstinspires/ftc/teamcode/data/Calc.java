@@ -46,5 +46,4 @@ public class Calc {
 		return Math.max(lo, Math.min(hi, value));
 	}
 
-
 }

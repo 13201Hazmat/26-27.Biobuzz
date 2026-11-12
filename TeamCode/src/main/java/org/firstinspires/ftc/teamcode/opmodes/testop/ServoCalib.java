@@ -19,7 +19,9 @@ import dev.nextftc.robot.triggers.Trigger;
 public class ServoCalib extends NextOpMode {
 	private final HazmatRobot robot;
 
-	private enum Selected { INTAKE, TURRET, GATE, HOOD }
+	private enum Selected {
+		INTAKE, TURRET, GATE, HOOD
+	}
 	private Selected last = Selected.INTAKE;
 
 	public ServoCalib(HazmatRobot robot) {
@@ -32,14 +34,22 @@ public class ServoCalib extends NextOpMode {
 
 	private Command goTo(double target) {
 		EnumMap<Selected, Command> cases = new EnumMap<>(Selected.class);
-		cases.put(Selected.INTAKE, instant(() ->
-				robot.getIntake().increment(target - robot.getIntake().getPosition()).schedule()));
-		cases.put(Selected.TURRET, instant(() ->
-				robot.getTurret().increment(target - robot.getTurret().getRightTurretServoPos()).schedule()));
-		cases.put(Selected.GATE, instant(() ->
-				robot.getLauncher().increment(target - robot.getLauncher().getLauncherGatePos()).schedule()));
-		cases.put(Selected.HOOD, instant(() ->
-				robot.getLauncherHood().increment(target - robot.getLauncherHood().getServoPos()).schedule()));
+		cases.put(
+			Selected.INTAKE,
+			instant(() -> robot.getIntake().increment(target - robot.getIntake().getPosition()).schedule())
+		);
+		cases.put(
+			Selected.TURRET,
+			instant(() -> robot.getTurret().increment(target - robot.getTurret().getRightTurretServoPos()).schedule())
+		);
+		cases.put(
+			Selected.GATE,
+			instant(() -> robot.getLauncher().increment(target - robot.getLauncher().getLauncherGatePos()).schedule())
+		);
+		cases.put(
+			Selected.HOOD,
+			instant(() -> robot.getLauncherHood().increment(target - robot.getLauncherHood().getServoPos()).schedule())
+		);
 		return match(() -> last, cases);
 	}
 
@@ -70,7 +80,9 @@ public class ServoCalib extends NextOpMode {
 		gp1.leftBumper().onTrue(goTo(0));
 		gp1.rightBumper().onTrue(goTo(1));
 
-		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 	}
 
 	@Override

@@ -27,7 +27,9 @@ public class Runnables {
 	/* FRONT AUTOS (We are shooting first) */
 
 	public Command leaveAuto(boolean isFront) {
-		return decidePath(isFront, paths.leavePoses.startingPose_To_frontLeavePose, paths.leavePoses.startingPose_To_backLeavePose);
+		return decidePath(
+			isFront, paths.leavePoses.startingPose_To_frontLeavePose(), paths.leavePoses.startingPose_To_backLeavePose()
+		);
 	}
 
 	public Command move(Path path) {
@@ -35,24 +37,33 @@ public class Runnables {
 	}
 
 	public Command intake(Path path) {
-		return sequential(parallel(robot.moveToPoint(path), robot.getIntake().setForward()), robot.getIntake().setOff());
+		return sequential(
+			parallel(robot.moveToPoint(path), robot.getIntake().setForward()), robot.getIntake().setOff()
+		);
 	}
 
 	public Command preloadAuto(boolean isFront, boolean goThroughMiddle) {
 		return sequential(
-				intake(paths.leavePoses.startingPose_To_midPose),
-				waitMs(1000),
-				conditional(() -> goThroughMiddle,
-						// if true go through the middle
-						sequential(
-								move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose),
-								decidePath(isFront, paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose, paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose)
-						),
-						// if false dont go through middle
-						sequential(
-								decidePath(isFront, paths.leavePoses.midPose_To_frontLeavePose, paths.leavePoses.midPose_To_backLeavePose)
-						)
+			intake(paths.leavePoses.startingPose_To_midPose()),
+			waitMs(1000),
+			conditional(
+				() -> goThroughMiddle,
+				// if true go through the middle
+				sequential(
+					move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose()),
+					decidePath(
+						isFront, paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose(),
+						paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose()
+					)
+				),
+				// if false dont go through middle
+				sequential(
+					decidePath(
+						isFront, paths.leavePoses.midPose_To_frontLeavePose(),
+						paths.leavePoses.midPose_To_backLeavePose()
+					)
 				)
+			)
 		);
 	}
 }

@@ -25,7 +25,7 @@ public class BaseAuto extends NextOpMode {
 		Alliance.currentAlliance = alliance;
 
 		this.runnables = new Runnables(robot);
-		this.startingPose = runnables.paths.leavePoses.startingPose;
+		this.startingPose = runnables.paths.cp.startingPose;
 	}
 
 	public void setAutoCommand(Command command) {

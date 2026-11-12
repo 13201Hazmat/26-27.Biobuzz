@@ -22,10 +22,9 @@ public class IntakeTestOp extends NextOpMode {
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 
-
 	}
 	@Override
-	public void start(){
+	public void start() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
@@ -41,7 +40,9 @@ public class IntakeTestOp extends NextOpMode {
 
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 
-		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 	}
 
 	@Override
@@ -53,7 +54,6 @@ public class IntakeTestOp extends NextOpMode {
 		Telemetry.log("DPad Left", "Ramp Down / Set Ramp Position (0.0)");
 		Telemetry.log("Left Bumper", "Cycle Transfer");
 		Telemetry.log("Left Trigger", "Debug");
-
 
 	}
 }
