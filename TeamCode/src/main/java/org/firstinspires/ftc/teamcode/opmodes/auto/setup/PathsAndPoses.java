@@ -11,6 +11,7 @@ public class PathsAndPoses {
 
 	private final PoseFactory factory;
 
+	private CommonPoints cp = new CommonPoints();
 	public final LeavePoses leavePoses;
 	public final BasicFlowerAutoPoses basicFlowerAutoPoses;
 	public final DoubleFlowerAutoPoses doubleFlowerAutoPoses;
@@ -45,13 +46,21 @@ public class PathsAndPoses {
 
 	/* Auto Path Poses */
 
+	public class CommonPoints {
+		public final Pose startingPose = factory.of(30.43, 7.48, 180);
+		public final Pose gardenIntakePose = factory.of(9.24, 7.31, 180);
+
+		public final Pose frontLeavePose = factory.of(10.34, 117.81, 0);
+		public final Pose backLeavePose = factory.of(10.11, 95.7, 0);
+	}
+
 	/* Starting at Open Hive */
 	public class LeavePoses {
-		public final Pose startingPose = factory.of(30.43, 7.48, 180);
-		public final Pose midPose = factory.of(9.24, 7.30, 180);
+		public final Pose startingPose = cp.startingPose;
+		public final Pose midPose = cp.gardenIntakePose;
 		public final Pose control = factory.of(25.96, 56.11, 180);
-		public final Pose frontLeavePose = factory.of(10.34, 117.81, 180);
-		public final Pose backLeavePose = factory.of(10.11, 95.7, 90);
+		public final Pose frontLeavePose = cp.frontLeavePose;
+		public final Pose backLeavePose = cp.backLeavePose;
 
 		public final Path startingPose_To_frontLeavePose = createLinearPath(startingPose, frontLeavePose);
 		public final Path startingPose_To_backLeavePose = createLinearPath(startingPose, backLeavePose);
@@ -61,7 +70,7 @@ public class PathsAndPoses {
 	}
 
 	public class BasicFlowerAutoPoses {
-		public final Pose startingPose = leavePoses.startingPose;
+		public final Pose startingPose = cp.startingPose;
 		public final Pose midPose = factory.of(9.24, 7.30, 180);
 		public final Pose control = factory.of(21.36, 86.38, 90);
 		public final Pose midControl = factory.of(95.96, 51.82, 90);
