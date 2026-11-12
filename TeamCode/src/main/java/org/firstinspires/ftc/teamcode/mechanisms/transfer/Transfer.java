@@ -8,7 +8,8 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;import dev.nextftc.units.measuretypes.Current;
+import dev.nextftc.telemetry.Telemetry;
+import dev.nextftc.units.measuretypes.Current;
 
 public class Transfer implements Mechanism {
 
