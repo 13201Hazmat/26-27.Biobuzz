@@ -38,7 +38,7 @@ public class Runnables {
 
 	public Command intake(Path path) {
 		return sequential(
-			parallel(robot.moveToPoint(path), robot.getIntake().setForward()), robot.getIntake().setOff()
+			parallel(robot.moveToPoint(path), robot.getIntake().setForward()), waitMs(1000), robot.getIntake().setOff()
 		);
 	}
 
