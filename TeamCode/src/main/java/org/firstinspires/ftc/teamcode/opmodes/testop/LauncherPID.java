@@ -17,6 +17,7 @@ public class LauncherPID extends NextOpMode {
 	public LauncherPID(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
+		robot.setActiveOpMode(this);
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}

@@ -5,50 +5,49 @@ import dev.nextftc.hardware.lynx.NextLynxModule;
 
 public class Config {
 
-	// Control Hub
-	public static NextLynxModule aModule = RobotController.controlHub();
-	public static int aPort = 0;
-	public static NextLynxModule bModule = RobotController.controlHub();
-	public static int bPort = 1;
-	public static NextLynxModule cModule = RobotController.controlHub();
-	public static int cPort = 2;
-	public static NextLynxModule dModule = RobotController.controlHub();
-	public static int dPort = 3;
-
-	// Servos
-	public static NextLynxModule eModule = RobotController.controlHub();
-	public static int ePort = 0;
-	public static NextLynxModule fModule = RobotController.controlHub();
-	public static int fPort = 1;
-	public static NextLynxModule gModule = RobotController.controlHub();
-	public static int gPort = 2;
-	public static NextLynxModule hModule = RobotController.controlHub();
-	public static int hPort = 3;
-	public static NextLynxModule iModule = RobotController.controlHub();
-	public static int iPort = 4;
-
-	// Expansion Hub (safely resolved in case Expansion Hub is not present in
-	// hardware config)
-	private static NextLynxModule getExpansionHubSafely() {
-		try {
-			return RobotController.expansionHub();
-		} catch (Exception e) {
-			return RobotController.controlHub();
-		}
-	}
-
-	public static NextLynxModule jModule = getExpansionHubSafely();
-	public static int jPort = 0;
-	public static NextLynxModule kModule = getExpansionHubSafely();
-	public static int kPort = 1;
-	public static NextLynxModule lModule = getExpansionHubSafely();
-	public static int lPort = 2;
-	public static NextLynxModule mModule = RobotController.controlHub();
-	public static int mPort = 3;
-
+	// Have to use strings because we are using pedro
 	public static String fl = "frontLeft";
 	public static String fR = "frontRight";
 	public static String bL = "backLeft";
 	public static String bR = "backRight";
+
+	/* CONTROL HUB MOTORS */
+	public static NextLynxModule leftLauncherMotorModule = RobotController.controlHub();
+	public static int leftLauncherMotorPort = 1;
+	public static NextLynxModule rightLauncherMotorModule = RobotController.controlHub();
+	public static int rightLauncherMotorPort = 2;
+
+	/* EXPANSION HUB MOTORS */
+	public static NextLynxModule intakeMotorModule = RobotController.expansionHub();
+	public static int intakeMotorPort = 1;
+	public static NextLynxModule transferMotorModule = RobotController.expansionHub();
+	public static int transferMotorPort = 2;
+
+	/* CONTROL HUB SERVOS */
+	public static NextLynxModule launcherBackPlateServoModule = RobotController.controlHub();
+	public static int launcherBackPlateServoPort = 0;
+	public static NextLynxModule leftIntakeRampServoModule = RobotController.controlHub();
+	public static int leftIntakeRampServoPort = 2;
+	// TODO add leftFlowerHood = 4;
+	public static NextLynxModule launcherGateServoModule = RobotController.expansionHub();
+	public static int launcherGateServoPort = 5;
+
+	/* EXPANSION HUB SERVOS */
+	public static NextLynxModule leftTurretServoModule = RobotController.expansionHub();
+	public static int leftTurretServoPort = 0;
+	public static NextLynxModule rightIntakeRampServoModule = RobotController.expansionHub();
+	public static int rightIntakeRampServoPort = 2;
+	public static NextLynxModule rightTurretServoModule = RobotController.expansionHub();
+	public static int rightTurretServoPort = 3;
+	// TODO add flowerHoodRight=4
+
+	/* CONTROL HUB DIGITAL SENSORS */
+	public static NextLynxModule intakeBeamBreakModule = RobotController.controlHub();
+	public static int intakeBeamBreakPort = 3;
+
+	public static NextLynxModule launcherBeamBreakModule = RobotController.controlHub();
+	public static int launcherBeamBreakPort = 5;
+
+	public static String intakeColorSensorName = "intakeColorSensor";
 
 }

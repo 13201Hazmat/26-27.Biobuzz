@@ -6,9 +6,8 @@ import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.robot.drive.DriveCommands;
-import dev.nextftc.robot.opmode.NextTeleop;
 
 public class Drivetrain implements Mechanism {
 	public final NextMotor frontLeft = new NextMotor(Config.fl);
@@ -17,10 +16,9 @@ public class Drivetrain implements Mechanism {
 	public final NextMotor backRight = new NextMotor(Config.bR);
 
 	public Drivetrain() {
-
-		frontLeft.setDirection(NextMotor.Direction.REVERSE);
-		frontRight.setDirection(NextMotor.Direction.FORWARD);
-		backLeft.setDirection(NextMotor.Direction.REVERSE);
+		frontLeft.setDirection(NextMotor.Direction.FORWARD);
+		frontRight.setDirection(NextMotor.Direction.REVERSE);
+		backLeft.setDirection(NextMotor.Direction.FORWARD);
 		backRight.setDirection(NextMotor.Direction.FORWARD);
 
 	}
@@ -40,6 +38,16 @@ public class Drivetrain implements Mechanism {
 			backRight,
 			gamepad,
 			() -> heading
+		).schedule();
+	}
+
+	public void startDrive(Gamepad gamepad) {
+		DriveCommands.mecanumDrive(
+			frontLeft,
+			frontRight,
+			backLeft,
+			backRight,
+			gamepad
 		).schedule();
 	}
 }
