@@ -59,7 +59,7 @@ public class PathsAndPoses {
 		public final Path startingPose_To_backLeavePose() {
 			return Paths.line(cp.startingPose, cp.backLeavePose).linear(cp.startingPose, cp.backLeavePose);
 		}
-		public final Path startingPose_To_midPose() {
+		public final Path startingPose_To_gardenIntakePose() {
 			return Paths.line(cp.startingPose, cp.gardenIntakePose).linear(cp.startingPose, cp.gardenIntakePose);
 		}
 		public final Path midPose_To_frontLeavePose() {
