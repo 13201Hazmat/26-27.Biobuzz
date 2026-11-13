@@ -45,6 +45,8 @@ public class RobotTest extends NextOpMode {
 		gp1.circle().onTrue(robot.getLauncher().openGate());
 		gp1.square().onTrue(robot.getLauncher().closeGate());
 
+		gp1.rightStickButton().onFalse(robot.getIntake().toggleRamp());
+
 		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
 	}
 
