@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-//import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import dev.nextftc.robot.opmode.NextUtility;
 
 public class HazmatRobot implements NextRobot {
 
-//	private Follower follower;
+	private Follower follower;
 	private final Drivetrain drivetrain;
 	private Intake intake;
 	private final Transfer transfer;
@@ -69,8 +69,6 @@ public class HazmatRobot implements NextRobot {
 		return Alliance.currentAlliance;
 	}
 
-
-
 	public HazmatRobot() {
 		drivetrain = new Drivetrain();
 		intake = new Intake();
@@ -78,7 +76,6 @@ public class HazmatRobot implements NextRobot {
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
 	}
-
 
 	public Drivetrain getDrivetrain() {
 		return drivetrain;
@@ -107,24 +104,28 @@ public class HazmatRobot implements NextRobot {
 		return launcherHood;
 	}
 
-//	public Follower getFollower() {
-//		if (follower == null) {
-//			follower = Constants.create(RobotController.hardwareMap());
-//		}
-//		return follower;
-//	}
+	public Follower getFollower() {
+		if (follower == null) {
+			follower = Constants.create(RobotController.hardwareMap());
+		}
+		return follower;
+	}
 
-//	public Pose getPose() {
-//		return getFollower().pose();
-//	}
+	public Command moveToPoint(com.pedropathing.paths.Path path) {
+		return instant(() -> getFollower().follow(path));
+	}
 
-//	public Velocity getVelocity(){
-//		return getFollower().velocity();
-//	}
+	public Pose getPose() {
+		return getFollower().pose();
+	}
 
-//	public void setStartingPose(Pose pose) {
-//		getFollower().setPose(pose);
-//	}
+	public Velocity getVelocity(){
+		return getFollower().velocity();
+	}
+
+	public void setStartingPose(Pose pose) {
+		getFollower().setPose(pose);
+	}
 
 	@NonNull
 	@Override
