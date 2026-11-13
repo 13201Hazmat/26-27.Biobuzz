@@ -69,7 +69,15 @@ public class Runnables {
 
 	public Command singleFlowerAuto(boolean isFront, boolean closeFlower, boolean goThroughMiddle) {
 		return sequential(
-			move(paths.leavePoses.startingPose_To_gardenIntakePose())
+				move(paths.leavePoses.startingPose_To_gardenIntakePose()),
+				conditional(() -> closeFlower,
+						sequential(
+
+						),
+						sequential(
+
+						)
+				)
 		);
 	}
 }
