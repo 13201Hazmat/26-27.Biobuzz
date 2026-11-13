@@ -132,7 +132,7 @@ public class Transfer implements Mechanism {
 			case BACKWARD :
 				transferMotor.setThrottle(BACKWARD_SPEED);
 				break;
-			case OFF:
+			case OFF :
 				transferMotor.setThrottle(OFF_SPEED);
 				break;
 		}

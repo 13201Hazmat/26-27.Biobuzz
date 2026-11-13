@@ -28,7 +28,7 @@ public class Config {
 	public static int launcherBackPlateServoPort = 0;
 	public static NextLynxModule leftIntakeRampServoModule = RobotController.controlHub();
 	public static int leftIntakeRampServoPort = 2;
-	//TODO add leftFlowerHood = 4;
+	// TODO add leftFlowerHood = 4;
 	public static NextLynxModule launcherGateServoModule = RobotController.expansionHub();
 	public static int launcherGateServoPort = 5;
 

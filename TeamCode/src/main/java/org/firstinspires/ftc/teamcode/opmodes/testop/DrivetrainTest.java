@@ -29,7 +29,9 @@ public class DrivetrainTest extends NextOpMode {
 
 		robot.getDrivetrain().startDrive(gamepad1);
 
-		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 	}
 
 	@Override

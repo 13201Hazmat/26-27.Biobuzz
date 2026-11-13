@@ -70,7 +70,9 @@ public class PathsAndPoses {
 			return Paths.line(cp.startingPose, cp.backLeavePose).linear(cp.startingPose, cp.backLeavePose);
 		}
 		public final Path midPose_To_frontLeavePose() {
-			return Paths.curve(cp.gardenIntakePose, control, cp.frontLeavePose).linear(cp.gardenIntakePose, cp.frontLeavePose);
+			return Paths.curve(cp.gardenIntakePose, control, cp.frontLeavePose).linear(
+				cp.gardenIntakePose, cp.frontLeavePose
+			);
 		}
 		public final Path midPose_To_backLeavePose() {
 			return Paths.curve(cp.gardenIntakePose, control, cp.backLeavePose);
@@ -81,7 +83,9 @@ public class PathsAndPoses {
 			public final Pose midLeavePose = factory.of(72.37, 103.32, 90);
 
 			public final Path midPose_To_midLeavePose() {
-				return Paths.curve(cp.gardenIntakePose, middleControl, midLeavePose).linear(cp.gardenIntakePose, midLeavePose);
+				return Paths.curve(cp.gardenIntakePose, middleControl, midLeavePose).linear(
+					cp.gardenIntakePose, midLeavePose
+				);
 			}
 			public final Path midLeavePose_To_frontLeavePose() {
 				return Paths.line(midLeavePose, cp.frontLeavePose);
@@ -94,7 +98,7 @@ public class PathsAndPoses {
 
 	public class CloseFlowerAutoPoses {
 		public final Pose beforeCloseFlowerIntakePose = factory.of(20.03, 46.64, 180);
-		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64,180);
+		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64, 180);
 		public final Pose leaveControlPoint = factory.of(25.11, 54.47, 0);
 
 		public Path gardenIntakePose_To_beforeCloseFlowerIntakePose() {
@@ -102,15 +106,21 @@ public class PathsAndPoses {
 		}
 
 		public Path beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose() {
-			return Paths.line(beforeCloseFlowerIntakePose, afterCloseFlowerIntakePose).constant(afterCloseFlowerIntakePose);
+			return Paths.line(beforeCloseFlowerIntakePose, afterCloseFlowerIntakePose).constant(
+				afterCloseFlowerIntakePose
+			);
 		}
 
 		public Path afterCloseFlowerIntakePose_To_frontLeavePose() {
-			return Paths.curve(afterCloseFlowerIntakePose, leaveControlPoint, cp.frontLeavePose).linear(afterCloseFlowerIntakePose, cp.frontLeavePose);
+			return Paths.curve(afterCloseFlowerIntakePose, leaveControlPoint, cp.frontLeavePose).linear(
+				afterCloseFlowerIntakePose, cp.frontLeavePose
+			);
 		}
 
 		public Path afterCloseFlowerIntakePose_To_backLeavePose() {
-			return Paths.curve(afterCloseFlowerIntakePose, leaveControlPoint, cp.backLeavePose).linear(afterCloseFlowerIntakePose, cp.backLeavePose);
+			return Paths.curve(afterCloseFlowerIntakePose, leaveControlPoint, cp.backLeavePose).linear(
+				afterCloseFlowerIntakePose, cp.backLeavePose
+			);
 		}
 	}
 

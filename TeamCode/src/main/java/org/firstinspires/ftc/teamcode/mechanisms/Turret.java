@@ -20,14 +20,13 @@ public class Turret implements Mechanism {
 	public static double TOLERANCE_DEG = 0.5;
 	public static boolean AUTO_AIM = true;
 
-
 	public static double CENTER_POS = 0.5;
 
 	private final NextServo leftTurretServo = new NextServo(
-			Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
 	);
 	private final NextServo rightTurretServo = new NextServo(
-			Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
 	);
 	private final OctoQuad oq;
 
@@ -36,7 +35,6 @@ public class Turret implements Mechanism {
 
 	private final double TURRET_MAX_ANGLE = 175;
 	private final double TURRET_MIN_ANGLE = -175;
-
 
 	private final int ABS_CHANNEL = 4;
 	private final int PWM_MIN = 1;
@@ -53,8 +51,8 @@ public class Turret implements Mechanism {
 				tempOq = hw.get(OctoQuad.class, "oq");
 				tempOq.setChannelBankConfig(OctoQuad.ChannelBankConfig.BANK1_QUADRATURE_BANK2_PULSE_WIDTH);
 				tempOq.setSingleChannelPulseWidthParams(
-						ABS_CHANNEL,
-						new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX)
+					ABS_CHANNEL,
+					new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX)
 				);
 			} catch (Exception e) {
 				tempOq = null;
@@ -71,7 +69,6 @@ public class Turret implements Mechanism {
 		return curAngle;
 	}
 
-
 	public double getRightTurretServoPos() {
 		return rightTurretServo.getPosition();
 	}
@@ -79,7 +76,6 @@ public class Turret implements Mechanism {
 	public double getLeftTurretServoPos() {
 		return leftTurretServo.getPosition();
 	}
-
 
 	public void toggleAutoAim() {
 		AUTO_AIM = !AUTO_AIM;
@@ -97,7 +93,6 @@ public class Turret implements Mechanism {
 		rightTurretServo.setPosition(p);
 		leftTurretServo.setPosition(p);
 	}
-
 
 	public Command zeroTurretServo() {
 		return instant(() -> setPositions(0));
@@ -152,11 +147,16 @@ public class Turret implements Mechanism {
 			updateAngle();
 			double error = targetTurretAng - curAngle;
 			if (Math.abs(error) > TOLERANCE_DEG) {
-				servoPos = clamp(servoPos - KP * error, turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE));
+				servoPos = clamp(
+					servoPos - KP * error, turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE)
+				);
 			}
 			setPositions(servoPos);
 		} else {
-			servoPos = clamp(turretAngleToServo(targetTurretAng), turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE));
+			servoPos = clamp(
+				turretAngleToServo(targetTurretAng), turretAngleToServo(TURRET_MAX_ANGLE),
+				turretAngleToServo(TURRET_MIN_ANGLE)
+			);
 			setPositions(servoPos);
 		}
 	}

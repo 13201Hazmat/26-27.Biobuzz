@@ -12,59 +12,61 @@ import dev.nextftc.robot.triggers.CommandGamepad;
 import dev.nextftc.robot.triggers.Trigger;
 
 public abstract class TeleOp extends NextOpMode {
-    private final HazmatRobot robot;
-    public TeleOp(HazmatRobot robot, Alliance alliance) {
-        super(robot, BulkReadHook.INSTANCE);
-        this.robot = robot;
+	private final HazmatRobot robot;
+	public TeleOp(HazmatRobot robot, Alliance alliance) {
+		super(robot, BulkReadHook.INSTANCE);
+		this.robot = robot;
 
-        robot.setActiveOpMode(this);
+		robot.setActiveOpMode(this);
 
-        Alliance.currentAlliance = alliance;
+		Alliance.currentAlliance = alliance;
 
-        Trigger.Companion.getDefaultEventLoop().clear();
+		Trigger.Companion.getDefaultEventLoop().clear();
 
-//        robot.setStartingPose(PoseStorage.get());
-    }
+		// robot.setStartingPose(PoseStorage.get());
+	}
 
-    @Override
-    public void start() {
-        gp1();
-        gp2();
-    }
+	@Override
+	public void start() {
+		gp1();
+		gp2();
+	}
 
-    protected void gp1() {
-        CommandGamepad gp1 = new CommandGamepad(gamepad1);
+	protected void gp1() {
+		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-        robot.getDrivetrain().startDrive(gamepad1);
+		robot.getDrivetrain().startDrive(gamepad1);
 
-        gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
-        gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
-        gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
+		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
+		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
 
-        gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
-    }
+		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
+	}
 
-    protected void gp2() {
-        CommandGamepad gp2 = new CommandGamepad(gamepad2);
+	protected void gp2() {
+		CommandGamepad gp2 = new CommandGamepad(gamepad2);
 
-        gp2.rightBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(true)));
-        gp2.leftBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(false)));
+		gp2.rightBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(true)));
+		gp2.leftBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(false)));
 
-        gp2.rightTrigger().isOver(0.2).onTrue(robot.getLauncher().closeGate());
+		gp2.rightTrigger().isOver(0.2).onTrue(robot.getLauncher().closeGate());
 
-        gp2.dpadUp().onTrue(instant(robot::toggleHoodAutomate));
-        gp2.dpadRight().onTrue(robot.getLauncherHood().setPollenPos());
-        gp2.dpadLeft().onTrue(robot.getLauncherHood().setNectarPos());
+		gp2.dpadUp().onTrue(instant(robot::toggleHoodAutomate));
+		gp2.dpadRight().onTrue(robot.getLauncherHood().setPollenPos());
+		gp2.dpadLeft().onTrue(robot.getLauncherHood().setNectarPos());
 
-        gp2.dpadDown().onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
-        gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));
+		gp2.dpadDown().onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
+		gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));
 
-        gp2.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp2.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 
-    }
+	}
 
-    @Override
-    public void periodic() {
+	@Override
+	public void periodic() {
 
-    }
+	}
 }

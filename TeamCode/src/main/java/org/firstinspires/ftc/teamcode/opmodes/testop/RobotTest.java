@@ -28,14 +28,13 @@ public class RobotTest extends NextOpMode {
 
 		robot.getDrivetrain().startDrive(gamepad1);
 
-		//Intake and Transfer Controls
+		// Intake and Transfer Controls
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 
-		//Launcher Controls
+		// Launcher Controls
 		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
-
 
 		// Launcher Hood Controls
 		gp1.cross().onTrue(robot.getLauncherHood().setPollenPos());
@@ -47,7 +46,9 @@ public class RobotTest extends NextOpMode {
 
 		gp1.rightStickButton().onFalse(robot.getIntake().toggleRamp());
 
-		gp1.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 	}
 
 	@Override
@@ -62,7 +63,6 @@ public class RobotTest extends NextOpMode {
 		Telemetry.log("Circle", "Open Launcher Gate");
 		Telemetry.log("Square", "Close Launcher Gate");
 		Telemetry.log("Left Trigger", "Debug");
-
 
 	}
 }
