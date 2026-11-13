@@ -63,7 +63,7 @@ public class HazmatRobot implements NextRobot {
 
 	public void setActiveOpMode(@Nullable NextOpMode activeOpMode) {
 		if (activeOpMode != null) {
-			resetAll();
+			offAll();
 		}
 		this.activeOpMode = activeOpMode;
 	}
@@ -180,9 +180,9 @@ public class HazmatRobot implements NextRobot {
 		);
 	}
 
-	public void resetAll() {
-		intake.reset();
-		transfer.reset();
+	public void offAll() {
+		intake.off();
+		transfer.off();
 	}
 
 	private Command setHoodForFirst() {

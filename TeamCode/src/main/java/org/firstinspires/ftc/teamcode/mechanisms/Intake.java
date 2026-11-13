@@ -66,10 +66,6 @@ public class Intake implements Mechanism {
 		intakeRampServo.setPosition(pos);
 	}
 
-	public void reset() {
-		intakeState = IntakeState.OFF;
-	}
-
 	public Command setForward() {
 		return instant(this::forward);
 	}

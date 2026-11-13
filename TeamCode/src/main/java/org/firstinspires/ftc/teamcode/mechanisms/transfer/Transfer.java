@@ -75,10 +75,6 @@ public class Transfer implements Mechanism {
 		setState(TransferMotorState.OFF);
 	}
 
-	public void reset() {
-		transferMotorState = TransferMotorState.OFF;
-	}
-
 	public void cycle() {
 		if (transferMotorState == TransferMotorState.FORWARD) {
 			transferMotorState = TransferMotorState.BACKWARD;
