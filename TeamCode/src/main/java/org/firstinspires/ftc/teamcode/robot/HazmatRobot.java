@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+//import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import dev.nextftc.robot.opmode.NextUtility;
 
 public class HazmatRobot implements NextRobot {
 
-	private Follower follower;
+//	private Follower follower;
 	private final Drivetrain drivetrain;
 	private Intake intake;
 	private final Transfer transfer;
@@ -107,24 +107,24 @@ public class HazmatRobot implements NextRobot {
 		return launcherHood;
 	}
 
-	public Follower getFollower() {
-		if (follower == null) {
-			follower = Constants.create(RobotController.hardwareMap());
-		}
-		return follower;
-	}
+//	public Follower getFollower() {
+//		if (follower == null) {
+//			follower = Constants.create(RobotController.hardwareMap());
+//		}
+//		return follower;
+//	}
 
-	public Pose getPose() {
-		return getFollower().pose();
-	}
+//	public Pose getPose() {
+//		return getFollower().pose();
+//	}
 
-	public Velocity getVelocity(){
-		return getFollower().velocity();
-	}
+//	public Velocity getVelocity(){
+//		return getFollower().velocity();
+//	}
 
-	public void setStartingPose(Pose pose) {
-		getFollower().setPose(pose);
-	}
+//	public void setStartingPose(Pose pose) {
+//		getFollower().setPose(pose);
+//	}
 
 	@NonNull
 	@Override
@@ -260,7 +260,7 @@ public class HazmatRobot implements NextRobot {
 		if (on) {
 			intake.forward();
 			// if (transfer.isStalling()) {
-			transfer.off();
+//			transfer.off();
 			// } else {
 			transfer.forward();
 			// }
@@ -272,14 +272,15 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		setTargetPose(getAlliance(),getPose());
+//		setTargetPose(getAlliance(),getPose());
+
 
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 
 		if(Turret.AUTO_AIM){
-			getTurret().trackGoal(TurretPoses.targetPose, getPose());
+//			getTurret().trackGoal(TurretPoses.targetPose, getPose());
 		}
 
 		if (debugEnabled) {

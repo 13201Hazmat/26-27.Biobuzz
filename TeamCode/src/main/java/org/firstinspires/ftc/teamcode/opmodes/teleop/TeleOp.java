@@ -23,7 +23,7 @@ public abstract class TeleOp extends NextOpMode {
 
         Trigger.Companion.getDefaultEventLoop().clear();
 
-        robot.setStartingPose(PoseStorage.get());
+//        robot.setStartingPose(PoseStorage.get());
     }
 
     @Override

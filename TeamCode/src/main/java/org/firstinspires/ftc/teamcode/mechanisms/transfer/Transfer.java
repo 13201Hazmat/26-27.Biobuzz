@@ -35,7 +35,7 @@ public class Transfer implements Mechanism {
 	public Transfer() {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
 		transferTracking = new TransferTracking();
-		transferMotorState = TransferMotorState.FORWARD;
+		transferMotorState = TransferMotorState.STOPPED;
 		transferSensingState = TransferSensingState.EMPTY;
 
 		transferMotor.setCurrentAlert(currentLimit);

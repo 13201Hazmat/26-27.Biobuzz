@@ -14,7 +14,7 @@ public class LauncherHood implements Mechanism {
 	);
 
 	private final double POLLEN_POS = 0.8;
-	private final double NECTAR_POS = 0.48;
+	private final double NECTAR_POS = 0.42;
 
 	public LauncherHood() {
 		launcherHood.setPwmRange(500, 2500);
