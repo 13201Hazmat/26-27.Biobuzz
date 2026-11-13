@@ -23,27 +23,15 @@ public class Runnables {
 		this.paths = new PathsAndPoses();
 	}
 
+	/**
+	 * Defers path selection until runtime execution using lazy(...).
+	 * Dynamically evaluates condition at runtime and executes only the selected path command.
+	 */
 	public Command decidePath(BooleanSupplier condition, Path option1, Path option2) {
 		return lazy(() -> condition.getAsBoolean() ? robot.moveToPoint(option1) : robot.moveToPoint(option2));
 	}
 
-	public Command decidePath(boolean condition, Path option1, Path option2) {
-		return decidePath(() -> condition, option1, option2);
-	}
-
 	/* FRONT AUTOS (We are shooting first) */
-
-	public Command leaveAuto(BooleanSupplier isFront) {
-		return decidePath(
-			isFront,
-			paths.leavePoses.startingPose_To_frontLeavePose(),
-			paths.leavePoses.startingPose_To_backLeavePose()
-		);
-	}
-
-	public Command leaveAuto(boolean isFront) {
-		return leaveAuto(() -> isFront);
-	}
 
 	public Command move(Path path) {
 		return robot.moveToPoint(path);
@@ -51,9 +39,17 @@ public class Runnables {
 
 	public Command intake(Path path) {
 		return sequential(
-			parallel(robot.moveToPoint(path), robot.getIntake().setForward()),
-			waitMs(1000),
-			robot.getIntake().setOff()
+				parallel(robot.moveToPoint(path), robot.getIntake().setForward()),
+				waitMs(1000),
+				robot.getIntake().setOff()
+		);
+	}
+
+	public Command leaveAuto(BooleanSupplier isFront) {
+		return decidePath(
+				isFront,
+				paths.leavePoses.startingPose_To_frontLeavePose(),
+				paths.leavePoses.startingPose_To_backLeavePose()
 		);
 	}
 
@@ -80,21 +76,6 @@ public class Runnables {
 						paths.leavePoses.midPose_To_backLeavePose()
 					)
 				)
-			)
-		);
-	}
-
-	public Command preloadAuto(boolean isFront, boolean goThroughMiddle) {
-		return preloadAuto(() -> isFront, () -> goThroughMiddle);
-	}
-
-	public Command singleFlowerAuto(boolean isFront, boolean closeFlower, boolean goThroughMiddle) {
-		return sequential(
-			move(paths.cp.startingPose_To_gardenIntakePose()),
-			conditional(
-				() -> closeFlower,
-				sequential(),
-				sequential()
 			)
 		);
 	}
