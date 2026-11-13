@@ -18,12 +18,12 @@ public class Transfer implements Mechanism {
 	}
 
 	public enum TransferMotorState {
-		FORWARD, BACKWARD, STOPPED
+		FORWARD, BACKWARD, OFF
 	}
 
 	private static final double FORWARD_SPEED = 1.0;
 	private static final double BACKWARD_SPEED = -1.0;
-	private static final double IDLE_SPEED = 0.0;
+	private static final double OFF_SPEED = 0.0;
 
 	private final Current currentLimit = Amperes.of(5.0);
 
@@ -35,7 +35,7 @@ public class Transfer implements Mechanism {
 	public Transfer() {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
 		transferTracking = new TransferTracking();
-		transferMotorState = TransferMotorState.STOPPED;
+		transferMotorState = TransferMotorState.OFF;
 		transferSensingState = TransferSensingState.EMPTY;
 
 		transferMotor.setCurrentAlert(currentLimit);
@@ -72,14 +72,18 @@ public class Transfer implements Mechanism {
 	}
 
 	public void off() {
-		setState(TransferMotorState.STOPPED);
+		setState(TransferMotorState.OFF);
+	}
+
+	public void reset() {
+		transferMotorState = TransferMotorState.OFF;
 	}
 
 	public void cycle() {
 		if (transferMotorState == TransferMotorState.FORWARD) {
 			transferMotorState = TransferMotorState.BACKWARD;
 		} else if (transferMotorState == TransferMotorState.BACKWARD) {
-			transferMotorState = TransferMotorState.STOPPED;
+			transferMotorState = TransferMotorState.OFF;
 		} else {
 			transferMotorState = TransferMotorState.FORWARD;
 		}
@@ -128,8 +132,8 @@ public class Transfer implements Mechanism {
 			case BACKWARD :
 				transferMotor.setThrottle(BACKWARD_SPEED);
 				break;
-			case STOPPED :
-				transferMotor.setThrottle(IDLE_SPEED);
+			case OFF:
+				transferMotor.setThrottle(OFF_SPEED);
 				break;
 		}
 	}

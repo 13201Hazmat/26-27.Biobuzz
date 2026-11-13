@@ -65,10 +65,4 @@ public class RobotTest extends NextOpMode {
 
 
 	}
-
-	@Override
-	public void end() {
-		robot.getIntake().setOff();
-		robot.getTransfer().setOff();
-	}
 }
