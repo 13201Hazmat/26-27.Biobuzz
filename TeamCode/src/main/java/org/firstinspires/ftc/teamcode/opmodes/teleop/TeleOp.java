@@ -28,6 +28,7 @@ public abstract class TeleOp extends NextOpMode {
 
 	@Override
 	public void start() {
+		robot.init();
 		gp1();
 		gp2();
 	}

@@ -174,7 +174,7 @@ public class HazmatRobot implements NextRobot {
 
 	public Command init() {
 		return parallel(
-			intake.setRampDown(),
+			intake.setRampUp(),
 			launcherHood.setPollenPos(),
 			launcher.closeGate()
 		);
