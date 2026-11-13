@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
+import com.pedropathing.math.Pose;
+
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.PoseStorage;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -16,6 +18,7 @@ public abstract class TeleOp extends NextOpMode {
 	public TeleOp(HazmatRobot robot, Alliance alliance) {
 		super(robot, BulkReadHook.INSTANCE);
 		this.robot = robot;
+		robot.getFollower().setPose(new Pose(30.43, 7.48, 180));
 
 		robot.setActiveOpMode(this);
 
@@ -65,6 +68,7 @@ public abstract class TeleOp extends NextOpMode {
 
 	@Override
 	public void periodic() {
-
+		telemetry.addData("POSE", robot.getFollower().pose());
+		telemetry.update();
 	}
 }

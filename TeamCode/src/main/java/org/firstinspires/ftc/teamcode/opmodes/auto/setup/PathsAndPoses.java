@@ -11,7 +11,7 @@ public class PathsAndPoses {
 
 	private final PoseFactory factory;
 
-	public CommonPoints cp = new CommonPoints();
+	public final CommonPoints cp;
 	public final LeavePoses leavePoses;
 	public final FarFlowerAutoPoses farFlowerPoses;
 	public final CloseFlowerAutoPoses closeFlowerPoses;
@@ -23,6 +23,7 @@ public class PathsAndPoses {
 			factory.mirrorY(70.75);
 		}
 
+		cp = new CommonPoints();
 		leavePoses = new LeavePoses();
 		farFlowerPoses = new FarFlowerAutoPoses();
 		closeFlowerPoses = new CloseFlowerAutoPoses();
@@ -64,7 +65,7 @@ public class PathsAndPoses {
 		public MidLeavePoses midLeavePoses;
 		public final Pose control = factory.of(25.96, 56.11, 180);
 		public final Path startingPose_To_frontLeavePose() {
-			return Paths.line(cp.startingPose, cp.frontLeavePose);
+			return Paths.line(cp.startingPose, cp.frontLeavePose).linear(180, 0);
 		}
 		public final Path startingPose_To_backLeavePose() {
 			return Paths.line(cp.startingPose, cp.backLeavePose).linear(cp.startingPose, cp.backLeavePose);

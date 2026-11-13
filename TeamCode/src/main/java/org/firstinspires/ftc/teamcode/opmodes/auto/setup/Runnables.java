@@ -27,9 +27,10 @@ public class Runnables {
 	/* FRONT AUTOS (We are shooting first) */
 
 	public Command leaveAuto(boolean isFront) {
-		return decidePath(
-			isFront, paths.leavePoses.startingPose_To_frontLeavePose(), paths.leavePoses.startingPose_To_backLeavePose()
-		);
+//		return decidePath(
+//			isFront, paths.leavePoses.startingPose_To_frontLeavePose(), paths.leavePoses.startingPose_To_backLeavePose()
+//		);
+		return move(paths.leavePoses.startingPose_To_frontLeavePose());
 	}
 
 	public Command move(Path path) {
