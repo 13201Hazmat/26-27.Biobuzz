@@ -14,6 +14,8 @@ public class PathsAndPoses {
 	public CommonPoints cp = new CommonPoints();
 	public final LeavePoses leavePoses;
 	public final FarFlowerAutoPoses farFlowerPoses;
+	public final CloseFlowerAutoPoses closeFlowerPoses;
+	public final DoubleFlowerAutoPoses doubleFlowerPoses;
 	public PathsAndPoses() {
 		factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 		if (Alliance.currentAlliance == Alliance.BLUE) {
@@ -23,6 +25,8 @@ public class PathsAndPoses {
 
 		leavePoses = new LeavePoses();
 		farFlowerPoses = new FarFlowerAutoPoses();
+		closeFlowerPoses = new CloseFlowerAutoPoses();
+		doubleFlowerPoses = new DoubleFlowerAutoPoses();
 	}
 
 	public static class TurretPoses {
@@ -49,8 +53,6 @@ public class PathsAndPoses {
 	public class LeavePoses {
 		public MidLeavePoses midLeavePoses;
 		public final Pose control = factory.of(25.96, 56.11, 180);
-		public final Pose middleControl = factory.of(86.68, 32.16, 90);
-		public final Pose midLeavePose = factory.of(72.37, 103.32, 90);
 		public final Path startingPose_To_frontLeavePose() {
 			return Paths.line(cp.startingPose, cp.frontLeavePose);
 		}
@@ -85,6 +87,10 @@ public class PathsAndPoses {
 		}
 	}
 
+	public class CloseFlowerAutoPoses {
+
+	}
+
 	public class FarFlowerAutoPoses {
 		private final Pose controlPoint = factory.of(21.3681, 86.3828, 0);
 		public Path startingPose_To_gardenIntakePose() {
@@ -114,6 +120,10 @@ public class PathsAndPoses {
 				cp.afterFarFlowerIntakePose, cp.frontLeavePose
 			);
 		}
+	}
+
+	public class DoubleFlowerAutoPoses {
+
 	}
 
 }

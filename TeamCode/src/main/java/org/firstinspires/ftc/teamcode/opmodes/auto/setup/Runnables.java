@@ -66,4 +66,10 @@ public class Runnables {
 			)
 		);
 	}
+
+	public Command singleFlowerAuto(boolean isFront, boolean closeFlower, boolean goThroughMiddle) {
+		return sequential(
+
+		);
+	}
 }
