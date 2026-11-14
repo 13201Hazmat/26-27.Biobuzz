@@ -62,7 +62,7 @@ public class PathsAndPoses {
 
 	/* Starting at Open Hive */
 	public class LeavePoses {
-		public MidLeavePoses midLeavePoses;
+		public final MidLeavePoses midLeavePoses = new MidLeavePoses();
 		public final Pose control = factory.of(25.96, 56.11, 180);
 		public final Path startingPose_To_frontLeavePose() {
 			return Paths.line(cp.startingPose, cp.frontLeavePose).linear(180, 0);
