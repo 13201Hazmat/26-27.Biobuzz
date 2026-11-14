@@ -74,7 +74,7 @@ public class PathsAndPoses {
 			return Paths.curve(cp.gardenIntakePose, control, cp.frontLeavePose).linear(cp.gardenIntakePose, cp.frontLeavePose);
 		}
 		public final Path midPose_To_backLeavePose() {
-			return Paths.curve(cp.gardenIntakePose, control, cp.backLeavePose);
+			return Paths.curve(cp.gardenIntakePose, control, cp.backLeavePose).linear(cp.gardenIntakePose, cp.backLeavePose);
 		}
 
 		public class MidLeavePoses {
@@ -87,10 +87,10 @@ public class PathsAndPoses {
 				return Paths.curve(cp.gardenIntakePose, middleControl, midLeavePose).linear(cp.gardenIntakePose, midLeavePose);
 			}
 			public final Path midLeavePose_To_frontLeavePose() {
-				return Paths.line(midLeavePose, frontLeavePose);
+				return Paths.line(midLeavePose, frontLeavePose).linear(midLeavePose, frontLeavePose);
 			}
 			public final Path midLeavePose_To_backLeavePose() {
-				return Paths.line(midLeavePose, backLeavePose);
+				return Paths.line(midLeavePose, backLeavePose).linear(midLeavePose, backLeavePose);
 			}
 		}
 	}

@@ -55,28 +55,55 @@ public class Runnables {
 
 	public Command preloadAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
-			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(1000),
-			conditional(
-				goThroughMiddle,
-				// if true go through the middle
-				sequential(
-					move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose()),
-					decidePath(
-						isFront,
-						paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose(),
-						paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose()
-					)
-				),
-				// if false dont go through middle
-				sequential(
-					decidePath(
-						isFront,
-						paths.leavePoses.midPose_To_frontLeavePose(),
-						paths.leavePoses.midPose_To_backLeavePose()
-					)
+				intake(paths.cp.startingPose_To_gardenIntakePose()),
+				waitMs(1000),
+				conditional(
+						goThroughMiddle,
+						// if true go through the middle
+						sequential(
+								move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose()),
+								decidePath(
+										isFront,
+										paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose(),
+										paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose()
+								)
+						),
+						// if false dont go through middle
+						sequential(
+								decidePath(
+										isFront,
+										paths.leavePoses.midPose_To_frontLeavePose(),
+										paths.leavePoses.midPose_To_backLeavePose()
+								)
+						)
 				)
-			)
 		);
 	}
+	public Command firstFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
+		return sequential(
+				intake(paths.cp.startingPose_To_gardenIntakePose()),
+				waitMs(1000),
+				conditional(
+						goThroughMiddle,
+						// if true go through the middle
+						sequential(
+								move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose()),
+								decidePath(
+										isFront,
+										paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose(),
+										paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose()
+								)
+						),
+						// if false dont go through middle
+						sequential(
+								decidePath(
+										isFront,
+										paths.leavePoses.midPose_To_frontLeavePose(),
+										paths.leavePoses.midPose_To_backLeavePose()
+								)
+						)
+				)
+		);
+	}
+
 }
