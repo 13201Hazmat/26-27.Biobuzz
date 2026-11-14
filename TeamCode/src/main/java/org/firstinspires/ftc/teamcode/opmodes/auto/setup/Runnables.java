@@ -79,30 +79,27 @@ public class Runnables {
 				)
 		);
 	}
-	public Command firstFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
+	public Command closeFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
 				intake(paths.cp.startingPose_To_gardenIntakePose()),
 				waitMs(1000),
-				conditional(
-						goThroughMiddle,
-						// if true go through the middle
-						sequential(
-								move(paths.leavePoses.midLeavePoses.midPose_To_midLeavePose()),
-								decidePath(
-										isFront,
-										paths.leavePoses.midLeavePoses.midLeavePose_To_frontLeavePose(),
-										paths.leavePoses.midLeavePoses.midLeavePose_To_backLeavePose()
-								)
-						),
-						// if false dont go through middle
-						sequential(
-								decidePath(
-										isFront,
-										paths.leavePoses.midPose_To_frontLeavePose(),
-										paths.leavePoses.midPose_To_backLeavePose()
-								)
-						)
-				)
+				intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
+				intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
+				waitMs(500),
+				intake(paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose()),
+				waitMs(500),
+				decidePath(isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(), paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose())
+		);
+	}
+
+	public Command farFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
+		return sequential(
+				intake(paths.cp.startingPose_To_gardenIntakePose()),
+				waitMs(1000),
+				intake(paths.farFlowerPoses.gardenIntakePose_To_beforeFarFlowerIntakePose()),
+				intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+				waitMs(500),
+				decidePath(isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(), paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose())
 		);
 	}
 

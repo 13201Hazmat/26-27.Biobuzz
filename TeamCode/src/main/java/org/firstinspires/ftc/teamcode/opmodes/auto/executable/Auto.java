@@ -35,7 +35,8 @@ public class Auto extends BaseAuto {
 			"autoSelection", new OptionPrompt<>(
 				"Select Auto Routine",
 				"Leave Auto",
-				"Preload Auto"
+				"Preload Auto",
+				"Close Flower Auto"
 			)
 		);
 
@@ -45,7 +46,9 @@ public class Auto extends BaseAuto {
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto").label("Through Middle");
+		).showIf("autoSelection", "Preload Auto")
+		 .or("autoSelection", "Close Flower Auto")
+		 .label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
 	}
@@ -66,12 +69,17 @@ public class Auto extends BaseAuto {
 				() -> prompter.getOrDefault("isFront", true),
 				() -> prompter.getOrDefault("throughMiddle", false)
 			));
+		} else if ("Close Flower Auto".equals(autoSelection)) {
+			setAutoCommand(runnables.closeFlowerAuto(
+				() -> prompter.getOrDefault("isFront", true),
+				() -> prompter.getOrDefault("throughMiddle", false)
+			));
 		}
 
 		telemetry.addData("Selected Alliance", alliance);
 		telemetry.addData("Selected Auto", autoSelection);
 		telemetry.addData("isFront", prompter.getOrDefault("isFront", true));
-		if ("Preload Auto".equals(autoSelection)) {
+		if ("Preload Auto".equals(autoSelection) || "Close Flower Auto".equals(autoSelection)) {
 			telemetry.addData("throughMiddle", prompter.getOrDefault("throughMiddle", false));
 		}
 		telemetry.update();
