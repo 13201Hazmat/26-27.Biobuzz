@@ -95,7 +95,7 @@ public class PathsAndPoses {
 		}
 	}
 	public class CloseFlowerAutoPoses {
-
+		public CloseFlowerAutoMiddlePoses middlePoses;
 		public final Pose beforeCloseFlowerIntakePose = factory.of(20.03, 46.64, 180);
 		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64,180);
 		public final Pose leaveControlPoint = factory.of(25.11, 54.47, 0);
@@ -114,6 +114,42 @@ public class PathsAndPoses {
 
 		public Path afterCloseFlowerIntakePose_To_backLeavePose() {
 			return Paths.curve(afterCloseFlowerIntakePose, leaveControlPoint, cp.backLeavePose).linear(afterCloseFlowerIntakePose, cp.backLeavePose);
+		}
+
+		public class CloseFlowerAutoMiddlePoses {
+
+			private final PoseFactory poseFactory = PoseFactory.degrees();
+
+			private final Pose start = poseFactory.of(30.43, 7.48, 180);
+			private final Pose path1 = poseFactory.of(9.24, 7.3085, -180);
+			private final Pose point2Start = poseFactory.of(9.24, 7.3085, 180);
+			private final Pose point2 = poseFactory.of(64.5992, 61.8578, 90);
+			private final Pose point2Control1 = poseFactory.of(65.7014, 35.1158, 0);
+			private final Pose point3 = poseFactory.of(46.6347, 124.3776, 90);
+			private final Pose point3Control1 = poseFactory.of(76.9289, 88.2204, 0);
+			private final Pose point4 = poseFactory.of(46.5294, 130.4416, 90);
+			private final Pose point5Start = poseFactory.of(46.5294, 130.4416, 90);
+			private final Pose point5 = poseFactory.of(9.76, 96.28, 0);
+
+			public Path path1() {
+				return Paths.line(start, path1).linear(start, path1);
+			}
+
+			public Path path2() {
+				return Paths.curve(point2Start, point2Control1, point2).linear(point2Start, point2);
+			}
+
+			public Path path3() {
+				return Paths.curve(point2, point3Control1, point3).constant(point3);
+			}
+
+			public Path path4() {
+				return Paths.line(point3, point4).constant(point4);
+			}
+
+			public Path path5() {
+				return Paths.line(point5Start, point5).linear(point5Start, point5);
+			}
 		}
 	}
 
@@ -151,6 +187,36 @@ public class PathsAndPoses {
 
 	public class DoubleFlowerAutoPoses {
 
+		private final Pose start = factory.of(30.43, 7.48, 180);
+		private final Pose path1 = factory.of(9.24, 7.3085, -180);
+		private final Pose point2 = factory.of(10.8109, 46.5197, 180);
+		private final Pose point2Control1 = factory.of(22.2085, 50.0337, 0);
+		private final Pose point3Start = factory.of(10.8109, 46.5197, 180);
+		private final Pose point3 = factory.of(46.6347, 121.1208, 90);
+		private final Pose point4 = factory.of(46.5294, 128.7421, 90);
+		private final Pose point5Start = factory.of(46.5294, 128.7421, 90);
+		private final Pose point5 = factory.of(9.7786, 96.28, 0);
+
+		public Path path1() {
+			return Paths.line(start, path1).linear(start, path1);
+		}
+
+		public Path path2() {
+			return Paths.curve(path1, point2Control1, point2).constant(point2);
+		}
+
+		public Path path3() {
+			return Paths.line(point3Start, point3).linear(point3Start, point3);
+		}
+
+		public Path path4() {
+			return Paths.line(point3, point4).constant(point4);
+		}
+
+		public Path path5() {
+			return Paths.line(point5Start, point5).linear(point5Start, point5);
+		}
 	}
+
 
 }

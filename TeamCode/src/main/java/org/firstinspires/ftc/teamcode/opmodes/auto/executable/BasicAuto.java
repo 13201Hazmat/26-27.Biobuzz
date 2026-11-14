@@ -10,6 +10,6 @@ import dev.nextftc.robot.opmode.NextAutonomous;
 public class BasicAuto extends BaseAuto {
 	public BasicAuto(HazmatRobot robot) {
 		super(robot, Alliance.BLUE);
-		setAutoCommand(runnables.farFlowerAuto(() -> false, () -> false));
+		setAutoCommand(runnables.doubleFlowerAuto(() -> false, () -> false));
 	}
 }

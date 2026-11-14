@@ -86,8 +86,6 @@ public class Runnables {
 				intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
 				intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
 				waitMs(500),
-				intake(paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose()),
-				waitMs(500),
 				decidePath(isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(), paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose())
 		);
 	}
@@ -100,6 +98,16 @@ public class Runnables {
 				intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
 				waitMs(500),
 				decidePath(isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(), paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose())
+		);
+	}
+
+	public Command doubleFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
+		return sequential(
+				intake(paths.doubleFlowerPoses.path1()),
+				intake(paths.doubleFlowerPoses.path2()),
+				intake(paths.doubleFlowerPoses.path3()),
+				intake(paths.doubleFlowerPoses.path4()),
+				intake(paths.doubleFlowerPoses.path5())
 		);
 	}
 
