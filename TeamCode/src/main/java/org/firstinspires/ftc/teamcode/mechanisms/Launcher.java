@@ -37,7 +37,7 @@ public class Launcher implements Mechanism {
 	private final double FAR_SPEED = 0.0;
 
 	private final double OPEN_POS = 0.31;
-	private final double CLOSE_POS = 0.0;
+	private final double CLOSE_POS = 0.05;
 
 	private double kV = 0.0;
 	private double kS = 0.0;
