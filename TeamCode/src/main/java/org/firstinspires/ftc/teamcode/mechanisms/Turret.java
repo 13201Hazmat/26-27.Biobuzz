@@ -4,7 +4,7 @@ import static org.firstinspires.ftc.teamcode.data.Calc.clamp;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
-import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
+// import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.data.Calc;
@@ -23,12 +23,12 @@ public class Turret implements Mechanism {
 	public static double CENTER_POS = 0.5;
 
 	private final NextServo leftTurretServo = new NextServo(
-		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
+			Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
 	);
 	private final NextServo rightTurretServo = new NextServo(
-		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
+			Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
 	);
-	private final OctoQuad oq;
+	// private final OctoQuad oq;
 
 	private final double GEAR_RATIO = 0.9923076923;
 	private final double SERVO_RANGE = 326;
@@ -36,15 +36,18 @@ public class Turret implements Mechanism {
 	private final double TURRET_MAX_ANGLE = 175;
 	private final double TURRET_MIN_ANGLE = -175;
 
+	/*
 	private final int ABS_CHANNEL = 4;
 	private final int PWM_MIN = 1;
 	private final int PWM_MAX = 1024;
 	private final double ABS_ZERO_DEG = 0;
+	*/
 
 	private double curAngle = 0.0;
 	private double servoPos = CENTER_POS;
 
-	public Turret(HardwareMap hw) {
+	public Turret() {
+		/*
 		OctoQuad tempOq = null;
 		if (hw != null) {
 			try {
@@ -59,6 +62,7 @@ public class Turret implements Mechanism {
 			}
 		}
 		this.oq = tempOq;
+		*/
 		targetTurretAng = curAngle;
 
 		rightTurretServo.setPwmRange(550, 2450);
@@ -122,6 +126,8 @@ public class Turret implements Mechanism {
 
 		return CENTER_POS - angle * (GEAR_RATIO / SERVO_RANGE);
 	}
+
+	/*
 	private int readPulse() {
 		if (oq == null)
 			return 0;
@@ -160,6 +166,14 @@ public class Turret implements Mechanism {
 			setPositions(servoPos);
 		}
 	}
+	*/
+	private void update() {
+		servoPos = clamp(
+				turretAngleToServo(targetTurretAng), turretAngleToServo(TURRET_MAX_ANGLE),
+				turretAngleToServo(TURRET_MIN_ANGLE)
+		);
+		setPositions(servoPos);
+	}
 
 	public void debug() {
 
@@ -172,6 +186,6 @@ public class Turret implements Mechanism {
 
 	@Override
 	public void periodic() {
-		update(false);
+		update();
 	}
 }

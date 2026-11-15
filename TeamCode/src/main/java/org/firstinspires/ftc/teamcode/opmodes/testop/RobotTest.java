@@ -36,9 +36,6 @@ public class RobotTest extends NextOpMode {
 		gp1.dpadUp().onTrue(instant(() -> robot.getLauncher().increasePower()));
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
 
-		// Launcher Hood Controls
-		gp1.cross().onTrue(robot.getLauncherHood().setPollenPos());
-		gp1.triangle().onTrue(robot.getLauncherHood().setNectarPos());
 
 		// Launcher Gate Controls
 		gp1.circle().onTrue(robot.getLauncher().openGate());
