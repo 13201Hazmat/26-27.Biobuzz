@@ -17,6 +17,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
@@ -27,8 +28,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
@@ -104,7 +103,7 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
-	public Command moveToPoint(com.pedropathing.paths.Path path) {
+	public Command moveToPoint(Path path) {
 		return instant(() -> getFollower().follow(path));
 	}
 
@@ -221,11 +220,7 @@ public class HazmatRobot implements NextRobot {
 
 		if (on) {
 			intake.forward();
-			// if (transfer.isStalling()) {
-			// transfer.off();
-			// } else {
 			transfer.forward();
-			// }
 		} else {
 			intake.off();
 			transfer.off();
