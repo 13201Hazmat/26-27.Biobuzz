@@ -20,7 +20,6 @@ import com.pedropathing.math.Velocity;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
-import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
@@ -236,7 +235,7 @@ public class HazmatRobot implements NextRobot {
 		}
 
 		if (Turret.AUTO_AIM) {
-//			turret.trackGoal(TurretPoses.targetPose, getPose());
+			// turret.trackGoal(TurretPoses.targetPose, getPose());
 		}
 
 		if (debugEnabled) {
