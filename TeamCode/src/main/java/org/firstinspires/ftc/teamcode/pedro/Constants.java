@@ -27,8 +27,8 @@ public class Constants {
                 c.frontRightName.set(Config.fR);
                 c.backRightName.set(Config.bR);
 
-                c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
-                c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+                c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+                c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
                 c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
                 c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
             }
@@ -36,37 +36,42 @@ public class Constants {
 
     public static OctoQuadConfig octoQuadConfig = new OctoQuadConfig(c -> {
         c.name.set("octoquad");
-        c.xPodPort.set(1);
-        c.yPodPort.set(0);
+        c.xPodPort.set(0);
+        c.yPodPort.set(1);
         c.ticksPerUnit.set(505.316944406);
-        c.xPodOffset.set(-0.45275590551181105);
-        c.yPodOffset.set(-1.3188976377952757);
+        c.xPodOffset.set(-0.15748031496062992);
+        c.yPodOffset.set(-2.4015748031496065);
         c.xPodDirection.set(OctoQuad.EncoderDirection.FORWARD);
         c.yPodDirection.set(OctoQuad.EncoderDirection.FORWARD);
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
         c.i2cRecoveryMode.set(OctoQuad.I2cRecoveryMode.MODE_1_PERIPH_RST_ON_FRAME_ERR);
-        c.headingScalar.set(1.333819966281649);
+        c.headingScalar.set(0.9980906104344437);
     });
 
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
-                Controller primaryTranslationalForward = Controller.proportional(0.3);
-                Controller secondaryTranslationalForward = Controller.proportional(0.1);
-                Controller primaryTranslationalLateral = Controller.proportional(0.3);
-                Controller secondaryTranslationalLateral = Controller.proportional(0.1);
+                Controller primaryTranslationalForward = Controller.proportional(0.288164046166755);
+                Controller secondaryTranslationalForward = Controller.proportional(0.1064689151734916);
+                Controller primaryTranslationalLateral = Controller.proportional(0.3992830023201202);
+                Controller secondaryTranslationalLateral = Controller.proportional(0.14752440031896794);
+
                 c.forwardTranslational.set(Controller.piecewise(secondaryTranslationalForward).put(2.5, primaryTranslationalForward));
                 c.strafeTranslational.set(Controller.piecewise(secondaryTranslationalLateral).put(2.5, primaryTranslationalLateral));
-                c.coast.set(Controller.proportionalFeedforward(0.010978350889324107));
-                c.brake.set(Controller.proportionalFeedforward(0.008731598255925491));
-                c.headingFeedback.set(Controller.proportional(5.258721785960744));
-                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.05642143125655298, 0.0063829525363003695));
-                c.linearBrakeCoefficients.set(Matrix.diag(0.10605894992901523, 0.08719146175596092));
-                c.quadraticBrakeCoefficients.set(Matrix.diag(0.0014663966976606565, 0.0013837064502458813));
-                c.maxAchievableForwardVelocity.set(72.72923108818539);
-                c.maxAchievableStrafeVelocity.set(52.34323936525474);
-                c.naturalForwardDeceleration.set(85.01144677379789);
-                c.naturalStrafeDeceleration.set(104.49787535782846);
+
+                c.coast.set(Controller.proportionalFeedforward(0.012065818450188887));
+                c.brake.set(Controller.proportionalFeedforward(0.010255945682660554));
+
+                c.headingFeedback.set(Controller.proportional(4.397159898275782));
+                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.041731348412274764, 0.006553664079208524));
+
+                c.linearBrakeCoefficients.set(Matrix.diag(0.06845360972805715, 0.051432465121919575));
+                c.quadraticBrakeCoefficients.set(Matrix.diag(0.0012892304942403164, 0.0017167109212243258));
+
+                c.maxAchievableForwardVelocity.set(85.84657278638646);
+                c.maxAchievableStrafeVelocity.set(72.36370975625626);
+                c.naturalForwardDeceleration.set(57.27590320668094);
+                c.naturalStrafeDeceleration.set(74.95453985810164);
             }
     );
 
