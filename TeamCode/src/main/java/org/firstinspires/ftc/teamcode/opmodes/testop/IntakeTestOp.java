@@ -41,7 +41,7 @@ public class IntakeTestOp extends NextOpMode {
 		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 
 		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
-				instant(() -> robot.setDebugEnabled(false))
+			instant(() -> robot.setDebugEnabled(false))
 		);
 	}
 
