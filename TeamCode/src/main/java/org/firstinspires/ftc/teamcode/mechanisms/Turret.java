@@ -4,15 +4,14 @@ import static org.firstinspires.ftc.teamcode.data.Calc.clamp;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
-// import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
-import dev.nextftc.telemetry.Telemetry;
+import dev.nextftc.robot.Telemetry;
+
 public class Turret implements Mechanism {
 
 	public static double targetTurretAng = 0.0;
@@ -20,39 +19,20 @@ public class Turret implements Mechanism {
 	public static double TOLERANCE_DEG = 0.5;
 	public static boolean AUTO_AIM = true;
 
-	public static double CENTER_POS = 0.5;
-
 	private final NextServo leftTurretServo = new NextServo(
 		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
 	);
 	private final NextServo rightTurretServo = new NextServo(
 		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
 	);
-	// private final OctoQuad oq;
 
 	private final double GEAR_RATIO = 0.9923076923;
 	private final double SERVO_RANGE = 326;
 
-	private final double TURRET_MAX_ANGLE = 175;
-	private final double TURRET_MIN_ANGLE = -175;
-
-	/*
-	 * private final int ABS_CHANNEL = 4; private final int PWM_MIN = 1; private
-	 * final int PWM_MAX = 1024; private final double ABS_ZERO_DEG = 0;
-	 */
-
 	private double curAngle = 0.0;
-	private double servoPos = CENTER_POS;
+	private double servoPos = 0.0;
 
 	public Turret() {
-		/*
-		 * OctoQuad tempOq = null; if (hw != null) { try { tempOq =
-		 * hw.get(OctoQuad.class, "oq");
-		 * tempOq.setChannelBankConfig(OctoQuad.ChannelBankConfig.
-		 * BANK1_QUADRATURE_BANK2_PULSE_WIDTH); tempOq.setSingleChannelPulseWidthParams(
-		 * ABS_CHANNEL, new OctoQuad.ChannelPulseWidthParams(PWM_MIN, PWM_MAX) ); }
-		 * catch (Exception e) { tempOq = null; } } this.oq = tempOq;
-		 */
 		targetTurretAng = curAngle;
 
 		rightTurretServo.setPwmRange(550, 2450);
@@ -108,37 +88,16 @@ public class Turret implements Mechanism {
 	}
 
 	public double normalizeAngle(double angDeg) {
-		double a = ((angDeg % 360.0) + 360.0) % 360.0;
-		return a > 180 ? a - 360 : a;
+		return ((angDeg % 360.0) + 360.0) % 360.0;
 	}
 
 	private double turretAngleToServo(double angle) {
-
-		return CENTER_POS - angle * (GEAR_RATIO / SERVO_RANGE);
+		return angle * (GEAR_RATIO / SERVO_RANGE);
 	}
 
-	/*
-	 * private int readPulse() { if (oq == null) return 0; try { return
-	 * oq.readSinglePosition_Caching(ABS_CHANNEL); } catch (Exception e) { return 0;
-	 * } } private double pulseToDeg(int pulse) { double frac = (pulse - PWM_MIN) /
-	 * (double) (PWM_MAX - PWM_MIN); return normalizeAngle(frac * 360.0 +
-	 * ABS_ZERO_DEG); }
-	 * 
-	 * private void updateAngle() { int pulse = readPulse(); if (pulse > 0) curAngle
-	 * = pulseToDeg(pulse); }
-	 * 
-	 * private void update(boolean useOQ) { if (useOQ) { updateAngle(); double error
-	 * = targetTurretAng - curAngle; if (Math.abs(error) > TOLERANCE_DEG) { servoPos
-	 * = clamp( servoPos - KP * error, turretAngleToServo(TURRET_MAX_ANGLE),
-	 * turretAngleToServo(TURRET_MIN_ANGLE) ); } setPositions(servoPos); } else {
-	 * servoPos = clamp( turretAngleToServo(targetTurretAng),
-	 * turretAngleToServo(TURRET_MAX_ANGLE), turretAngleToServo(TURRET_MIN_ANGLE) );
-	 * setPositions(servoPos); } }
-	 */
 	private void update() {
 		servoPos = clamp(
-			turretAngleToServo(targetTurretAng), turretAngleToServo(TURRET_MAX_ANGLE),
-			turretAngleToServo(TURRET_MIN_ANGLE)
+			turretAngleToServo(targetTurretAng), 0.0, 1.0
 		);
 		setPositions(servoPos);
 	}
