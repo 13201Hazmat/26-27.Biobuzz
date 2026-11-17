@@ -4,7 +4,7 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
-import dev.nextftc.robot.Telemetry;
+import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextUtility;
 import dev.nextftc.robot.triggers.CommandGamepad;
@@ -54,8 +54,6 @@ public class RobotTest extends NextOpMode {
 		Telemetry.log("Left Bumper", "Cycle Transfer");
 		Telemetry.log("DPad Up", "Increase Launcher Power");
 		Telemetry.log("DPad Down", "Decrease Launcher Power");
-		Telemetry.log("Cross", "Set Hood to Pollen Position");
-		Telemetry.log("Triangle", "Set Hood to Nectar Position");
 		Telemetry.log("Circle", "Open Launcher Gate");
 		Telemetry.log("Square", "Close Launcher Gate");
 		Telemetry.log("Left Trigger", "Debug");

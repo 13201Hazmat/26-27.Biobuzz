@@ -45,7 +45,6 @@ public class HazmatRobot implements NextRobot {
 	private final Launcher launcher;
 
 	private boolean isLaunching = false;
-	private boolean isHoodAutomated = true;
 	private boolean isTransferManual = false;
 
 	private boolean debugEnabled = false;
@@ -122,10 +121,6 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake, transfer, drivetrain, launcher, turret);
-	}
-
-	public void toggleHoodAutomate() {
-		isHoodAutomated = !isHoodAutomated;
 	}
 
 	public void toggleManualTransfer() {
