@@ -8,7 +8,6 @@ import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
-import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
@@ -64,6 +62,9 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public void setActiveOpMode(@Nullable NextOpMode activeOpMode) {
+		if (activeOpMode != null) {
+			offAll();
+		}
 		this.activeOpMode = activeOpMode;
 	}
 
@@ -113,6 +114,10 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
+	public Command moveToPoint(com.pedropathing.paths.Path path) {
+		return instant(() -> getFollower().follow(path));
+	}
+
 	public Pose getPose() {
 		return getFollower().pose();
 	}
@@ -129,10 +134,6 @@ public class HazmatRobot implements NextRobot {
 	@Override
 	public Set<Mechanism> getMechanisms() {
 		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, getTurret());
-	}
-
-	public Command moveToPoint(Path path) {
-		return follow(getFollower(), path);
 	}
 
 	public void toggleHoodAutomate() {
@@ -173,10 +174,15 @@ public class HazmatRobot implements NextRobot {
 
 	public Command init() {
 		return parallel(
-			intake.setRampDown(),
+			intake.setRampUp(),
 			launcherHood.setPollenPos(),
 			launcher.closeGate()
 		);
+	}
+
+	public void offAll() {
+		intake.off();
+		transfer.off();
 	}
 
 	private Command setHoodForFirst() {
@@ -263,7 +269,7 @@ public class HazmatRobot implements NextRobot {
 		if (on) {
 			intake.forward();
 			// if (transfer.isStalling()) {
-			transfer.off();
+			// transfer.off();
 			// } else {
 			transfer.forward();
 			// }
@@ -275,14 +281,14 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		setTargetPose(getAlliance(), getPose());
+		// setTargetPose(getAlliance(),getPose());
 
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 
 		if (Turret.AUTO_AIM) {
-			getTurret().trackGoal(TurretPoses.targetPose, getPose());
+			// getTurret().trackGoal(TurretPoses.targetPose, getPose());
 		}
 
 		if (debugEnabled) {

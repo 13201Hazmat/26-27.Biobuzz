@@ -27,6 +27,7 @@ public class ServoCalib extends NextOpMode {
 	public ServoCalib(HazmatRobot robot) {
 		super(robot);
 		this.robot = robot;
+		robot.setActiveOpMode(this);
 		robot.setManualTransferTrue();
 
 		Trigger.Companion.getDefaultEventLoop().clear();

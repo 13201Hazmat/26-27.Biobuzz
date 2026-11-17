@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.data.Config;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.telemetry.Telemetry;
-
 public class Turret implements Mechanism {
 
 	public static double targetTurretAng = 0.0;
@@ -24,10 +23,10 @@ public class Turret implements Mechanism {
 	public static double CENTER_POS = 0.5;
 
 	private final NextServo leftTurretServo = new NextServo(
-		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
 	);
 	private final NextServo rightTurretServo = new NextServo(
-		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.0
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
 	);
 	private final OctoQuad oq;
 
@@ -62,8 +61,8 @@ public class Turret implements Mechanism {
 		this.oq = tempOq;
 		targetTurretAng = curAngle;
 
-		rightTurretServo.setPwmRange(500, 2500);
-		leftTurretServo.setPwmRange(500, 2500);
+		rightTurretServo.setPwmRange(550, 2450);
+		leftTurretServo.setPwmRange(550, 2450);
 	}
 
 	public double getAngle() {

@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
-import com.pedropathing.math.Pose;
-
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.PoseStorage;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -18,7 +16,6 @@ public abstract class TeleOp extends NextOpMode {
 	public TeleOp(HazmatRobot robot, Alliance alliance) {
 		super(robot, BulkReadHook.INSTANCE);
 		this.robot = robot;
-		robot.getFollower().setPose(new Pose(30.43, 7.48, 180));
 
 		robot.setActiveOpMode(this);
 
@@ -26,11 +23,12 @@ public abstract class TeleOp extends NextOpMode {
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 
-		robot.setStartingPose(PoseStorage.get());
+		// robot.setStartingPose(PoseStorage.get());
 	}
 
 	@Override
 	public void start() {
+		robot.init();
 		gp1();
 		gp2();
 	}
@@ -62,13 +60,14 @@ public abstract class TeleOp extends NextOpMode {
 		gp2.dpadDown().onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
 		gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));
 
-		gp2.leftTrigger().isOver(0.2).onTrue(instant(()->robot.setDebugEnabled(true))).onFalse(instant(()-> robot.setDebugEnabled(false)));
+		gp2.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 
 	}
 
 	@Override
 	public void periodic() {
-		telemetry.addData("POSE", robot.getFollower().pose());
-		telemetry.update();
+
 	}
 }

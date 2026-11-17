@@ -13,7 +13,6 @@ import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.telemetry.Telemetry;
-
 public class Launcher implements Mechanism {
 
 	public enum LauncherState {
@@ -38,7 +37,7 @@ public class Launcher implements Mechanism {
 	private final double FAR_SPEED = 0.0;
 
 	private final double OPEN_POS = 0.31;
-	private final double CLOSE_POS = 0.0;
+	private final double CLOSE_POS = 0.05;
 
 	private double kV = 0.0;
 	private double kS = 0.0;

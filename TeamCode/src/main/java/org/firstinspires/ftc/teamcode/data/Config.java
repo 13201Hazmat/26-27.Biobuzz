@@ -48,6 +48,6 @@ public class Config {
 	public static NextLynxModule launcherBeamBreakModule = RobotController.controlHub();
 	public static int launcherBeamBreakPort = 5;
 
-	public static String intakeColorSensorName = "startColorSensor";
+	public static String intakeColorSensorName = "intakeColorSensor";
 
 }

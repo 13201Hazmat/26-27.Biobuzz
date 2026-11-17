@@ -7,15 +7,14 @@ import org.firstinspires.ftc.teamcode.data.Config;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.telemetry.Telemetry;
-
 public class LauncherHood implements Mechanism {
 
 	private final NextServo launcherHood = new NextServo(
 		Config.launcherBackPlateServoModule, Config.launcherBackPlateServoPort, 0.0
 	);
 
-	private final double POLLEN_POS = 0.8;
-	private final double NECTAR_POS = 0.48;
+	private final double POLLEN_POS = 0.56;
+	private final double NECTAR_POS = 0.42;
 
 	public LauncherHood() {
 		launcherHood.setPwmRange(500, 2500);
