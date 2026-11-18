@@ -162,13 +162,19 @@ public class PathsAndPoses {
 
 	public class FarFlowerAutoPoses {
 		public FarFlowerAutoMiddlePoses middlePoses = new FarFlowerAutoMiddlePoses();
-		private final Pose firstControl = factory.of(32.94, 102.71, 0);
-		private final Pose secondControl = factory.of(0.14, 105.03, 0);
+		private final Pose firstControl = factory.of(29.12, 42.64, 0);
+		private final Pose secondControl = factory.of(14.67, 99.09, 0);
 
-		public Path gardenIntakePose_To_beforeFarFlowerIntakePose() {
-			return Paths.curve(cp.gardenIntakePose, firstControl, secondControl, cp.beforeFarFlowerIntakePose).linear(
-				cp.gardenIntakePose, cp.beforeFarFlowerIntakePose
+		private final Pose midPose = factory.of(23.74, 63.72, 90);
+
+		public Path gardenIntakePose_To_midPose() {
+			return Paths.curve(cp.gardenIntakePose, firstControl, midPose).linear(
+				cp.gardenIntakePose, midPose
 			);
+		}
+
+		public Path midPose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(midPose, secondControl, cp.beforeFarFlowerIntakePose).constant(cp.beforeFarFlowerIntakePose);
 		}
 
 		public Path beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose() {

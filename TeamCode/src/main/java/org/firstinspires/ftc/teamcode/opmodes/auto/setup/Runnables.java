@@ -7,7 +7,6 @@ import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
-import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -110,26 +109,28 @@ public class Runnables {
 	public Command farFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(200),
+			waitMs(1000),
 			conditional(
 				goThroughMiddle,
 				sequential(
 					intake(paths.farFlowerPoses.middlePoses.gardenIntakePose_To_midMiddlePose()),
-					waitMs(200),
+					waitMs(1000),
 					intake(paths.farFlowerPoses.middlePoses.midMiddlePose_To_beforeFarFlowerIntakePose()),
-					waitMs(200),
+					waitMs(1000),
 					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-					waitMs(200),
+					waitMs(1000),
 					decidePath(
 						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
 						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
 					)
 				),
 				sequential(
-					intake(paths.farFlowerPoses.gardenIntakePose_To_beforeFarFlowerIntakePose()),
-					waitMs(500),
+					intake(paths.farFlowerPoses.gardenIntakePose_To_midPose()),
+					waitMs(1000),
+					intake(paths.farFlowerPoses.midPose_To_beforeFarFlowerIntakePose()),
+					waitMs(1000),
 					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-					waitMs(500),
+					waitMs(1000),
 					decidePath(
 						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
 						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
