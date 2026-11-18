@@ -37,7 +37,8 @@ public class Auto extends BaseAuto {
 				"Leave Auto",
 				"Preload Auto",
 				"Close Flower Auto",
-				"Far Flower Auto"
+				"Far Flower Auto",
+				"Double Flower Auto"
 			)
 		);
 
@@ -47,9 +48,11 @@ public class Auto extends BaseAuto {
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto").or("autoSelection", "Close Flower Auto").or(
-			"autoSelection", "Far Flower Auto"
-		).label("Through Middle");
+		).showIf("autoSelection", "Preload Auto")
+		 .or("autoSelection", "Close Flower Auto")
+		 .or("autoSelection", "Far Flower Auto")
+		 .or("autoSelection", "Double Flower Auto")
+		 .label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
 	}
@@ -82,6 +85,13 @@ public class Auto extends BaseAuto {
 		} else if ("Far Flower Auto".equals(autoSelection)) {
 			setAutoCommand(
 				runnables.farFlowerAuto(
+					() -> prompter.getOrDefault("isFront", true),
+					() -> prompter.getOrDefault("throughMiddle", false)
+				)
+			);
+		} else if ("Double Flower Auto".equals(autoSelection)) {
+			setAutoCommand(
+				runnables.doubleFlowerAuto(
 					() -> prompter.getOrDefault("isFront", true),
 					() -> prompter.getOrDefault("throughMiddle", false)
 				)

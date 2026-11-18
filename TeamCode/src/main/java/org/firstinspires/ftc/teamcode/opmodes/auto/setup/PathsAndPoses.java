@@ -234,4 +234,7 @@ public class PathsAndPoses {
 		}
 	}
 
+	public class BackLeaveAutoPoses {
+	}
+
 }

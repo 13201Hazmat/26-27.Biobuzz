@@ -31,7 +31,6 @@ public class Runnables {
 		return lazy(() -> condition.getAsBoolean() ? robot.moveToPoint(option1) : robot.moveToPoint(option2));
 	}
 
-	/* FRONT AUTOS (We are shooting first) */
 
 	public Command move(Path path) {
 		return robot.moveToPoint(path);
@@ -44,6 +43,8 @@ public class Runnables {
 			robot.getIntake().setOff()
 		);
 	}
+
+	/* FRONT AUTOS (We are shooting first) */
 
 	public Command launch() {
 		return sequential(waitMs(100), robot.launch(), waitMs(100));
@@ -179,6 +180,12 @@ public class Runnables {
 				)
 			)
 		);
+	}
+
+	/* BACK AUTOS (We are waiting first) */
+
+	public Command backLeaveAuto() {
+		return null;
 	}
 
 }
