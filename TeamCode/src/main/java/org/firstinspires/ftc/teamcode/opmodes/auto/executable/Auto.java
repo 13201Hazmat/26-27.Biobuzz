@@ -47,10 +47,9 @@ public class Auto extends BaseAuto {
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto")
-		 .or("autoSelection", "Close Flower Auto")
-		 .or("autoSelection", "Far Flower Auto")
-		 .label("Through Middle");
+		).showIf("autoSelection", "Preload Auto").or("autoSelection", "Close Flower Auto").or(
+			"autoSelection", "Far Flower Auto"
+		).label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
 	}

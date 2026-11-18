@@ -174,7 +174,9 @@ public class PathsAndPoses {
 		}
 
 		public Path midPose_To_beforeFarFlowerIntakePose() {
-			return Paths.curve(midPose, secondControl, cp.beforeFarFlowerIntakePose).constant(cp.beforeFarFlowerIntakePose);
+			return Paths.curve(midPose, secondControl, cp.beforeFarFlowerIntakePose).constant(
+				cp.beforeFarFlowerIntakePose
+			);
 		}
 
 		public Path beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose() {
@@ -215,6 +217,21 @@ public class PathsAndPoses {
 
 	public class DoubleFlowerAutoPoses {
 
+		public DoubleFlowerAutoMiddlePoses middlePoses = new DoubleFlowerAutoMiddlePoses();
+
+		public final Pose control = factory.of(23.1, 118.99, 90);
+		public Path afterCloseFlowerIntakePose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(cp.afterCloseFlowerIntakePose, control, cp.beforeFarFlowerIntakePose).linear(
+				cp.afterCloseFlowerIntakePose, cp.beforeFarFlowerIntakePose
+			);
+		}
+		public class DoubleFlowerAutoMiddlePoses {
+			public Path secondMidMiddlePose_To_beforeFarFlowerIntakePose() {
+				return Paths.line(
+					closeFlowerPoses.middlePoses.secondMidMiddlePathPose, cp.beforeFarFlowerIntakePose
+				).linear(closeFlowerPoses.middlePoses.secondMidMiddlePathPose, cp.beforeFarFlowerIntakePose);
+			}
+		}
 	}
 
 }
