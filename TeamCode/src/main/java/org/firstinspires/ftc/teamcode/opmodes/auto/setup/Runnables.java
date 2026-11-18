@@ -7,6 +7,7 @@ import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -46,10 +47,10 @@ public class Runnables {
 	}
 
 	public Command leaveAuto(BooleanSupplier isFront) {
-		return decidePath(
+		return conditional(
 			isFront,
-			paths.leavePoses.startingPose_To_frontLeavePose(),
-			paths.leavePoses.startingPose_To_backLeavePose()
+			move(paths.leavePoses.startingPose_To_frontLeavePose()),
+			move(paths.leavePoses.startingPose_To_backLeavePose())
 		);
 	}
 
@@ -85,10 +86,23 @@ public class Runnables {
 			waitMs(1000),
 			intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
 			intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
-			waitMs(500),
-			decidePath(
-				isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
-				paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
+			conditional(
+				goThroughMiddle,
+				sequential(
+					intake(paths.closeFlowerPoses.middlePoses.afterCloseFlowerIntakePose_To_midMiddlePathPose()),
+					intake(paths.closeFlowerPoses.middlePoses.midMiddlePathPose_To_secondMidMiddlePathPose()),
+					decidePath(
+						isFront, paths.closeFlowerPoses.middlePoses.secondMidMiddlePathPose_To_frontLeavePose(),
+						paths.closeFlowerPoses.middlePoses.secondMidMiddlePathPose_To_backLeavePose()
+					)
+				),
+				sequential(
+					waitMs(500),
+					decidePath(
+						isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
+						paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
+					)
+				)
 			)
 		);
 	}
@@ -96,25 +110,37 @@ public class Runnables {
 	public Command farFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(1000),
-			intake(paths.farFlowerPoses.gardenIntakePose_To_beforeFarFlowerIntakePose()),
-			intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-			waitMs(500),
-			decidePath(
-				isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+			waitMs(200),
+			conditional(
+				goThroughMiddle,
+				sequential(
+					intake(paths.farFlowerPoses.middlePoses.gardenIntakePose_To_midMiddlePose()),
+					waitMs(200),
+					intake(paths.farFlowerPoses.middlePoses.midMiddlePose_To_beforeFarFlowerIntakePose()),
+					waitMs(200),
+					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					waitMs(200),
+					decidePath(
+						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				),
+				sequential(
+					intake(paths.farFlowerPoses.gardenIntakePose_To_beforeFarFlowerIntakePose()),
+					waitMs(500),
+					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					waitMs(500),
+					decidePath(
+						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				)
 			)
 		);
 	}
 
 	public Command doubleFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
-		return sequential(
-			intake(paths.doubleFlowerPoses.path1()),
-			intake(paths.doubleFlowerPoses.path2()),
-			intake(paths.doubleFlowerPoses.path3()),
-			intake(paths.doubleFlowerPoses.path4()),
-			intake(paths.doubleFlowerPoses.path5())
-		);
+		return null;
 	}
 
 }
