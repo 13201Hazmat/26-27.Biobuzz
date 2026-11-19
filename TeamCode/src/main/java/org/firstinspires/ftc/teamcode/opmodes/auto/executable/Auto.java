@@ -32,7 +32,15 @@ public class Auto extends BaseAuto {
 		);
 
 		prompter.prompt(
-			"autoSelection", new OptionPrompt<>(
+			"startPosition", new OptionPrompt<>(
+				"Select Starting Position",
+				"Front",
+				"Back"
+			)
+		).label("Starting Position");
+
+		prompter.prompt(
+			"autoSelectionFront", new OptionPrompt<>(
 				"Select Auto Routine",
 				"Leave Auto",
 				"Preload Auto",
@@ -40,18 +48,26 @@ public class Auto extends BaseAuto {
 				"Far Flower Auto",
 				"Double Flower Auto"
 			)
-		);
+		).showIf("startPosition", "Front").label("Auto Routine");
 
 		prompter.prompt(
-			"isFront", new BooleanPrompt("Start Front?", true)
-		).label("Is Front");
+			"autoSelectionBack", new OptionPrompt<>(
+				"Select Auto Routine",
+				"Back Leave Auto",
+				"Back Far Flower Auto"
+			)
+		).showIf("startPosition", "Back").label("Auto Routine");
+
+		prompter.prompt(
+			"isFront", new BooleanPrompt("Leave Pose: Front (YES) or Back (NO)?", true)
+		).label("Leave Pose");
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto")
-		 .or("autoSelection", "Close Flower Auto")
-		 .or("autoSelection", "Far Flower Auto")
-		 .or("autoSelection", "Double Flower Auto")
+		).showIf("autoSelectionFront", "Preload Auto")
+		 .or("autoSelectionFront", "Close Flower Auto")
+		 .or("autoSelectionFront", "Far Flower Auto")
+		 .or("autoSelectionFront", "Double Flower Auto")
 		 .label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
@@ -62,48 +78,68 @@ public class Auto extends BaseAuto {
 		Alliance.currentAlliance = alliance;
 
 		this.runnables = new Runnables(robot);
-		this.startingPose = runnables.paths.cp.startingPose;
 
-		String autoSelection = prompter.get("autoSelection");
+		String startPosition = prompter.get("startPosition");
 
-		if ("Leave Auto".equals(autoSelection)) {
-			setAutoCommand(runnables.leaveAuto(() -> prompter.getOrDefault("isFront", true)));
-		} else if ("Preload Auto".equals(autoSelection)) {
-			setAutoCommand(
-				runnables.preloadAuto(
-					() -> prompter.getOrDefault("isFront", true),
-					() -> prompter.getOrDefault("throughMiddle", false)
-				)
-			);
-		} else if ("Close Flower Auto".equals(autoSelection)) {
-			setAutoCommand(
-				runnables.closeFlowerAuto(
-					() -> prompter.getOrDefault("isFront", true),
-					() -> prompter.getOrDefault("throughMiddle", false)
-				)
-			);
-		} else if ("Far Flower Auto".equals(autoSelection)) {
-			setAutoCommand(
-				runnables.farFlowerAuto(
-					() -> prompter.getOrDefault("isFront", true),
-					() -> prompter.getOrDefault("throughMiddle", false)
-				)
-			);
-		} else if ("Double Flower Auto".equals(autoSelection)) {
-			setAutoCommand(
-				runnables.doubleFlowerAuto(
-					() -> prompter.getOrDefault("isFront", true),
-					() -> prompter.getOrDefault("throughMiddle", false)
-				)
-			);
+		if ("Front".equals(startPosition)) {
+			this.startingPose = runnables.paths.cp.startingPose;
+			String autoSelection = prompter.get("autoSelectionFront");
+
+			if ("Leave Auto".equals(autoSelection)) {
+				setAutoCommand(runnables.leaveAuto(() -> prompter.getOrDefault("isFront", true)));
+			} else if ("Preload Auto".equals(autoSelection)) {
+				setAutoCommand(
+					runnables.preloadAuto(
+						() -> prompter.getOrDefault("isFront", true),
+						() -> prompter.getOrDefault("throughMiddle", false)
+					)
+				);
+			} else if ("Close Flower Auto".equals(autoSelection)) {
+				setAutoCommand(
+					runnables.closeFlowerAuto(
+						() -> prompter.getOrDefault("isFront", true),
+						() -> prompter.getOrDefault("throughMiddle", false)
+					)
+				);
+			} else if ("Far Flower Auto".equals(autoSelection)) {
+				setAutoCommand(
+					runnables.farFlowerAuto(
+						() -> prompter.getOrDefault("isFront", true),
+						() -> prompter.getOrDefault("throughMiddle", false)
+					)
+				);
+			} else if ("Double Flower Auto".equals(autoSelection)) {
+				setAutoCommand(
+					runnables.doubleFlowerAuto(
+						() -> prompter.getOrDefault("isFront", true),
+						() -> prompter.getOrDefault("throughMiddle", false)
+					)
+				);
+			}
+
+			telemetry.addData("Selected Alliance", alliance);
+			telemetry.addData("Starting Position", startPosition);
+			telemetry.addData("Selected Auto", autoSelection);
+			telemetry.addData("Leave Pose (Front)", prompter.getOrDefault("isFront", true));
+			if (!"Leave Auto".equals(autoSelection)) {
+				telemetry.addData("throughMiddle", prompter.getOrDefault("throughMiddle", false));
+			}
+		} else { // "Back"
+			this.startingPose = runnables.paths.backLeaveAutoPoses.start;
+			String autoSelection = prompter.get("autoSelectionBack");
+
+			if ("Back Leave Auto".equals(autoSelection)) {
+				setAutoCommand(runnables.backLeaveAuto(() -> prompter.getOrDefault("isFront", true)));
+			} else if ("Back Far Flower Auto".equals(autoSelection)) {
+				setAutoCommand(runnables.backFarFlowerAuto(() -> prompter.getOrDefault("isFront", true)));
+			}
+
+			telemetry.addData("Selected Alliance", alliance);
+			telemetry.addData("Starting Position", startPosition);
+			telemetry.addData("Selected Auto", autoSelection);
+			telemetry.addData("Leave Pose (Front)", prompter.getOrDefault("isFront", true));
 		}
 
-		telemetry.addData("Selected Alliance", alliance);
-		telemetry.addData("Selected Auto", autoSelection);
-		telemetry.addData("isFront", prompter.getOrDefault("isFront", true));
-		if (!"Leave Auto".equals(autoSelection)) {
-			telemetry.addData("throughMiddle", prompter.getOrDefault("throughMiddle", false));
-		}
 		telemetry.update();
 	}
 

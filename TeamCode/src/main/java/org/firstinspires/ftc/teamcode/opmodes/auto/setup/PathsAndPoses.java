@@ -237,12 +237,15 @@ public class PathsAndPoses {
 	}
 
 	public class BackLeaveAutoPoses {
-		public final Pose backStartingPose = factory.of(110, 8.4, 270);
-		public final Pose firstControl = factory.of(27.59, 108.98, 0);
-		public Path backStartingPose_To_beforeFarFlowerIntakePose() {
-			return Paths.curve(backStartingPose, firstControl, cp.beforeFarFlowerIntakePose).linear(backStartingPose, cp.beforeFarFlowerIntakePose);
-		}
+		public final Pose start = factory.of(31.2587, 133.5892, 270);
+		public final Pose path1 = factory.of(47.5021, 122.5019, 90);
+		public final Pose path1Control1 = factory.of(27.5859, 108.9778, 0);
 
+		public Path backStartingPose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(start, path1Control1, path1).linear(start, path1);
+		}
 	}
+
+
 
 }

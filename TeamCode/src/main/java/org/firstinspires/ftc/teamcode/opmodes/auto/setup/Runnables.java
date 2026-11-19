@@ -186,8 +186,22 @@ public class Runnables {
 
 	public Command backLeaveAuto(BooleanSupplier isFront) {
 		return sequential(
-				move(paths.backLeaveAutoPoses.backStartingPose_To_beforeFarFlowerIntakePose()),
-				move(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+				waitMs(100),
+				decidePath(
+						isFront,
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+				)
+		);
+	}
+
+	public Command backFarFlowerAuto(BooleanSupplier isFront) {
+		return sequential(
+				waitMs(100),
+				intake(paths.backLeaveAutoPoses.backStartingPose_To_beforeFarFlowerIntakePose()),
+				waitMs(100),
+				intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+				waitMs(100),
 				decidePath(
 						isFront,
 						paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
