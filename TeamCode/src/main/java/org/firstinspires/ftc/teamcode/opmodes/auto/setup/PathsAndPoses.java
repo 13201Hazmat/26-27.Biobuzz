@@ -16,6 +16,7 @@ public class PathsAndPoses {
 	public final FarFlowerAutoPoses farFlowerPoses;
 	public final CloseFlowerAutoPoses closeFlowerPoses;
 	public final DoubleFlowerAutoPoses doubleFlowerPoses;
+	public final BackLeaveAutoPoses backLeaveAutoPoses;
 	public PathsAndPoses() {
 		factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 		if (Alliance.currentAlliance == Alliance.BLUE) {
@@ -28,6 +29,7 @@ public class PathsAndPoses {
 		farFlowerPoses = new FarFlowerAutoPoses();
 		closeFlowerPoses = new CloseFlowerAutoPoses();
 		doubleFlowerPoses = new DoubleFlowerAutoPoses();
+		backLeaveAutoPoses = new BackLeaveAutoPoses();
 	}
 
 	public static class TurretPoses {
@@ -235,6 +237,12 @@ public class PathsAndPoses {
 	}
 
 	public class BackLeaveAutoPoses {
+		public final Pose backStartingPose = factory.of(110, 8.4, 270);
+		public final Pose firstControl = factory.of(27.59, 108.98, 0);
+		public Path backStartingPose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(backStartingPose, firstControl, cp.beforeFarFlowerIntakePose).linear(backStartingPose, cp.beforeFarFlowerIntakePose);
+		}
+
 	}
 
 }
