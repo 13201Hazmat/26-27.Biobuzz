@@ -20,10 +20,10 @@ public class Turret implements Mechanism {
 	public static boolean AUTO_AIM = true;
 
 	private final NextServo leftTurretServo = new NextServo(
-		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.01
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.001
 	);
 	private final NextServo rightTurretServo = new NextServo(
-		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.01
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.001
 	);
 
 	private final double GEAR_RATIO = 0.9923076923;
