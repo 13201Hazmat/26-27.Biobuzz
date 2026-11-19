@@ -39,9 +39,9 @@ public class Launcher implements Mechanism {
 	private final double OPEN_POS = 0.31;
 	private final double CLOSE_POS = 0.05;
 
-	private double kV = 0.0;
-	private double kS = 0.0;
-	private double kP = 0.0;
+	private double kV = 0.00017;
+	private double kS = 0.113;
+	private double kP = 0.000003;
 
 	private double targetVelocity = 0.0;
 	private double offset = 0.0;
@@ -183,7 +183,7 @@ public class Launcher implements Mechanism {
 	}
 
 	public void increaseKP() {
-		setKP(kP + 0.0001);
+		setKP(kP + 0.000001);
 	}
 
 	public void decreaseKP() {

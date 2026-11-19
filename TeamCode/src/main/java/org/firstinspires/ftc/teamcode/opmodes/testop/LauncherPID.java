@@ -34,6 +34,9 @@ public class LauncherPID extends NextOpMode {
 		gp1.y().onTrue(instant(() -> robot.getLauncher().incrementRPM()));
 		gp1.a().onTrue(instant(() -> robot.getLauncher().decrementRPM()));
 		gp1.b().onTrue(instant(() -> robot.getLauncher().setTargetVelocity(0)));
+
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 	}
 
 	@Override
