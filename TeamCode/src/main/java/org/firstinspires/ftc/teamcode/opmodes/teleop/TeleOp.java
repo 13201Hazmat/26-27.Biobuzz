@@ -53,8 +53,6 @@ public abstract class TeleOp extends NextOpMode {
 
 		gp2.rightTrigger().isOver(0.2).onTrue(robot.getLauncher().closeGate());
 
-		gp2.dpadUp().onTrue(instant(robot::toggleHoodAutomate));
-
 		gp2.dpadDown().onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
 		gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));
 

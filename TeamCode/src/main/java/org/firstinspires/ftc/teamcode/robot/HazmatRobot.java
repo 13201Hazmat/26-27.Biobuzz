@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import static com.pedropathing.ivy.commands.Commands.conditional;
 import static com.pedropathing.ivy.commands.Commands.instant;
-import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.onInterrupt;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.commands.Commands.waitUntil;
@@ -109,11 +107,12 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().pose();
 	}
 
+
 	public Velocity getVelocity() {
 		return getFollower().velocity();
 	}
 
-	public void setStartingPose(Pose pose) {
+	public void setPose(Pose pose) {
 		getFollower().setPose(pose);
 	}
 
@@ -230,11 +229,13 @@ public class HazmatRobot implements NextRobot {
 		}
 
 		if (Turret.AUTO_AIM) {
-			// turret.trackGoal(TurretPoses.targetPose, getPose());
+//			 turret.trackGoal(TurretPoses.targetPose, getPose());
 		}
 
 		if (debugEnabled) {
 			debugAll();
 		}
+
+//		follower.update();
 	}
 }

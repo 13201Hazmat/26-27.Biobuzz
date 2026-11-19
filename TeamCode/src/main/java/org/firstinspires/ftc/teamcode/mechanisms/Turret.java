@@ -55,7 +55,7 @@ public class Turret implements Mechanism {
 		AUTO_AIM = !AUTO_AIM;
 	}
 
-	private void setAutoAim(boolean on) {
+	public void setAutoAim(boolean on) {
 		AUTO_AIM = on;
 	}
 
@@ -113,6 +113,8 @@ public class Turret implements Mechanism {
 
 	@Override
 	public void periodic() {
-		update();
+		if (AUTO_AIM) {
+//			update();
+		}
 	}
 }

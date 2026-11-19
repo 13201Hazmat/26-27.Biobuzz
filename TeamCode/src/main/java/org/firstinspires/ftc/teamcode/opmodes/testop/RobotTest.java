@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.testop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
+import com.pedropathing.math.Pose;
+
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.telemetry.Telemetry;
@@ -41,6 +43,7 @@ public class RobotTest extends NextOpMode {
 		gp1.square().onTrue(robot.getLauncher().closeGate());
 
 		gp1.rightStickButton().onFalse(robot.getIntake().toggleRamp());
+		gp1.leftStickButton().onTrue(instant(()->robot.setPose(new Pose(133,8.4,90))));
 
 		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
 			instant(() -> robot.setDebugEnabled(false))
