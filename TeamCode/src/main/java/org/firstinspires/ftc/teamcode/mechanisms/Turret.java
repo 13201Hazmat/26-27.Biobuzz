@@ -23,10 +23,10 @@ public class Turret implements Mechanism {
 	public static double CENTER_POS = 0.5;
 
 	private final NextServo leftTurretServo = new NextServo(
-		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.0
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.001
 	);
 	private final NextServo rightTurretServo = new NextServo(
-		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.0
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.001
 	);
 	private final OctoQuad oq;
 
