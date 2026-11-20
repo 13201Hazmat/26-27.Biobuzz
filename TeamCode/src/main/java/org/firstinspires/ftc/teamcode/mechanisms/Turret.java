@@ -18,10 +18,10 @@ public class Turret implements Mechanism {
 	public static boolean AUTO_AIM = true;
 
 	private final NextServo leftTurretServo = new NextServo(
-			Config.leftTurretServoModule, Config.leftTurretServoPort, 0.001
+		Config.leftTurretServoModule, Config.leftTurretServoPort, 0.001
 	);
 	private final NextServo rightTurretServo = new NextServo(
-			Config.rightTurretServoModule, Config.rightTurretServoPort, 0.001
+		Config.rightTurretServoModule, Config.rightTurretServoPort, 0.001
 	);
 
 	private final double GEAR_RATIO = 0.9923076923;
@@ -63,7 +63,7 @@ public class Turret implements Mechanism {
 	}
 
 	public void setPositions(double p) {
-		p = clamp(p,0,1);
+		p = clamp(p, 0, 1);
 		rightTurretServo.setPosition(p);
 		leftTurretServo.setPosition(p);
 	}
@@ -82,7 +82,6 @@ public class Turret implements Mechanism {
 	public void trackGoal(Pose goal, Pose robot) {
 		track(goal, robot);
 	}
-
 
 	public double normalizeAngle(double angDeg) {
 		return ((angDeg % 360.0) + 360.0) % 360.0;

@@ -280,14 +280,14 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		 setTargetPose(getAlliance(),getPose());
+		setTargetPose(getAlliance(), getPose());
 
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 
 		if (Turret.AUTO_AIM) {
-			 getTurret().trackGoal(TurretPoses.targetPose, Calc.predict(getPose(), getVelocity(), 0.05));
+			getTurret().trackGoal(TurretPoses.targetPose, Calc.predict(getPose(), getVelocity(), 0.05));
 		}
 
 		if (debugEnabled) {
