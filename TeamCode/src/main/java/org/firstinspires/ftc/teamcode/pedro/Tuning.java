@@ -10,19 +10,19 @@ import org.firstinspires.ftc.teamcode.pedro.procedures.MecanumTuner;
 import org.firstinspires.ftc.teamcode.pedro.procedures.OctoQuadTuner;
 
 public class Tuning {
-
+/*
     @Tuner
     public static Procedure mecanumTuner() {
         return new MecanumTuner();
     }
 
     @Tuner
-    public static Procedure octoQuadTuner() {
+    public static Procedure octoquadTuner() {
         return new OctoQuadTuner();
     }
 
     @Tuner
     public static Procedure foresightTuner() {
         return new ForesightTuner((hardwareMap) -> new OctoQuadLocalizer(hardwareMap, Constants.octoQuadConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants.driveConfig));
-    }
+    }*/
 }

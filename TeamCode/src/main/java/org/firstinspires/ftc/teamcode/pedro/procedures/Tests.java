@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import static com.pedropathing.api.Paths.curve;
-import static com.pedropathing.api.Paths.line;
-
 import com.pedropathing.algorithm.Algorithm;
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.drivetrain.Drivetrain;
@@ -22,7 +19,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.pedropathing.api.Paths.curve;
+import static com.pedropathing.api.Paths.line;
+
 public class Tests extends Procedure {
+    enum Test {
+        @DisplayName("Hold Test")
+        HOLD,
+        @DisplayName("Line Test")
+        LINE,
+        @DisplayName("Curve Test")
+        CURVED,
+        @DisplayName("Interpolation Test")
+        INTERPOLATION_CURVED,
+        @DisplayName("Localization Test")
+        LOCALIZATION,
+        @DisplayName("Odometry Test")
+        ODOMETRY,
+        @DisplayName("Driving Test")
+        DRIVING,
+        @DisplayName("Pose Test")
+        POSE
+    }
     Function<HardwareMap, Drivetrain> drivetrainFunction;
     Function<HardwareMap, Localizer> localizerFunction;
     Supplier<Algorithm> algorithmSupplier;
@@ -109,25 +127,6 @@ public class Tests extends Procedure {
 
         result("Completed", completed);
     }
-
-    enum Test {
-        @DisplayName("Hold Test")
-        HOLD,
-        @DisplayName("Line Test")
-        LINE,
-        @DisplayName("Curve Test")
-        CURVED,
-        @DisplayName("Interpolation Test")
-        INTERPOLATION_CURVED,
-        @DisplayName("Localization Test")
-        LOCALIZATION,
-        @DisplayName("Odometry Test")
-        ODOMETRY,
-        @DisplayName("Driving Test")
-        DRIVING,
-        @DisplayName("Pose Test")
-        POSE
-    }
 }
 
 class TestsHold extends TuningOpMode<Boolean> {
@@ -172,8 +171,8 @@ class TestsLine extends TuningOpMode<Boolean> {
         double distance = 48;
         boolean forward = true;
 
-        Path path1 = line(Pose.zero(), new Pose(distance, 0, 0)).constant(0);
-        Path path2 = line(new Pose(distance, 0, 0), Pose.zero()).constant(0);
+        Path path1 = line(Pose.zero(), new Pose(distance,0, 0)).constant(0);
+        Path path2 = line(new Pose(distance,0, 0), Pose.zero()).constant(0);
 
         Thread.sleep(1000);
         waitForStart();
@@ -214,8 +213,8 @@ class TestsCurve extends TuningOpMode<Boolean> {
         double distance = 48;
         boolean forward = true;
 
-        Path path1 = curve(Pose.zero(), new Pose(distance + 0, 0), new Pose(distance, distance)).tangent();
-        Path path2 = curve(new Pose(distance, distance), new Pose(distance, 0), Pose.zero()).tangent();
+        Path path1 = curve(Pose.zero(), new Pose(distance + 0,0), new Pose(distance,distance)).tangent();
+        Path path2 = curve(new Pose(distance,distance), new Pose(distance,0), Pose.zero()).tangent();
 
         Thread.sleep(1000);
         waitForStart();
@@ -256,8 +255,8 @@ class TestsInterpolation extends TuningOpMode<Boolean> {
         double distance = 48;
         boolean forward = true;
 
-        Path path1 = curve(Pose.zero(), new Pose(distance + 0, 0), new Pose(distance, distance)).heading((curve, t) -> Math.PI);
-        Path path2 = curve(new Pose(distance, distance), new Pose(distance, 0), Pose.zero()).heading(Interpolator.piecewise().until(0.5, Interpolator.tangent).until(1.0, Interpolator.constant(0)));
+        Path path1 = curve(Pose.zero(), new Pose(distance + 0,0), new Pose(distance,distance)).heading((curve, t) -> Math.PI);
+        Path path2 = curve(new Pose(distance,distance), new Pose(distance,0), Pose.zero()).heading(Interpolator.piecewise().until(0.5, Interpolator.tangent).until(1.0, Interpolator.constant(0)));
 
         Thread.sleep(1000);
         waitForStart();
@@ -312,13 +311,24 @@ class TestsLocalization extends TuningOpMode<Boolean> {
 }
 
 class TestsOdometry extends TuningOpMode<Boolean> {
-    public static double POWER = 0.5;
-    private final ElapsedTime timer = new ElapsedTime();
     Function<HardwareMap, Drivetrain> drivetrainFunction;
     Function<HardwareMap, Localizer> localizerFunction;
+
+    public enum Test {
+        FORWARD,
+        LEFT,
+        TURN,
+        IDLE
+    }
+
+    private Test test = Test.FORWARD;
+    public static double POWER = 0.5;
+
     double totalHeading;
     double prevHeading;
-    private Test test = Test.FORWARD;
+
+    private final ElapsedTime timer = new ElapsedTime();
+
     private boolean passedX = false;
     private boolean passedY = false;
     private boolean passedHeading = false;
@@ -426,13 +436,6 @@ class TestsOdometry extends TuningOpMode<Boolean> {
             telemetry.update();
         }
         return passedX && passedY && passedHeading;
-    }
-
-    public enum Test {
-        FORWARD,
-        LEFT,
-        TURN,
-        IDLE
     }
 }
 
