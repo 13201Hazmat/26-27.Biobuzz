@@ -47,7 +47,6 @@ public class Launcher implements Mechanism {
 	private double offset = 0.0;
 	private double error = 0.0;
 
-
 	private boolean powerMode = false;
 	public LauncherState launcherState = LauncherState.IDLE;
 

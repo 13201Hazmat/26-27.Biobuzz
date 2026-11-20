@@ -46,7 +46,7 @@ public class PathsAndPoses {
 		public final Pose gardenIntakePose = factory.of(9.24, 7.31, 180);
 		public final Pose frontLeavePose = factory.of(10.34, 117.81, 0);
 		public final Pose backLeavePose = factory.of(9.53, 99.19, 0);
-		public final Pose reset = factory.of(133.5,7.8, 90);
+		public final Pose reset = factory.of(133.5, 7.8, 90);
 
 		public final Path startingPose_To_gardenIntakePose() {
 			return Paths.line(startingPose, gardenIntakePose).linear(startingPose, gardenIntakePose);

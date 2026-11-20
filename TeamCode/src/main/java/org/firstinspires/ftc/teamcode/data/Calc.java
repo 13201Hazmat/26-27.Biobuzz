@@ -17,11 +17,11 @@ public class Calc {
 		map.put(3.0153, 4300.00);
 		map.put(3.30, 4450.00);
 		map.put(3.66, 4600.00);
-		map.put(4.08,4575.000);
-		map.put(4.65,4750.00);
-		map.put(5.28,4825.00);
+		map.put(4.08, 4575.000);
+		map.put(4.65, 4750.00);
+		map.put(5.28, 4825.00);
 		map.put(5.8, 5225.00);
-		map.put(6.2,5350.00);
+		map.put(6.2, 5350.00);
 		return map;
 	}
 
