@@ -29,7 +29,7 @@ public class ServoCalib extends NextOpMode {
 		this.robot = robot;
 		robot.setActiveOpMode(this);
 		robot.setManualTransferTrue();
-
+		robot.getTurret().setAutoAim(false);
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}
 

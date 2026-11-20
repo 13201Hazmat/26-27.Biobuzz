@@ -20,6 +20,7 @@ import com.pedropathing.math.Velocity;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.BallType;
+import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
@@ -78,6 +79,7 @@ public class HazmatRobot implements NextRobot {
 		transfer = new Transfer();
 		launcher = new Launcher();
 		launcherHood = new LauncherHood();
+		turret = new Turret();
 	}
 
 	public Drivetrain getDrivetrain() {
@@ -89,9 +91,6 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Turret getTurret() {
-		if (turret == null) {
-			turret = new Turret(RobotController.hardwareMap());
-		}
 		return turret;
 	}
 
@@ -126,14 +125,14 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().velocity();
 	}
 
-	public void setStartingPose(Pose pose) {
+	public void setPose(Pose pose) {
 		getFollower().setPose(pose);
 	}
 
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, getTurret());
+		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, turret);
 	}
 
 	public void toggleHoodAutomate() {
@@ -218,21 +217,16 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			conditional(() -> !isHoodAutomated, setHoodForFirst(), instant(() -> {
-			})),
-			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 			transfer.setForward(),
 			launcher.openGate(),
-			waitMs(200),
-			conditional(() -> !isHoodAutomated, cycleHood(), instant(() -> {
-			})),
-			waitMs(1000),
+			waitMs(1500),
 			launcher.closeGate(),
 			instant(() -> isLaunching = false)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
 			launcher.closeGate().schedule();
-		})).unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
+		}));
+		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
 
 	public void debugAll() {
@@ -241,7 +235,7 @@ public class HazmatRobot implements NextRobot {
 		intake.debug();
 		launcher.debug();
 		launcherHood.debug();
-		getTurret().debug();
+		turret.debug();
 	}
 
 	public void updateStates() {
@@ -281,18 +275,20 @@ public class HazmatRobot implements NextRobot {
 
 	@Override
 	public void periodic() {
-		// setTargetPose(getAlliance(),getPose());
+		setTargetPose(getAlliance(), getPose());
 
 		if (!isUtilityOpMode()) {
 			updateStates();
 		}
 
 		if (Turret.AUTO_AIM) {
-			// getTurret().trackGoal(TurretPoses.targetPose, getPose());
+			getTurret().trackGoal(TurretPoses.targetPose, Calc.predict(getPose(), getVelocity(), 0.05));
 		}
 
 		if (debugEnabled) {
 			debugAll();
 		}
+
+		follower.update();
 	}
 }
