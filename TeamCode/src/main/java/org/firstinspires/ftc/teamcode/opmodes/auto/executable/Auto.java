@@ -5,23 +5,30 @@ import com.skeletonarmy.marrow.prompts.OptionPrompt;
 import com.skeletonarmy.marrow.prompts.Prompter;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
+import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.BaseAuto;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runnables;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
+import java.util.ArrayList;
+
 import dev.nextftc.robot.opmode.NextAutonomous;
 
-@NextAutonomous(name = "Front Auto")
-public class FirstShootAuto extends BaseAuto {
+@NextAutonomous(name = "Auto")
+public class Auto extends BaseAuto {
 	private final Prompter prompter;
 
-	public FirstShootAuto(HazmatRobot robot) {
+	public Auto(HazmatRobot robot) {
 		super(robot, Alliance.RED);
+
 		// Fallback default command using BooleanSupplier
 		setAutoCommand(runnables.leaveAuto(() -> false));
-
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
 		this.prompter = new Prompter(telemetry, gamepad1, gamepad2);
-
+		// robot.getTurret().setAutoAim(true);
 		prompter.prompt(
 			"alliance", new OptionPrompt<>(
 				"Select Alliance",
@@ -36,8 +43,7 @@ public class FirstShootAuto extends BaseAuto {
 				"Leave Auto",
 				"Preload Auto",
 				"Close Flower Auto",
-				"Far Flower Auto",
-				"Double Flower Auto"
+				"Far Flower Auto"
 			)
 		);
 
@@ -47,11 +53,9 @@ public class FirstShootAuto extends BaseAuto {
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto")
-		 .or("autoSelection", "Close Flower Auto")
-		 .or("autoSelection", "Far Flower Auto")
-		 .or("autoSelection", "Double Flower Auto")
-		 .label("Through Middle");
+		).showIf("autoSelection", "Preload Auto").or("autoSelection", "Close Flower Auto").or(
+			"autoSelection", "Far Flower Auto"
+		).label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
 	}
@@ -88,13 +92,6 @@ public class FirstShootAuto extends BaseAuto {
 					() -> prompter.getOrDefault("throughMiddle", false)
 				)
 			);
-		} else if ("Double Flower Auto".equals(autoSelection)) {
-			setAutoCommand(
-				runnables.doubleFlowerAuto(
-					() -> prompter.getOrDefault("isFront", true),
-					() -> prompter.getOrDefault("throughMiddle", false)
-				)
-			);
 		}
 
 		telemetry.addData("Selected Alliance", alliance);
@@ -108,7 +105,7 @@ public class FirstShootAuto extends BaseAuto {
 
 	@Override
 	public void disabledPeriodic() {
-		prompter.run();
 		robot.init().schedule();
+		prompter.run();
 	}
 }

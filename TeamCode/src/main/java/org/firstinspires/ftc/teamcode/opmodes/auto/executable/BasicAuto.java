@@ -10,6 +10,8 @@ import dev.nextftc.robot.opmode.NextAutonomous;
 public class BasicAuto extends BaseAuto {
 	public BasicAuto(HazmatRobot robot) {
 		super(robot, Alliance.RED);
-		setAutoCommand(runnables.backLeaveAuto(() -> false));
+		robot.init().schedule();
+		setAutoCommand(runnables.leaveAuto(() -> true));
 	}
+
 }

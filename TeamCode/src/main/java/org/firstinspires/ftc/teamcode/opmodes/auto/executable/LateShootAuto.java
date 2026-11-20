@@ -17,9 +17,8 @@ public class LateShootAuto extends BaseAuto {
 
 	public LateShootAuto(HazmatRobot robot) {
 		super(robot, Alliance.RED);
-		robot.init();
+
 		this.startingPose = runnables.paths.backLeaveAutoPoses.start;
-		setAutoCommand(runnables.backLeaveAuto(() -> false));
 
 		this.prompter = new Prompter(telemetry, gamepad1, gamepad2);
 
@@ -43,17 +42,19 @@ public class LateShootAuto extends BaseAuto {
 			"isFront", new BooleanPrompt("Start Front?", true)
 		).label("Is Front");
 
-		prompter.showSummary().onComplete(this::onPromptsComplete);
+		prompter.onComplete(this::onPromptsComplete);
+
+		updateAutoCommand();
 	}
 
-	public void onPromptsComplete() {
-		Alliance alliance = prompter.get("alliance");
+	public void updateAutoCommand() {
+		Alliance alliance = prompter.getOrDefault("alliance", Alliance.RED);
 		Alliance.currentAlliance = alliance;
 
 		this.runnables = new Runnables(robot);
 		this.startingPose = runnables.paths.backLeaveAutoPoses.start;
 
-		String autoSelection = prompter.get("autoSelection");
+		String autoSelection = prompter.getOrDefault("autoSelection", "Back Leave Auto");
 
 		if ("Back Leave Auto".equals(autoSelection)) {
 			setAutoCommand(runnables.backLeaveAuto(() -> prompter.getOrDefault("isFront", true)));
@@ -64,11 +65,16 @@ public class LateShootAuto extends BaseAuto {
 		telemetry.addData("Selected Alliance", alliance);
 		telemetry.addData("Selected Auto", autoSelection);
 		telemetry.addData("isFront", prompter.getOrDefault("isFront", true));
+	}
+
+	public void onPromptsComplete() {
+		updateAutoCommand();
 		telemetry.update();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		prompter.run();
+		updateAutoCommand();
 	}
 }
