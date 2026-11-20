@@ -174,7 +174,6 @@ public class HazmatRobot implements NextRobot {
 	public Command init() {
 		return parallel(
 			intake.setRampUp(),
-			launcherHood.setPollenPos(),
 			launcher.closeGate()
 		);
 	}
@@ -224,7 +223,6 @@ public class HazmatRobot implements NextRobot {
 			instant(() -> isLaunching = false)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
-			launcher.closeGate().schedule();
 		}));
 		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}

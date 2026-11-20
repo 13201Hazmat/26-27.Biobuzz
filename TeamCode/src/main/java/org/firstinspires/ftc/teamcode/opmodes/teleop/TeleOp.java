@@ -28,7 +28,7 @@ public abstract class TeleOp extends NextOpMode {
 
 	@Override
 	public void start() {
-		robot.init();
+		robot.init().schedule();
 		gp1();
 		gp2();
 	}

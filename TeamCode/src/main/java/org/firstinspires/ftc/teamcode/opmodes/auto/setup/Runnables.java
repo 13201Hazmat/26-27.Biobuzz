@@ -31,8 +31,6 @@ public class Runnables {
 		return lazy(() -> condition.getAsBoolean() ? robot.moveToPoint(option1) : robot.moveToPoint(option2));
 	}
 
-	/* FRONT AUTOS (We are shooting first) */
-
 	public Command move(Path path) {
 		return robot.moveToPoint(path);
 	}
@@ -45,18 +43,25 @@ public class Runnables {
 		);
 	}
 
+	/* FRONT AUTOS (We are shooting first) */
+
+	public Command launch() {
+		return sequential(waitMs(100), robot.launch(), waitMs(100));
+	}
+
 	public Command leaveAuto(BooleanSupplier isFront) {
-		return decidePath(
+		return conditional(
 			isFront,
-			paths.leavePoses.startingPose_To_frontLeavePose(),
-			paths.leavePoses.startingPose_To_backLeavePose()
+			move(paths.leavePoses.startingPose_To_frontLeavePose()),
+			move(paths.leavePoses.startingPose_To_backLeavePose())
 		);
 	}
 
 	public Command preloadAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
+			launch(),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(1000),
+			launch(),
 			conditional(
 				goThroughMiddle,
 				// if true go through the middle
@@ -81,39 +86,126 @@ public class Runnables {
 	}
 	public Command closeFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
+			// robot.launch(),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(1000),
+			launch(),
 			intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
 			intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
-			waitMs(500),
-			decidePath(
-				isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
-				paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
+			conditional(
+				goThroughMiddle,
+				sequential(
+					intake(paths.closeFlowerPoses.middlePoses.afterCloseFlowerIntakePose_To_midMiddlePathPose()),
+					intake(paths.closeFlowerPoses.middlePoses.midMiddlePathPose_To_secondMidMiddlePathPose()),
+					// launch(),
+					decidePath(
+						isFront, paths.closeFlowerPoses.middlePoses.secondMidMiddlePathPose_To_frontLeavePose(),
+						paths.closeFlowerPoses.middlePoses.secondMidMiddlePathPose_To_backLeavePose()
+					)
+				),
+				sequential(
+					waitMs(100),
+					decidePath(
+						isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
+						paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
+					)
+					// launch()
+				)
 			)
 		);
 	}
 
 	public Command farFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
+			launch(),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			waitMs(1000),
-			intake(paths.farFlowerPoses.gardenIntakePose_To_beforeFarFlowerIntakePose()),
-			intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-			waitMs(500),
-			decidePath(
-				isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+			launch(),
+			conditional(
+				goThroughMiddle,
+				sequential(
+					intake(paths.farFlowerPoses.middlePoses.gardenIntakePose_To_midMiddlePose()),
+					intake(paths.farFlowerPoses.middlePoses.midMiddlePose_To_beforeFarFlowerIntakePose()),
+					launch(),
+					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					decidePath(
+						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				),
+				sequential(
+					intake(paths.farFlowerPoses.gardenIntakePose_To_midPose()),
+					intake(paths.farFlowerPoses.midPose_To_beforeFarFlowerIntakePose()),
+					launch(),
+					intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					decidePath(
+						isFront, paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				)
 			)
 		);
 	}
 
 	public Command doubleFlowerAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
-			intake(paths.doubleFlowerPoses.path1()),
-			intake(paths.doubleFlowerPoses.path2()),
-			intake(paths.doubleFlowerPoses.path3()),
-			intake(paths.doubleFlowerPoses.path4()),
-			intake(paths.doubleFlowerPoses.path5())
+			launch(),
+			intake(paths.cp.startingPose_To_gardenIntakePose()),
+			launch(),
+			intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
+			intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
+			conditional(
+				goThroughMiddle, sequential(
+					move(paths.closeFlowerPoses.middlePoses.afterCloseFlowerIntakePose_To_midMiddlePathPose()),
+					move(paths.closeFlowerPoses.middlePoses.midMiddlePathPose_To_secondMidMiddlePathPose()),
+					move(paths.doubleFlowerPoses.middlePoses.secondMidMiddlePose_To_beforeFarFlowerIntakePose()),
+					launch(),
+					move(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					launch(),
+					decidePath(
+						isFront,
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				),
+				sequential(
+					move(paths.doubleFlowerPoses.afterCloseFlowerIntakePose_To_beforeFarFlowerIntakePose()),
+					launch(),
+					move(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+					launch(),
+					decidePath(
+						isFront,
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+						paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+					)
+				)
+			)
+		);
+	}
+
+	/* BACK AUTOS (We are waiting first) */
+
+	public Command backLeaveAuto(BooleanSupplier isFront) {
+		return sequential(
+			waitMs(100),
+			decidePath(
+				isFront,
+				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+			)
+		);
+	}
+
+	public Command backFarFlowerAuto(BooleanSupplier isFront) {
+		return sequential(
+			waitMs(100),
+			intake(paths.backLeaveAutoPoses.backStartingPose_To_beforeFarFlowerIntakePose()),
+			waitMs(100),
+			intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
+			waitMs(100),
+			decidePath(
+				isFront,
+				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
+				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
+			)
 		);
 	}
 

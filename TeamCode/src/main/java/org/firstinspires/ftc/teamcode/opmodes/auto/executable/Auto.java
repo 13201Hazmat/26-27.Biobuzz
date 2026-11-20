@@ -5,9 +5,12 @@ import com.skeletonarmy.marrow.prompts.OptionPrompt;
 import com.skeletonarmy.marrow.prompts.Prompter;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
+import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.BaseAuto;
 import org.firstinspires.ftc.teamcode.opmodes.auto.setup.Runnables;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
+
+import java.util.ArrayList;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
 
@@ -20,9 +23,12 @@ public class Auto extends BaseAuto {
 
 		// Fallback default command using BooleanSupplier
 		setAutoCommand(runnables.leaveAuto(() -> false));
-
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
 		this.prompter = new Prompter(telemetry, gamepad1, gamepad2);
-
+		// robot.getTurret().setAutoAim(true);
 		prompter.prompt(
 			"alliance", new OptionPrompt<>(
 				"Select Alliance",
@@ -36,7 +42,8 @@ public class Auto extends BaseAuto {
 				"Select Auto Routine",
 				"Leave Auto",
 				"Preload Auto",
-				"Close Flower Auto"
+				"Close Flower Auto",
+				"Far Flower Auto"
 			)
 		);
 
@@ -46,7 +53,9 @@ public class Auto extends BaseAuto {
 
 		prompter.prompt(
 			"throughMiddle", new BooleanPrompt("Go Through Middle?", false)
-		).showIf("autoSelection", "Preload Auto").or("autoSelection", "Close Flower Auto").label("Through Middle");
+		).showIf("autoSelection", "Preload Auto").or("autoSelection", "Close Flower Auto").or(
+			"autoSelection", "Far Flower Auto"
+		).label("Through Middle");
 
 		prompter.showSummary().onComplete(this::onPromptsComplete);
 	}
@@ -76,12 +85,19 @@ public class Auto extends BaseAuto {
 					() -> prompter.getOrDefault("throughMiddle", false)
 				)
 			);
+		} else if ("Far Flower Auto".equals(autoSelection)) {
+			setAutoCommand(
+				runnables.farFlowerAuto(
+					() -> prompter.getOrDefault("isFront", true),
+					() -> prompter.getOrDefault("throughMiddle", false)
+				)
+			);
 		}
 
 		telemetry.addData("Selected Alliance", alliance);
 		telemetry.addData("Selected Auto", autoSelection);
 		telemetry.addData("isFront", prompter.getOrDefault("isFront", true));
-		if ("Preload Auto".equals(autoSelection) || "Close Flower Auto".equals(autoSelection)) {
+		if (!"Leave Auto".equals(autoSelection)) {
 			telemetry.addData("throughMiddle", prompter.getOrDefault("throughMiddle", false));
 		}
 		telemetry.update();
@@ -89,6 +105,7 @@ public class Auto extends BaseAuto {
 
 	@Override
 	public void disabledPeriodic() {
+		robot.init().schedule();
 		prompter.run();
 	}
 }
