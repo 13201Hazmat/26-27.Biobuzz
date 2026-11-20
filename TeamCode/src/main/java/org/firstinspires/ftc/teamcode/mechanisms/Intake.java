@@ -21,7 +21,7 @@ public class Intake implements Mechanism {
 	private static final double OFF = 0.0;
 	private static final double CALIB_DELTA = 0.1;
 
-	private final double RAMP_UP_POS = 0.7;
+	private final double RAMP_UP_POS = 0.62;
 	private final double RAMP_DOWN_POS = 0.98;
 
 	private double powerValue = 0.0;

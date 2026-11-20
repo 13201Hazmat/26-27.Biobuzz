@@ -23,7 +23,12 @@ public abstract class TeleOp extends NextOpMode {
 
 		Trigger.Companion.getDefaultEventLoop().clear();
 
-		// robot.setStartingPose(PoseStorage.get());
+		robot.setPose(PoseStorage.get());
+	}
+
+	@Override
+	public void disabledPeriodic() {
+		robot.getFollower();
 	}
 
 	@Override
@@ -36,11 +41,12 @@ public abstract class TeleOp extends NextOpMode {
 	protected void gp1() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		robot.getDrivetrain().startDrive(gamepad1);
+		robot.getDrivetrain().startDrive(gamepad1, () -> robot.getPose().heading());
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
 		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
+		gp1.square().onTrue(instant(() -> robot.relocalize(Alliance.currentAlliance)));
 
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
 	}
@@ -52,10 +58,6 @@ public abstract class TeleOp extends NextOpMode {
 		gp2.leftBumper().onTrue(instant(() -> robot.getLauncher().adjustOffset(false)));
 
 		gp2.rightTrigger().isOver(0.2).onTrue(robot.getLauncher().closeGate());
-
-		gp2.dpadUp().onTrue(instant(robot::toggleHoodAutomate));
-		gp2.dpadRight().onTrue(robot.getLauncherHood().setPollenPos());
-		gp2.dpadLeft().onTrue(robot.getLauncherHood().setNectarPos());
 
 		gp2.dpadDown().onTrue(instant(() -> robot.getTurret().toggleAutoAim()));
 		gp2.x().onTrue(instant(() -> robot.getTransfer().cycle()).with(instant(robot::toggleManualTransfer)));

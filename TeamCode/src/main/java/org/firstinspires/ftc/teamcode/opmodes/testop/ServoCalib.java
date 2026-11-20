@@ -47,10 +47,6 @@ public class ServoCalib extends NextOpMode {
 			Selected.GATE,
 			instant(() -> robot.getLauncher().increment(target - robot.getLauncher().getLauncherGatePos()).schedule())
 		);
-		cases.put(
-			Selected.HOOD,
-			instant(() -> robot.getLauncherHood().increment(target - robot.getLauncherHood().getServoPos()).schedule())
-		);
 		return match(() -> last, cases);
 	}
 
@@ -72,11 +68,6 @@ public class ServoCalib extends NextOpMode {
 		gp1.dpadUp().onTrue(instant(() -> last = Selected.GATE));
 		gp1.dpadDown().onTrue(robot.getLauncher().increment(-0.01));
 		gp1.dpadDown().onTrue(instant(() -> last = Selected.GATE));
-
-		gp1.dpadRight().onTrue(robot.getLauncherHood().increment(0.01));
-		gp1.dpadRight().onTrue(instant(() -> last = Selected.HOOD));
-		gp1.dpadLeft().onTrue(robot.getLauncherHood().increment(-0.01));
-		gp1.dpadLeft().onTrue(instant(() -> last = Selected.HOOD));
 
 		gp1.leftBumper().onTrue(goTo(0));
 		gp1.rightBumper().onTrue(goTo(1));
@@ -100,9 +91,6 @@ public class ServoCalib extends NextOpMode {
 
 		Telemetry.log("Launcher Gate Position", robot.getLauncher().getLauncherGatePos());
 		Telemetry.log("DPad Up / Down", "Launcher Gate +0.01 / -0.01");
-
-		Telemetry.log("Launcher Hood Position", robot.getLauncherHood().getServoPos());
-		Telemetry.log("DPad Right / Left", "Hood +0.01 / -0.01");
 
 		Telemetry.log("Left Trigger", "Debug");
 	}

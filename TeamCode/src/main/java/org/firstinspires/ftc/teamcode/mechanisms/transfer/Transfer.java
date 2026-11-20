@@ -14,7 +14,7 @@ import dev.nextftc.units.measuretypes.Current;
 public class Transfer implements Mechanism {
 
 	public enum TransferSensingState {
-		EMPTY, FILLING, FULL
+		EMPTY, FILLING, LOADED, FULL
 	}
 
 	public enum TransferMotorState {
@@ -112,9 +112,11 @@ public class Transfer implements Mechanism {
 				transferSensingState = TransferSensingState.EMPTY;
 				break;
 			case 1 :
+				transferSensingState = TransferSensingState.FILLING;
+				break;
 			case 2 :
 			case 3 :
-				transferSensingState = TransferSensingState.FILLING;
+				transferSensingState = TransferSensingState.LOADED;
 				break;
 			case 4 :
 				transferSensingState = TransferSensingState.FULL;

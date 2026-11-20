@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.Config;
+
+import java.util.function.Supplier;
 
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.robot.Mechanism;
@@ -29,15 +33,13 @@ public class Drivetrain implements Mechanism {
 		Telemetry.log("BL -", backLeft.getThrottle());
 		Telemetry.log("BR -", backRight.getThrottle());
 	}
+	public void startDrive(Gamepad gamepad, Supplier<Double> heading) {
+		double offset = Alliance.currentAlliance == Alliance.RED ? Math.PI / 2 : Math.PI * 1.5;
 
-	public void startDrive(Gamepad gamepad, double heading) {
 		DriveCommands.mecanumDriveFieldCentric(
-			frontLeft,
-			frontRight,
-			backLeft,
-			backRight,
+			frontLeft, frontRight, backLeft, backRight,
 			gamepad,
-			() -> heading
+			() -> heading.get() + offset
 		).schedule();
 	}
 

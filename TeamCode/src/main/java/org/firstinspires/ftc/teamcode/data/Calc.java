@@ -26,13 +26,13 @@ public class Calc {
 	}
 
 	public static double getVelocity(Pose current) {
-		return velocity.get(distance(current));
+		double d = Math.max(2.517, Math.min(6.2, distance(current)));
+		return velocity.get(d);
 	}
-
 	public static double distance(Pose current) {
 		return Math.hypot(
-			PathsAndPoses.TurretPoses.blueAudienceHive.x() - current.x(),
-			PathsAndPoses.TurretPoses.blueAudienceHive.y() - current.y()
+			PathsAndPoses.TurretPoses.targetPose.x() - current.x(),
+			PathsAndPoses.TurretPoses.targetPose.y() - current.y()
 		) / 12;
 	}
 
