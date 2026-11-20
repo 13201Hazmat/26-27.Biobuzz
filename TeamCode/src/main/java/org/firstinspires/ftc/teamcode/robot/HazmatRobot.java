@@ -125,7 +125,7 @@ public class HazmatRobot implements NextRobot {
 		return getFollower().velocity();
 	}
 
-	public void setStartingPose(Pose pose) {
+	public void setPose(Pose pose) {
 		getFollower().setPose(pose);
 	}
 
