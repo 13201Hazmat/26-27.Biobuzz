@@ -46,6 +46,7 @@ public abstract class TeleOp extends NextOpMode {
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
 		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
+		gp1.square().onTrue(instant(()->robot.relocalize(Alliance.currentAlliance)));
 
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
 	}

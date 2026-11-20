@@ -34,7 +34,7 @@ public class Drivetrain implements Mechanism {
 		Telemetry.log("BR -", backRight.getThrottle());
 	}
 	public void startDrive(Gamepad gamepad, Supplier<Double> heading) {
-		double offset = Alliance.currentAlliance == Alliance.RED ? 0.0 : Math.PI;
+		double offset = Alliance.currentAlliance == Alliance.RED ? Math.PI / 2 : Math.PI * 1.5;
 
 		DriveCommands.mecanumDriveFieldCentric(
 				frontLeft, frontRight, backLeft, backRight,

@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import static com.pedropathing.ivy.commands.Commands.conditional;
 import static com.pedropathing.ivy.commands.Commands.instant;
-import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.onInterrupt;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
-import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
@@ -20,7 +17,6 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
-import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
@@ -29,8 +25,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
@@ -147,6 +141,14 @@ public class HazmatRobot implements NextRobot {
 		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
 	}
 
+	public void relocalize(Alliance a){
+		if (a == Alliance.RED){
+			setPose(rightHpCorner);
+		}
+		if (a == Alliance.BLUE){
+			setPose(blueHpCorner);
+		}
+	}
 	public void setTargetPose(Alliance a, Pose current) {
 		if (a == Alliance.RED) {
 			if (current.y() > 70.5) {
