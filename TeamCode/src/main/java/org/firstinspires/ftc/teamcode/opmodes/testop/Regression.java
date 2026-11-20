@@ -30,14 +30,12 @@ public class Regression extends NextOpMode {
 
 	@Override
 	public void start() {
-		PoseFactory factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 		robot.getDrivetrain().startDrive(gamepad1);
 
 		gp1.triangle().onTrue(instant(() -> robot.getLauncher().incrementRPM()));
 		gp1.cross().onTrue(instant(() -> robot.getLauncher().decrementRPM()));
 		gp1.circle().onTrue(instant(() -> robot.getLauncher().setTargetVelocity(0)));
-		gp1.square().onTrue(instant(() -> robot.setPose(factory.of(133.5,7.8, 90))));
 
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
