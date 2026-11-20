@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode.opmodes.testop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
+import com.pedropathing.api.PoseFactory;
+import com.pedropathing.math.Pose;
+
+import org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.telemetry.Telemetry;
@@ -24,6 +28,7 @@ public class RobotTest extends NextOpMode {
 
 	@Override
 	public void start() {
+		PoseFactory factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
 		robot.getDrivetrain().startDrive(gamepad1);
@@ -37,8 +42,7 @@ public class RobotTest extends NextOpMode {
 		gp1.dpadDown().onTrue(instant(() -> robot.getLauncher().decreasePower()));
 
 		// Launcher Hood Controls
-		gp1.cross().onTrue(robot.getLauncherHood().setPollenPos());
-		gp1.triangle().onTrue(robot.getLauncherHood().setNectarPos());
+		gp1.cross().onTrue(instant(()->robot.setStartingPose(factory.of(133.5,7.8, 90))));
 
 		// Launcher Gate Controls
 		gp1.circle().onTrue(robot.getLauncher().openGate());
@@ -63,6 +67,9 @@ public class RobotTest extends NextOpMode {
 		Telemetry.log("Circle", "Open Launcher Gate");
 		Telemetry.log("Square", "Close Launcher Gate");
 		Telemetry.log("Left Trigger", "Debug");
+		telemetry.addData("Target Pose", PathsAndPoses.TurretPoses.targetPose);
+		telemetry.addData("Odo", robot.getPose());
+		telemetry.update();
 
 	}
 }

@@ -25,7 +25,7 @@ public class Turret implements Mechanism {
 	);
 
 	private final double GEAR_RATIO = 0.9923076923;
-	private final double SERVO_RANGE = 326;
+	private final double SERVO_RANGE = 337.25;
 
 	private double curAngle = 0.0;
 	private double servoPos = 0.0;
