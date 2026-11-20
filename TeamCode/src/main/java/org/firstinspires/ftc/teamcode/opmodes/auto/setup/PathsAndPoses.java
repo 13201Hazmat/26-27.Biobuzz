@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.data.Alliance;
 
 public class PathsAndPoses {
 
-	private final PoseFactory factory;
+	public static final PoseFactory factory = PoseFactory.degrees();
 
 	public final CommonPoints cp;
 	public final LeavePoses leavePoses;
@@ -18,12 +18,6 @@ public class PathsAndPoses {
 	public final DoubleFlowerAutoPoses doubleFlowerPoses;
 	public final BackLeaveAutoPoses backLeaveAutoPoses;
 	public PathsAndPoses() {
-		factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
-		if (Alliance.currentAlliance == Alliance.BLUE) {
-			factory.mirrorX(70.75);
-			factory.mirrorY(70.75);
-		}
-
 		cp = new CommonPoints();
 		leavePoses = new LeavePoses();
 		farFlowerPoses = new FarFlowerAutoPoses();
