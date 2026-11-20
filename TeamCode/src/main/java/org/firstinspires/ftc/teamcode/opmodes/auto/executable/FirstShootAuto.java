@@ -17,7 +17,6 @@ public class FirstShootAuto extends BaseAuto {
 
 	public FirstShootAuto(HazmatRobot robot) {
 		super(robot, Alliance.RED);
-
 		// Fallback default command using BooleanSupplier
 		setAutoCommand(runnables.leaveAuto(() -> false));
 
@@ -110,5 +109,6 @@ public class FirstShootAuto extends BaseAuto {
 	@Override
 	public void disabledPeriodic() {
 		prompter.run();
+		robot.init().schedule();
 	}
 }

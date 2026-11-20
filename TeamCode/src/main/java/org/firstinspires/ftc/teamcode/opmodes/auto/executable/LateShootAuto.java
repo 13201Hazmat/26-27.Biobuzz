@@ -17,7 +17,7 @@ public class LateShootAuto extends BaseAuto {
 
 	public LateShootAuto(HazmatRobot robot) {
 		super(robot, Alliance.RED);
-
+		robot.init();
 		this.startingPose = runnables.paths.backLeaveAutoPoses.start;
 		setAutoCommand(runnables.backLeaveAuto(() -> false));
 
