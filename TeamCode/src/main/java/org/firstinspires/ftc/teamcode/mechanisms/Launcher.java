@@ -6,6 +6,7 @@ import static dev.nextftc.units.Units.RotationsPerMinute;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 
+import org.firstinspires.ftc.teamcode.data.BangBang;
 import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.data.Config;
 
@@ -32,12 +33,17 @@ public class Launcher implements Mechanism {
 	private final double READY_TOLERANCE = 25.0;
 	private final double EXIT_TOLERANCE = 75.0;
 
-	private final double IDLE_SPEED = 0.0;
+	private final double IDLE_SPEED = 4200;
 	private final double CLOSE_SPEED = 0.0;
 	private final double FAR_SPEED = 0.0;
 
 	private final double OPEN_POS = 0.31;
 	private final double CLOSE_POS = 0.05;
+	private final double BANG_THRESHOLD = 150.0;
+	private final double BANG_POWER = 1.0;
+	private final double BANG_HYSTERESIS = 10.0;
+	private boolean bangBangEnabled = true;
+	private final BangBang bangBang = new BangBang(BANG_POWER, BANG_HYSTERESIS);
 
 	private double kV = 0.00017;
 	private double kS = 0.113;
@@ -48,6 +54,7 @@ public class Launcher implements Mechanism {
 	private double error = 0.0;
 
 	private boolean powerMode = false;
+	private boolean bangActive = false;
 	public LauncherState launcherState = LauncherState.IDLE;
 
 	public Launcher() {
@@ -114,7 +121,13 @@ public class Launcher implements Mechanism {
 	public void setReady() {
 		launcherState = LauncherState.READY;
 	}
+	public void setBangBangEnabled(boolean enabled) {
+		this.bangBangEnabled = enabled;
+	}
 
+	public boolean isBangBangEnabled() {
+		return bangBangEnabled;
+	}
 	public void setKS(double kS) {
 		this.kS = kS;
 		rightLauncher.getVelocityConstants().setKS(kS);
@@ -201,20 +214,16 @@ public class Launcher implements Mechanism {
 	public void adjustOffset(boolean increase) {
 		if (increase) {
 			increaseOffset();
+		} else {
+			decreaseOffset();
 		}
-		decreaseOffset();
-	}
-
-	public void test() {
-		setPowerMode(true);
-		rightLauncher.setThrottle(1.0);
 	}
 
 	public void updateState() {
 		if (isIdle())
 			return;
 
-		error = Math.abs(getCurrentRPM() - targetVelocity);
+		error = Math.abs(getCurrentRPM() - (targetVelocity + offset));
 
 		if (isReady()) {
 			if (error > EXIT_TOLERANCE)
@@ -222,6 +231,19 @@ public class Launcher implements Mechanism {
 		} else {
 			if (error <= READY_TOLERANCE)
 				setReady();
+		}
+	}
+
+	private void applyControl() {
+		double goal = targetVelocity + offset;
+		double rpm = getCurrentRPM();
+
+		if (bangBangEnabled && goal - rpm > BANG_THRESHOLD) {
+			rightLauncher.setThrottle(bangBang.calculate(goal, rpm));
+			bangActive = true;
+		} else if (bangActive) {
+		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(goal));
+			bangActive = false;
 		}
 	}
 
@@ -262,6 +284,10 @@ public class Launcher implements Mechanism {
 
 		if (isIdle() && !powerMode) {
 			setTargetVelocity(IDLE_SPEED);
+		}
+
+		if (!powerMode) {
+			applyControl();
 		}
 
 		rightLauncher.update();

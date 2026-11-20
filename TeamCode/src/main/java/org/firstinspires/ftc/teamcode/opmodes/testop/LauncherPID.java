@@ -18,7 +18,7 @@ public class LauncherPID extends NextOpMode {
 		super(robot);
 		this.robot = robot;
 		robot.setActiveOpMode(this);
-
+		robot.getLauncher().setBangBangEnabled(false);
 		Trigger.Companion.getDefaultEventLoop().clear();
 	}
 

@@ -13,6 +13,7 @@ import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.Tu
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
@@ -24,7 +25,6 @@ import org.firstinspires.ftc.teamcode.data.Calc;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
-import org.firstinspires.ftc.teamcode.mechanisms.LauncherHood;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -47,15 +47,17 @@ public class HazmatRobot implements NextRobot {
 	private final Transfer transfer;
 	private Turret turret;
 	private final Launcher launcher;
-	private final LauncherHood launcherHood;
 
 	private boolean isLaunching = false;
-	private boolean isHoodAutomated = true;
 	private boolean isTransferManual = false;
 
 	private boolean debugEnabled = false;
 
 	private NextOpMode activeOpMode = null;
+	private PoseFactory f = PoseFactory.degrees();
+	public final Pose blueHpCorner = f.of(133.432, 7.569, 90);
+	public final Pose rightHpCorner = f.of(7.9,132,-90);
+
 
 	@Nullable
 	public NextOpMode getActiveOpMode() {
@@ -78,7 +80,6 @@ public class HazmatRobot implements NextRobot {
 		intake = new Intake();
 		transfer = new Transfer();
 		launcher = new Launcher();
-		launcherHood = new LauncherHood();
 		turret = new Turret();
 	}
 
@@ -100,10 +101,6 @@ public class HazmatRobot implements NextRobot {
 
 	public Launcher getLauncher() {
 		return launcher;
-	}
-
-	public LauncherHood getLauncherHood() {
-		return launcherHood;
 	}
 
 	public Follower getFollower() {
@@ -132,11 +129,7 @@ public class HazmatRobot implements NextRobot {
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, launcherHood, turret);
-	}
-
-	public void toggleHoodAutomate() {
-		isHoodAutomated = !isHoodAutomated;
+		return Set.of(intake, transfer, drivetrain, launcher, turret);
 	}
 
 	public void toggleManualTransfer() {
@@ -174,7 +167,6 @@ public class HazmatRobot implements NextRobot {
 	public Command init() {
 		return parallel(
 			intake.setRampUp(),
-			launcherHood.setPollenPos(),
 			launcher.closeGate()
 		);
 	}
@@ -183,37 +175,6 @@ public class HazmatRobot implements NextRobot {
 		intake.off();
 		transfer.off();
 	}
-
-	private Command setHoodForFirst() {
-		return lazy(() -> {
-			BallType front = transfer.getTransferSensing().getTopBall();
-			return setHoodFor(front);
-		});
-	}
-
-	private Command setHoodFor(BallType type) {
-		return conditional(
-			() -> type == BallType.POLLEN,
-			launcherHood.setPollenPos(),
-			launcherHood.setNectarPos()
-		);
-	}
-
-	private Command cycleHood() {
-		return lazy(() -> {
-			List<BallType> balls = new ArrayList<>(transfer.getTransferSensing().getStoredBalls());
-			List<Command> commands = new ArrayList<>();
-
-			for (BallType ballType : balls.subList(1, balls.size())) {
-				if (ballType == null || ballType == BallType.NOTHING)
-					break;
-				commands.add(setHoodFor(ballType));
-				commands.add(waitMs(150));
-			}
-			return sequential(commands.toArray(new Command[0]));
-		});
-	}
-
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
@@ -234,7 +195,6 @@ public class HazmatRobot implements NextRobot {
 		drivetrain.debug();
 		intake.debug();
 		launcher.debug();
-		launcherHood.debug();
 		turret.debug();
 	}
 
@@ -250,6 +210,13 @@ public class HazmatRobot implements NextRobot {
 			case FILLING :
 				setIntakeAndTransfer(true);
 				break;
+			case LOADED:
+				launcher.autoSetVelocity(getPose());
+				if (!isTransferManual) {
+					intake.forward();
+					transfer.off();
+				}
+				break;
 			case FULL :
 				setIntakeAndTransfer(false);
 				break;
@@ -262,11 +229,7 @@ public class HazmatRobot implements NextRobot {
 
 		if (on) {
 			intake.forward();
-			// if (transfer.isStalling()) {
-			// transfer.off();
-			// } else {
 			transfer.forward();
-			// }
 		} else {
 			intake.off();
 			transfer.off();
