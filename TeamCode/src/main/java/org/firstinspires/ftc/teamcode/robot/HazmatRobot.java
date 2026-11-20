@@ -50,8 +50,7 @@ public class HazmatRobot implements NextRobot {
 	private NextOpMode activeOpMode = null;
 	private PoseFactory f = PoseFactory.degrees();
 	public final Pose blueHpCorner = f.of(133.432, 7.569, 90);
-	public final Pose rightHpCorner = f.of(7.9,132,-90);
-
+	public final Pose rightHpCorner = f.of(7.9, 132, -90);
 
 	@Nullable
 	public NextOpMode getActiveOpMode() {
@@ -141,11 +140,11 @@ public class HazmatRobot implements NextRobot {
 		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
 	}
 
-	public void relocalize(Alliance a){
-		if (a == Alliance.RED){
+	public void relocalize(Alliance a) {
+		if (a == Alliance.RED) {
 			setPose(rightHpCorner);
 		}
-		if (a == Alliance.BLUE){
+		if (a == Alliance.BLUE) {
 			setPose(blueHpCorner);
 		}
 	}
@@ -212,7 +211,7 @@ public class HazmatRobot implements NextRobot {
 			case FILLING :
 				setIntakeAndTransfer(true);
 				break;
-			case LOADED:
+			case LOADED :
 				launcher.autoSetVelocity(getPose());
 				if (!isTransferManual) {
 					intake.forward();

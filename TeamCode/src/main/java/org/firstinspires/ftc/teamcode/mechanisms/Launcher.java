@@ -242,7 +242,7 @@ public class Launcher implements Mechanism {
 			rightLauncher.setThrottle(bangBang.calculate(goal, rpm));
 			bangActive = true;
 		} else if (bangActive) {
-		rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(goal));
+			rightLauncher.setVelocitySetpoint(RotationsPerMinute.of(goal));
 			bangActive = false;
 		}
 	}

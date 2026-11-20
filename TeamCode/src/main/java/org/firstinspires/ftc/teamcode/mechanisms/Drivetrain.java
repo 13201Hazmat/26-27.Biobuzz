@@ -37,9 +37,9 @@ public class Drivetrain implements Mechanism {
 		double offset = Alliance.currentAlliance == Alliance.RED ? Math.PI / 2 : Math.PI * 1.5;
 
 		DriveCommands.mecanumDriveFieldCentric(
-				frontLeft, frontRight, backLeft, backRight,
-				gamepad,
-				() -> heading.get() + offset
+			frontLeft, frontRight, backLeft, backRight,
+			gamepad,
+			() -> heading.get() + offset
 		).schedule();
 	}
 
