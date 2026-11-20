@@ -13,9 +13,15 @@ public class Calc {
 
 	private static InterpolatingMap<Double> buildVelocity() {
 		InterpolatingMap<Double> map = InterpolatingMap.Companion.spline();
-		map.put(0.0, 0.0); // distance, velocity
-		map.put(1.0, 0.0);
-		map.put(2.0, 0.0);
+		map.put(2.517, 4250.00); // distance, velocity
+		map.put(3.0153, 4300.00);
+		map.put(3.30, 4450.00);
+		map.put(3.66, 4600.00);
+		map.put(4.08, 4575.000);
+		map.put(4.65, 4750.00);
+		map.put(5.28, 4825.00);
+		map.put(5.8, 5225.00);
+		map.put(6.2, 5350.00);
 		return map;
 	}
 
@@ -25,8 +31,8 @@ public class Calc {
 
 	public static double distance(Pose current) {
 		return Math.hypot(
-			PathsAndPoses.TurretPoses.targetPose.x() - current.x(),
-			PathsAndPoses.TurretPoses.targetPose.y() - current.y()
+			PathsAndPoses.TurretPoses.blueAudienceHive.x() - current.x(),
+			PathsAndPoses.TurretPoses.blueAudienceHive.y() - current.y()
 		) / 12;
 	}
 

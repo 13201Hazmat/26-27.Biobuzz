@@ -41,7 +41,7 @@ public class Launcher implements Mechanism {
 
 	private double kV = 0.00017;
 	private double kS = 0.113;
-	private double kP = 0.007;
+	private double kP = 0.0057;
 
 	private double targetVelocity = 0.0;
 	private double offset = 0.0;

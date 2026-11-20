@@ -217,21 +217,16 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			conditional(() -> !isHoodAutomated, setHoodForFirst(), instant(() -> {
-			})),
-			waitUntil(launcher::isAtVelocity).raceWith(waitMs(1000)),
 			transfer.setForward(),
 			launcher.openGate(),
-			waitMs(200),
-			conditional(() -> !isHoodAutomated, cycleHood(), instant(() -> {
-			})),
-			waitMs(1000),
+			waitMs(1500),
 			launcher.closeGate(),
 			instant(() -> isLaunching = false)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
 			launcher.closeGate().schedule();
-		})).unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
+		}));
+		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
 
 	public void debugAll() {
