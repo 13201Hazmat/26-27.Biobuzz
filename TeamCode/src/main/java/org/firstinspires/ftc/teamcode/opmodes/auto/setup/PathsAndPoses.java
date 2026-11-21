@@ -27,11 +27,11 @@ public class PathsAndPoses {
 	}
 
 	public static class TurretPoses {
-		public static Pose targetPose = new Pose(0, 0, 0);
-		public static final Pose redAudienceHive = new Pose(58, 53, 0);
-		public static final Pose redFarHive = new Pose(58, 88, 0);
-		public static final Pose blueAudienceHive = new Pose(84, 53, 0);
-		public static final Pose blueFarHive = new Pose(84, 88, 0);
+		public static Pose targetPose = factory.of(0, 0, 0);
+		public static final Pose redAudienceHive = factory.of(58, 53, 0);
+		public static final Pose redFarHive = factory.of(58, 88, 0);
+		public static final Pose blueAudienceHive = factory.of(84, 53, 0);
+		public static final Pose blueFarHive = factory.of(84, 88, 0);
 	}
 
 	/* Auto Path Poses */

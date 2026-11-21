@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
+import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import java.util.function.BooleanSupplier;
@@ -46,7 +49,10 @@ public class Runnables {
 	/* FRONT AUTOS (We are shooting first) */
 
 	public Command launch() {
-		return sequential(waitMs(100), robot.launch(), waitMs(100));
+		return sequential(
+				waitUntil(()->robot.getLauncher().isReady()).raceWith(waitMs(1000)),
+				robot.launch(),
+				waitMs(100));
 	}
 
 	public Command leaveAuto(BooleanSupplier isFront) {
@@ -59,7 +65,10 @@ public class Runnables {
 
 	public Command preloadAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
-			launch(),
+			instant(() -> robot.getTurret().setTurretAngle(67)),
+			waitMs(1000),
+			robot.launch(),
+			waitMs(1000),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
 			launch(),
 			conditional(

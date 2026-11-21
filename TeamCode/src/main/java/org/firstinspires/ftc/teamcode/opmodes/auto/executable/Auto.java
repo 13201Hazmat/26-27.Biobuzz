@@ -23,10 +23,7 @@ public class Auto extends BaseAuto {
 
 		// Fallback default command using BooleanSupplier
 		setAutoCommand(runnables.leaveAuto(() -> false));
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+
 		this.prompter = new Prompter(telemetry, gamepad1, gamepad2);
 		// robot.getTurret().setAutoAim(true);
 		prompter.prompt(
@@ -107,5 +104,22 @@ public class Auto extends BaseAuto {
 	public void disabledPeriodic() {
 		robot.init().schedule();
 		prompter.run();
+
+	}
+
+	@Override
+	public void start() {
+		super.start();
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+	}
+
+	@Override
+	public void periodic() {
+		telemetry.addData("QUEU", robot.getTransfer().getTransferSensing().getStoredBalls());
+		telemetry.addData("STATE", robot.getTransfer().getTransferSensingState());
+		telemetry.update();
 	}
 }

@@ -179,8 +179,10 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			transfer.setForward(),
 			launcher.openGate(),
+			waitMs(250),
+			transfer.setForward(),
+			intake.setForward(),
 			waitMs(1500),
 			launcher.closeGate(),
 			instant(() -> {
@@ -190,7 +192,6 @@ public class HazmatRobot implements NextRobot {
 			)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
-			launcher.closeGate().schedule();
 		}));
 		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
