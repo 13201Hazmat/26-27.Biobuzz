@@ -41,12 +41,16 @@ public abstract class TeleOp extends NextOpMode {
 	protected void gp1() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		robot.getDrivetrain().startDrive(gamepad1, () -> robot.getPose().heading());
+		robot.getDrivetrain().startDrive(gamepad1/* , () -> robot.getPose().heading() */);
 
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
 		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
 		gp1.square().onTrue(instant(() -> robot.relocalize(Alliance.currentAlliance)));
+
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+			instant(() -> robot.setDebugEnabled(false))
+		);
 
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
 	}

@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
 import static com.pedropathing.ivy.commands.Commands.conditional;
+import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import java.util.function.BooleanSupplier;
@@ -46,22 +49,34 @@ public class Runnables {
 	/* FRONT AUTOS (We are shooting first) */
 
 	public Command launch() {
-		return sequential(waitMs(100), robot.launch(), waitMs(100));
+		return sequential(
+			waitUntil(() -> robot.getLauncher().isReady()).raceWith(waitMs(1000)),
+			robot.launch(),
+			waitMs(100)
+		);
 	}
 
 	public Command leaveAuto(BooleanSupplier isFront) {
-		return conditional(
-			isFront,
-			move(paths.leavePoses.startingPose_To_frontLeavePose()),
+		return sequential(
+			instant(() -> robot.getTurret().setTurretAngle(242)),
+			waitMs(1000),
+			launch(),
 			move(paths.leavePoses.startingPose_To_backLeavePose())
+			// conditional(
+			// isFront,
+			// move(paths.leavePoses.startingPose_To_frontLeavePose()),
+			// move(paths.leavePoses.startingPose_To_backLeavePose())
 		);
 	}
 
 	public Command preloadAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
+			instant(() -> robot.getTurret().setTurretAngle(242)),
+			waitMs(1000),
 			launch(),
+			waitMs(1000),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			launch(),
+			// launch(),
 			conditional(
 				goThroughMiddle,
 				// if true go through the middle
@@ -90,11 +105,13 @@ public class Runnables {
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
 			launch(),
 			intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
+			robot.getIntake().setRampDown(),
 			intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
 			conditional(
 				goThroughMiddle,
 				sequential(
 					intake(paths.closeFlowerPoses.middlePoses.afterCloseFlowerIntakePose_To_midMiddlePathPose()),
+					robot.getIntake().setRampUp(),
 					intake(paths.closeFlowerPoses.middlePoses.midMiddlePathPose_To_secondMidMiddlePathPose()),
 					// launch(),
 					decidePath(
@@ -107,7 +124,8 @@ public class Runnables {
 					decidePath(
 						isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
 						paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
-					)
+					), robot.getIntake().setRampUp()
+
 					// launch()
 				)
 			)
@@ -185,27 +203,18 @@ public class Runnables {
 
 	public Command backLeaveAuto(BooleanSupplier isFront) {
 		return sequential(
-			waitMs(100),
-			decidePath(
-				isFront,
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
-			)
+			instant(() -> robot.getTurret().setTurretAngle(115)),
+			waitMs(1000),
+			launch(),
+			move(paths.backLeaveAutoPoses.start_To_leave())
 		);
 	}
 
 	public Command backFarFlowerAuto(BooleanSupplier isFront) {
 		return sequential(
-			waitMs(100),
 			intake(paths.backLeaveAutoPoses.backStartingPose_To_beforeFarFlowerIntakePose()),
-			waitMs(100),
 			intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-			waitMs(100),
-			decidePath(
-				isFront,
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
-			)
+			move(paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose())
 		);
 	}
 

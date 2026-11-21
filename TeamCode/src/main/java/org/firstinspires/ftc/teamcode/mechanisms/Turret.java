@@ -106,8 +106,6 @@ public class Turret implements Mechanism {
 
 	@Override
 	public void periodic() {
-		if (AUTO_AIM) {
-			update();
-		}
+		update();
 	}
 }

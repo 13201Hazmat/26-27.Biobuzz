@@ -9,8 +9,7 @@ import org.firstinspires.ftc.teamcode.data.Alliance;
 
 public class PathsAndPoses {
 
-	public static final PoseFactory factory = PoseFactory.degrees();
-
+	public static PoseFactory factory = PoseFactory.degrees();
 	public final CommonPoints cp;
 	public final LeavePoses leavePoses;
 	public final FarFlowerAutoPoses farFlowerPoses;
@@ -27,11 +26,11 @@ public class PathsAndPoses {
 	}
 
 	public static class TurretPoses {
-		public static Pose targetPose = new Pose(0, 0, 0);
-		public static final Pose redAudienceHive = new Pose(58, 53, 0);
-		public static final Pose redFarHive = new Pose(58, 88, 0);
-		public static final Pose blueAudienceHive = new Pose(84, 53, 0);
-		public static final Pose blueFarHive = new Pose(84, 88, 0);
+		public static Pose targetPose = factory.of(0, 0, 0);
+		public static final Pose redAudienceHive = factory.of(58, 53, 0);
+		public static final Pose redFarHive = factory.of(58, 88, 0);
+		public static final Pose blueAudienceHive = factory.of(84, 53, 0);
+		public static final Pose blueFarHive = factory.of(84, 88, 0);
 	}
 
 	/* Auto Path Poses */
@@ -40,7 +39,7 @@ public class PathsAndPoses {
 		public final Pose startingPose = factory.of(30.43, 7.48, 180);
 		public final Pose gardenIntakePose = factory.of(9.24, 7.31, 180);
 		public final Pose frontLeavePose = factory.of(11.92, 120.23, 0);
-		public final Pose backLeavePose = factory.of(14.05, 91.2, 0);
+		public final Pose backLeavePose = factory.of(9, 94.95, 0);
 		public final Pose beforeCloseFlowerIntakePose = factory.of(20.03, 46.64, 180);
 		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64, 180);
 		public final Pose beforeFarFlowerIntakePose = factory.of(47.16, 123, 90);
@@ -63,7 +62,7 @@ public class PathsAndPoses {
 		public final MidLeavePoses midLeavePoses = new MidLeavePoses();
 		public final Pose control = factory.of(25.96, 56.11, 180);
 		public final Path startingPose_To_frontLeavePose() {
-			return Paths.line(cp.startingPose, cp.frontLeavePose).linear(cp.startingPose, cp.frontLeavePose);
+			return Paths.line(cp.startingPose, cp.frontLeavePose).constant(cp.startingPose);
 		}
 		public final Path startingPose_To_backLeavePose() {
 			return Paths.line(cp.startingPose, cp.backLeavePose).linear(cp.startingPose, cp.backLeavePose);
@@ -231,12 +230,16 @@ public class PathsAndPoses {
 	}
 
 	public class BackLeaveAutoPoses {
-		public final Pose start = factory.of(31.2587, 133.5892, 270);
+		public final Pose start = factory.of(31.2587, 133.5892, 180);
 		public final Pose path1 = factory.of(47.5021, 122.5019, 90);
 		public final Pose path1Control1 = factory.of(27.5859, 108.9778, 0);
 
 		public Path backStartingPose_To_beforeFarFlowerIntakePose() {
 			return Paths.curve(start, path1Control1, path1).linear(start, path1);
+		}
+
+		public Path start_To_leave() {
+			return Paths.line(start, cp.frontLeavePose).constant(start);
 		}
 	}
 

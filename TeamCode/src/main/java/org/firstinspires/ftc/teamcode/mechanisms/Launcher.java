@@ -39,7 +39,7 @@ public class Launcher implements Mechanism {
 
 	private final double OPEN_POS = 0.31;
 	private final double CLOSE_POS = 0.05;
-	private final double BANG_THRESHOLD = 150.0;
+	private final double BANG_THRESHOLD = 1000;
 	private final double BANG_POWER = 1.0;
 	private final double BANG_HYSTERESIS = 10.0;
 	private boolean bangBangEnabled = true;

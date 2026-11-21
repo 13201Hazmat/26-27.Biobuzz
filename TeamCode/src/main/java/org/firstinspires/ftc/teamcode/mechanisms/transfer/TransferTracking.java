@@ -14,7 +14,7 @@ import dev.nextftc.telemetry.Telemetry;
 public class TransferTracking implements Mechanism {
 
 	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(
-		Config.intakeBeamBreakModule, Config.intakeBeamBreakPort
+		"intakeBeamBreak", false
 	);
 	private final NextDigitalSensor launcherBeamBreak = new NextDigitalSensor(
 		Config.launcherBeamBreakModule, Config.launcherBeamBreakPort
@@ -91,15 +91,14 @@ public class TransferTracking implements Mechanism {
 		BallType.currentBallType = sensedColor;
 
 		if (currentIntakeBeamState && !lastIntakeBeamState) {
-			if (sensedColor != BallType.NOTHING) {
-				storedBalls.addLast(sensedColor);
-			}
+			// if (sensedColor != BallType.NOTHING) {
+			// storedBalls.addLast(sensedColor);
+			// }
+			storedBalls.push(BallType.POLLEN);
 		}
 
 		if (!currentLauncherBeamState && lastLauncherBeamState) {
-			if (!storedBalls.isEmpty()) {
-				storedBalls.removeFirst();
-			}
+			storedBalls.poll();
 		}
 
 		lastIntakeBeamState = currentIntakeBeamState;

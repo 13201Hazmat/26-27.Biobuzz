@@ -5,6 +5,7 @@ import static com.pedropathing.ivy.commands.Commands.onInterrupt;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
@@ -104,7 +105,7 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command moveToPoint(com.pedropathing.paths.Path path) {
-		return instant(() -> getFollower().follow(path));
+		return follow(getFollower(), path);
 	}
 
 	public Pose getPose() {
@@ -179,14 +180,19 @@ public class HazmatRobot implements NextRobot {
 	public Command launch() {
 		return sequential(
 			instant(() -> isLaunching = true),
-			transfer.setForward(),
 			launcher.openGate(),
+			waitMs(250),
+			transfer.setForward(),
+			intake.setForward(),
 			waitMs(1500),
 			launcher.closeGate(),
-			instant(() -> isLaunching = false)
+			instant(() -> {
+				isLaunching = false;
+				transfer.getTransferSensing().getStoredBalls().clear();
+			}
+			)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;
-			launcher.closeGate().schedule();
 		}));
 		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
@@ -219,6 +225,7 @@ public class HazmatRobot implements NextRobot {
 				}
 				break;
 			case FULL :
+				launcher.autoSetVelocity(getPose());
 				setIntakeAndTransfer(false);
 				break;
 		}

@@ -26,6 +26,8 @@ public class BaseAuto extends NextOpMode {
 
 		this.runnables = new Runnables(robot);
 		this.startingPose = runnables.paths.cp.startingPose;
+
+		robot.getFollower();
 	}
 
 	public void setAutoCommand(Command command) {
@@ -42,7 +44,6 @@ public class BaseAuto extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.getFollower();
 		robot.getFollower().update();
 		telemetry.addData("POSE", robot.getFollower().pose());
 	}
