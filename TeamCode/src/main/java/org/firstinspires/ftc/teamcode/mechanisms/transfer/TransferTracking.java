@@ -91,9 +91,9 @@ public class TransferTracking implements Mechanism {
 		BallType.currentBallType = sensedColor;
 
 		if (currentIntakeBeamState && !lastIntakeBeamState) {
-//			if (sensedColor != BallType.NOTHING) {
-//				storedBalls.addLast(sensedColor);
-//			}
+			// if (sensedColor != BallType.NOTHING) {
+			// storedBalls.addLast(sensedColor);
+			// }
 			storedBalls.push(BallType.POLLEN);
 		}
 

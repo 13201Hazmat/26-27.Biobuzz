@@ -50,21 +50,22 @@ public class Runnables {
 
 	public Command launch() {
 		return sequential(
-				waitUntil(()->robot.getLauncher().isReady()).raceWith(waitMs(1000)),
-				robot.launch(),
-				waitMs(100));
+			waitUntil(() -> robot.getLauncher().isReady()).raceWith(waitMs(1000)),
+			robot.launch(),
+			waitMs(100)
+		);
 	}
 
 	public Command leaveAuto(BooleanSupplier isFront) {
 		return sequential(
-				instant(() -> robot.getTurret().setTurretAngle(242)),
-				waitMs(1000),
-				launch(),
-				move(paths.leavePoses.startingPose_To_backLeavePose())
-//				conditional(
-//			isFront,
-//			move(paths.leavePoses.startingPose_To_frontLeavePose()),
-//			move(paths.leavePoses.startingPose_To_backLeavePose())
+			instant(() -> robot.getTurret().setTurretAngle(242)),
+			waitMs(1000),
+			launch(),
+			move(paths.leavePoses.startingPose_To_backLeavePose())
+			// conditional(
+			// isFront,
+			// move(paths.leavePoses.startingPose_To_frontLeavePose()),
+			// move(paths.leavePoses.startingPose_To_backLeavePose())
 		);
 	}
 
@@ -75,7 +76,7 @@ public class Runnables {
 			launch(),
 			waitMs(1000),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-//			launch(),
+			// launch(),
 			conditional(
 				goThroughMiddle,
 				// if true go through the middle

@@ -187,9 +187,9 @@ public class HazmatRobot implements NextRobot {
 			waitMs(1500),
 			launcher.closeGate(),
 			instant(() -> {
-						isLaunching = false;
-						transfer.getTransferSensing().getStoredBalls().clear();
-					}
+				isLaunching = false;
+				transfer.getTransferSensing().getStoredBalls().clear();
+			}
 			)
 		).raceWith(onInterrupt(() -> {
 			isLaunching = false;

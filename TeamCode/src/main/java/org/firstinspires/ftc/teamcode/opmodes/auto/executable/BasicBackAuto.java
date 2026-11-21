@@ -16,46 +16,46 @@ import dev.nextftc.robot.opmode.NextOpMode;
 
 @NextAutonomous(name = "plu Auto")
 public class BasicBackAuto extends NextOpMode {
-    protected final HazmatRobot robot;
-    protected Runnables runnables;
-    protected Pose startingPose;
-    public BasicBackAuto(HazmatRobot robot) {
-        super(robot);
-        this.robot = robot;
+	protected final HazmatRobot robot;
+	protected Runnables runnables;
+	protected Pose startingPose;
+	public BasicBackAuto(HazmatRobot robot) {
+		super(robot);
+		this.robot = robot;
 
-        robot.getTurret().setAutoAim(false);
+		robot.getTurret().setAutoAim(false);
 
-        Alliance.currentAlliance = Alliance.RED;
-        this.runnables = new Runnables(robot);
+		Alliance.currentAlliance = Alliance.RED;
+		this.runnables = new Runnables(robot);
 
-        robot.getFollower();
-    }
+		robot.getFollower();
+	}
 
-    @Override
-    public void start() {
-        robot.getFollower().setPose(runnables.paths.backLeaveAutoPoses.start);
-        robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-        robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-        robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-        robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-        runnables.backLeaveAuto(() -> true).schedule();
-    }
+	@Override
+	public void start() {
+		robot.getFollower().setPose(runnables.paths.backLeaveAutoPoses.start);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		runnables.backLeaveAuto(() -> true).schedule();
+	}
 
-    @Override
-    public void disabledPeriodic() {
-        robot.init().schedule();
-    }
+	@Override
+	public void disabledPeriodic() {
+		robot.init().schedule();
+	}
 
-    @Override
-    public void periodic() {
-        robot.getFollower().update();
-        telemetry.addData("POSE", robot.getFollower().pose());
-        telemetry.addData("ALLIANCE", Alliance.currentAlliance);
-        telemetry.update();
-    }
+	@Override
+	public void periodic() {
+		robot.getFollower().update();
+		telemetry.addData("POSE", robot.getFollower().pose());
+		telemetry.addData("ALLIANCE", Alliance.currentAlliance);
+		telemetry.update();
+	}
 
-    @Override
-    public void end() {
-        PoseStorage.save(robot.getFollower().pose());
-    }
+	@Override
+	public void end() {
+		PoseStorage.save(robot.getFollower().pose());
+	}
 }

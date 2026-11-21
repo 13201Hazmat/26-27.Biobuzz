@@ -25,7 +25,7 @@ public class Auto extends BaseAuto {
 		setAutoCommand(runnables.leaveAuto(() -> false));
 
 		this.prompter = new Prompter(telemetry, gamepad1, gamepad2);
-//		 robot.getTurret().setAutoAim(true);
+		// robot.getTurret().setAutoAim(true);
 		prompter.prompt(
 			"alliance", new OptionPrompt<>(
 				"Select Alliance",

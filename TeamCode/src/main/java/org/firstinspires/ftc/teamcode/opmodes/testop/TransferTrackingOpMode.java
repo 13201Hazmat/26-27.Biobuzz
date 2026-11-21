@@ -11,28 +11,28 @@ import dev.nextftc.robot.triggers.Trigger;
 
 @NextUtility(name = "Transfer Tracking")
 public class TransferTrackingOpMode extends NextOpMode {
-    private final HazmatRobot robot;
+	private final HazmatRobot robot;
 
-    public TransferTrackingOpMode(HazmatRobot robot) {
-        super(robot);
-        this.robot = robot;
-        robot.setActiveOpMode(this);
-        robot.getLauncher().setBangBangEnabled(false);
-        Trigger.Companion.getDefaultEventLoop().clear();
-    }
+	public TransferTrackingOpMode(HazmatRobot robot) {
+		super(robot);
+		this.robot = robot;
+		robot.setActiveOpMode(this);
+		robot.getLauncher().setBangBangEnabled(false);
+		Trigger.Companion.getDefaultEventLoop().clear();
+	}
 
-    @Override
-    public void start() {
-        CommandGamepad gp1 = new CommandGamepad(gamepad1);
+	@Override
+	public void start() {
+		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-        gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
-        gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
+		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
+		gp1.leftBumper().onTrue(instant(() -> robot.getTransfer().cycle()));
 
-    }
+	}
 
-    @Override
-    public void periodic() {
-        telemetry.addData("BEAM BREAK", robot.getTransfer().getTransferSensing().getIntakeBeamBreak().debug());
-        telemetry.update();
-    }
+	@Override
+	public void periodic() {
+		telemetry.addData("BEAM BREAK", robot.getTransfer().getTransferSensing().getIntakeBeamBreak().debug());
+		telemetry.update();
+	}
 }
