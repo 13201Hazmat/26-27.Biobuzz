@@ -90,11 +90,13 @@ public class Runnables {
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
 			launch(),
 			intake(paths.closeFlowerPoses.gardenIntakePose_To_beforeCloseFlowerIntakePose()),
+			robot.getIntake().setRampDown(),
 			intake(paths.closeFlowerPoses.beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose()),
 			conditional(
 				goThroughMiddle,
 				sequential(
 					intake(paths.closeFlowerPoses.middlePoses.afterCloseFlowerIntakePose_To_midMiddlePathPose()),
+					robot.getIntake().setRampUp(),
 					intake(paths.closeFlowerPoses.middlePoses.midMiddlePathPose_To_secondMidMiddlePathPose()),
 					// launch(),
 					decidePath(
@@ -107,7 +109,8 @@ public class Runnables {
 					decidePath(
 						isFront, paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_frontLeavePose(),
 						paths.closeFlowerPoses.afterCloseFlowerIntakePose_To_backLeavePose()
-					)
+					), robot.getIntake().setRampUp()
+
 					// launch()
 				)
 			)

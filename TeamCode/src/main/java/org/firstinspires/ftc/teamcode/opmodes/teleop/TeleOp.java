@@ -48,6 +48,10 @@ public abstract class TeleOp extends NextOpMode {
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
 		gp1.square().onTrue(instant(() -> robot.relocalize(Alliance.currentAlliance)));
 
+		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
+				instant(() -> robot.setDebugEnabled(false))
+		);
+
 		gp1.rightTrigger().isOver(0.2).onTrue(robot.launch());
 	}
 
