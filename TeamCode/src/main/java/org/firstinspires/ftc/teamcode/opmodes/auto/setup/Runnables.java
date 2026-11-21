@@ -56,21 +56,26 @@ public class Runnables {
 	}
 
 	public Command leaveAuto(BooleanSupplier isFront) {
-		return conditional(
-			isFront,
-			move(paths.leavePoses.startingPose_To_frontLeavePose()),
-			move(paths.leavePoses.startingPose_To_backLeavePose())
+		return sequential(
+				instant(() -> robot.getTurret().setTurretAngle(242)),
+				waitMs(1000),
+				launch(),
+				move(paths.leavePoses.startingPose_To_backLeavePose())
+//				conditional(
+//			isFront,
+//			move(paths.leavePoses.startingPose_To_frontLeavePose()),
+//			move(paths.leavePoses.startingPose_To_backLeavePose())
 		);
 	}
 
 	public Command preloadAuto(BooleanSupplier isFront, BooleanSupplier goThroughMiddle) {
 		return sequential(
-			instant(() -> robot.getTurret().setTurretAngle(67)),
+			instant(() -> robot.getTurret().setTurretAngle(242)),
 			waitMs(1000),
-			robot.launch(),
+			launch(),
 			waitMs(1000),
 			intake(paths.cp.startingPose_To_gardenIntakePose()),
-			launch(),
+//			launch(),
 			conditional(
 				goThroughMiddle,
 				// if true go through the middle
@@ -197,27 +202,18 @@ public class Runnables {
 
 	public Command backLeaveAuto(BooleanSupplier isFront) {
 		return sequential(
-			waitMs(100),
-			decidePath(
-				isFront,
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
-			)
+			instant(() -> robot.getTurret().setTurretAngle(115)),
+			waitMs(1000),
+			launch(),
+			move(paths.backLeaveAutoPoses.start_To_leave())
 		);
 	}
 
 	public Command backFarFlowerAuto(BooleanSupplier isFront) {
 		return sequential(
-			waitMs(100),
 			intake(paths.backLeaveAutoPoses.backStartingPose_To_beforeFarFlowerIntakePose()),
-			waitMs(100),
 			intake(paths.farFlowerPoses.beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose()),
-			waitMs(100),
-			decidePath(
-				isFront,
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_frontLeavePose(),
-				paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose()
-			)
+			move(paths.farFlowerPoses.afterFarFlowerIntakePose_To_backLeavePose())
 		);
 	}
 

@@ -119,9 +119,10 @@ public class Transfer implements Mechanism {
 				transferSensingState = TransferSensingState.LOADED;
 				break;
 			case 4 :
-				transferSensingState = TransferSensingState.FULL;
+            case 5 :
+                transferSensingState = TransferSensingState.FULL;
 				break;
-		}
+        }
 
 		switch (transferMotorState) {
 			case FORWARD :

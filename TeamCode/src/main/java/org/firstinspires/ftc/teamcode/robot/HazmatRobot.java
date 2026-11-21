@@ -5,6 +5,7 @@ import static com.pedropathing.ivy.commands.Commands.onInterrupt;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
 
 import androidx.annotation.NonNull;
@@ -104,7 +105,7 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public Command moveToPoint(com.pedropathing.paths.Path path) {
-		return instant(() -> getFollower().follow(path));
+		return follow(getFollower(), path);
 	}
 
 	public Pose getPose() {
@@ -224,6 +225,7 @@ public class HazmatRobot implements NextRobot {
 				}
 				break;
 			case FULL :
+				launcher.autoSetVelocity(getPose());
 				setIntakeAndTransfer(false);
 				break;
 		}
