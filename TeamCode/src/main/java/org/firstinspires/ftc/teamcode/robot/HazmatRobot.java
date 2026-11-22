@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
 import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
+import org.firstinspires.ftc.teamcode.mechanisms.vision.Arducam;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -38,10 +39,11 @@ public class HazmatRobot implements NextRobot {
 
 	private Follower follower;
 	private final Drivetrain drivetrain;
-	private Intake intake;
+	private final Intake intake;
 	private final Transfer transfer;
 	private Turret turret;
 	private final Launcher launcher;
+	private final Arducam arducam;
 
 	private boolean isLaunching = false;
 	private boolean isTransferManual = false;
@@ -75,6 +77,7 @@ public class HazmatRobot implements NextRobot {
 		transfer = new Transfer();
 		launcher = new Launcher();
 		turret = new Turret();
+		arducam = new Arducam();
 	}
 
 	public Drivetrain getDrivetrain() {
@@ -123,7 +126,7 @@ public class HazmatRobot implements NextRobot {
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, turret);
+		return Set.of(intake, transfer, drivetrain, launcher, turret, arducam);
 	}
 
 	public void toggleManualTransfer() {
