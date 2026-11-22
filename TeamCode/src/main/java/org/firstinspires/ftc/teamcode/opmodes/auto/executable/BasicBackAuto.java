@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
 
-@NextAutonomous(name = "plu Auto")
+@NextAutonomous(name = "Back Auto")
 public class BasicBackAuto extends NextOpMode {
 	protected final HazmatRobot robot;
 	protected Runnables runnables;

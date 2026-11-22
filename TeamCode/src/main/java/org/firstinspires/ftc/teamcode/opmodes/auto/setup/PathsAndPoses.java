@@ -39,7 +39,7 @@ public class PathsAndPoses {
 		public final Pose startingPose = factory.of(30.43, 7.48, 180);
 		public final Pose gardenIntakePose = factory.of(9.24, 7.31, 180);
 		public final Pose frontLeavePose = factory.of(11.92, 120.23, 0);
-		public final Pose backLeavePose = factory.of(9, 94.95, 0);
+		public final Pose backLeavePose = factory.of(7, 94.95, 0);
 		public final Pose beforeCloseFlowerIntakePose = factory.of(20.03, 46.64, 180);
 		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64, 180);
 		public final Pose beforeFarFlowerIntakePose = factory.of(47.16, 123, 90);

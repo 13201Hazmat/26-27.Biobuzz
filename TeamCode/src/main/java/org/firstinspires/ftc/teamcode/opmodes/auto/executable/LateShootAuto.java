@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.skeletonarmy.marrow.prompts.BooleanPrompt;
 import com.skeletonarmy.marrow.prompts.OptionPrompt;
 import com.skeletonarmy.marrow.prompts.Prompter;
@@ -11,7 +12,8 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
 
-@NextAutonomous(name = "Back Auto")
+@NextAutonomous(name = "Selectable Back Auto")
+@Disabled
 public class LateShootAuto extends BaseAuto {
 	private final Prompter prompter;
 

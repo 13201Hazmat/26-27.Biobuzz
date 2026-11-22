@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
 import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
 
-@NextAutonomous(name = "Base Auto")
+@NextAutonomous(name = "Front Auto")
 public class BasicAuto extends NextOpMode {
 	protected final HazmatRobot robot;
 	protected Runnables runnables;
@@ -34,12 +34,12 @@ public class BasicAuto extends NextOpMode {
 
 	@Override
 	public void start() {
-		robot.getFollower().setPose(runnables.paths.backLeaveAutoPoses.start);
+		robot.getFollower().setPose(runnables.paths.cp.startingPose);
 		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
 		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
 		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
 		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		runnables.backLeaveAuto(() -> true).schedule();
+		runnables.leaveAuto(() -> true).schedule();
 	}
 
 	@Override
