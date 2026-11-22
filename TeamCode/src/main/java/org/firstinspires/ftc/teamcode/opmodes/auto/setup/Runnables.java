@@ -8,7 +8,9 @@ import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
+import com.pedropathing.api.Paths;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
@@ -47,6 +49,19 @@ public class Runnables {
 	}
 
 	/* FRONT AUTOS (We are shooting first) */
+
+	public Command randomEngineerAuto() {
+		Pose start = new Pose(62.0, 9.5, 0);
+		Pose control = new Pose(18.37, 16.79, 0);
+		Path start_To_end = Paths.curve(start, control, paths.cp.backLeavePose).constant(start);
+		return sequential(
+			instant(() -> robot.getTurret().setTurretAngle(95)),
+			waitMs(1000),
+			launch(),
+			waitMs(10000),
+			move(start_To_end)
+		);
+	}
 
 	public Command launch() {
 		return sequential(
@@ -204,7 +219,7 @@ public class Runnables {
 	public Command backLeaveAuto(BooleanSupplier isFront) {
 		return sequential(
 			instant(() -> robot.getTurret().setTurretAngle(115)),
-			waitMs(1000),
+			waitMs(20000),
 			launch(),
 			move(paths.backLeaveAutoPoses.start_To_leave())
 		);

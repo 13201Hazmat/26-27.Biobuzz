@@ -126,8 +126,6 @@ public class Intake implements Mechanism {
 		if (intakeState == IntakeState.FORWARD) {
 			intakeState = IntakeState.REVERSE;
 		} else if (intakeState == IntakeState.REVERSE) {
-			intakeState = IntakeState.OFF;
-		} else {
 			intakeState = IntakeState.FORWARD;
 		}
 	}

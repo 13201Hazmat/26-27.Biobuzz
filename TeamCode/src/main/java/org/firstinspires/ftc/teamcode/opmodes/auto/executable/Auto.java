@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.executable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.skeletonarmy.marrow.prompts.BooleanPrompt;
 import com.skeletonarmy.marrow.prompts.OptionPrompt;
 import com.skeletonarmy.marrow.prompts.Prompter;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
 
-@NextAutonomous(name = "Auto")
+@NextAutonomous(name = "Selectable Front Auto")
+@Disabled
 public class Auto extends BaseAuto {
 	private final Prompter prompter;
 
