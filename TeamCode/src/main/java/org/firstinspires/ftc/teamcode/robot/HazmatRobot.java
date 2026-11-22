@@ -1,10 +1,29 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.onInterrupt;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
+import static org.firstinspires.ftc.teamcode.opmodes.auto.setup.PathsAndPoses.TurretPoses;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
+import com.pedropathing.math.Velocity;
 
+import org.firstinspires.ftc.teamcode.data.Alliance;
+import org.firstinspires.ftc.teamcode.data.Calc;
+import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
+import org.firstinspires.ftc.teamcode.mechanisms.Turret;
+import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -12,13 +31,70 @@ import java.util.Set;
 import dev.nextftc.hardware.RobotController;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
+import dev.nextftc.robot.opmode.NextOpMode;
+import dev.nextftc.robot.opmode.NextUtility;
 
 public class HazmatRobot implements NextRobot {
+
 	private Follower follower;
+	private final Drivetrain drivetrain;
 	private Intake intake;
+	private final Transfer transfer;
+	private Turret turret;
+	private final Launcher launcher;
+
+	private boolean isLaunching = false;
+	private boolean isTransferManual = false;
+
+	private boolean debugEnabled = false;
+
+	private NextOpMode activeOpMode = null;
+	private PoseFactory f = PoseFactory.degrees();
+	public final Pose blueHpCorner = f.of(133.432, 7.569, 90);
+	public final Pose rightHpCorner = f.of(7.9, 132, -90);
+
+	@Nullable
+	public NextOpMode getActiveOpMode() {
+		return activeOpMode;
+	}
+
+	public void setActiveOpMode(@Nullable NextOpMode activeOpMode) {
+		if (activeOpMode != null) {
+			offAll();
+		}
+		this.activeOpMode = activeOpMode;
+	}
+
+	public Alliance getAlliance() {
+		return Alliance.currentAlliance;
+	}
 
 	public HazmatRobot() {
+		drivetrain = new Drivetrain();
 		intake = new Intake();
+		transfer = new Transfer();
+		launcher = new Launcher();
+		turret = new Turret();
+	}
+
+	public Drivetrain getDrivetrain() {
+		return drivetrain;
+	}
+
+	public Intake getIntake() {
+		return intake;
+	}
+
+	public Turret getTurret() {
+		return turret;
+	}
+
+	public Transfer getTransfer() {
+		return transfer;
+	}
+
+	public Launcher getLauncher() {
+		return launcher;
 	}
 
 	public Follower getFollower() {
@@ -28,12 +104,162 @@ public class HazmatRobot implements NextRobot {
 		return follower;
 	}
 
-	public Intake getIntake() {
-		return intake;
+	public Command moveToPoint(com.pedropathing.paths.Path path) {
+		return follow(getFollower(), path);
+	}
+
+	public Pose getPose() {
+		return getFollower().pose();
+	}
+
+	public Velocity getVelocity() {
+		return getFollower().velocity();
+	}
+
+	public void setPose(Pose pose) {
+		getFollower().setPose(pose);
+	}
+
+	@NonNull
+	@Override
+	public Set<Mechanism> getMechanisms() {
+		return Set.of(intake, transfer, drivetrain, launcher, turret);
+	}
+
+	public void toggleManualTransfer() {
+		isTransferManual = !isTransferManual;
+	}
+
+	public void setManualTransferTrue() {
+		isTransferManual = true;
+	}
+
+	public void setDebugEnabled(boolean on) {
+		debugEnabled = on;
+	}
+	public boolean isUtilityOpMode() {
+		return activeOpMode != null && activeOpMode.getClass().isAnnotationPresent(NextUtility.class);
+	}
+
+	public void relocalize(Alliance a) {
+		if (a == Alliance.RED) {
+			setPose(rightHpCorner);
+		}
+		if (a == Alliance.BLUE) {
+			setPose(blueHpCorner);
+		}
+	}
+	public void setTargetPose(Alliance a, Pose current) {
+		if (a == Alliance.RED) {
+			if (current.y() > 70.5) {
+				TurretPoses.targetPose = TurretPoses.redFarHive;
+			} else {
+				TurretPoses.targetPose = TurretPoses.redAudienceHive;
+			}
+		}
+		if (a == Alliance.BLUE) {
+			if (current.y() > 70.5) {
+				TurretPoses.targetPose = TurretPoses.blueFarHive;
+			} else {
+				TurretPoses.targetPose = TurretPoses.blueAudienceHive;
+			}
+		}
+	}
+
+	public Command init() {
+		return parallel(
+			intake.setRampUp(),
+			launcher.closeGate()
+		);
+	}
+
+	public void offAll() {
+		intake.off();
+		transfer.off();
+	}
+	public Command launch() {
+		return sequential(
+			instant(() -> isLaunching = true),
+			launcher.openGate(),
+			waitMs(250),
+			transfer.setForward(),
+			intake.setForward(),
+			waitMs(1500),
+			launcher.closeGate(),
+			instant(() -> {
+				isLaunching = false;
+				transfer.getTransferSensing().getStoredBalls().clear();
+			}
+			)
+		).raceWith(onInterrupt(() -> {
+			isLaunching = false;
+		}));
+		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
+	}
+
+	public void debugAll() {
+		transfer.debug();
+		drivetrain.debug();
+		intake.debug();
+		launcher.debug();
+		turret.debug();
+	}
+
+	public void updateStates() {
+		if (isLaunching || launcher.isPowerMode())
+			return;
+
+		switch (transfer.getTransferSensingState()) {
+			case EMPTY :
+				launcher.setIdle();
+				setIntakeAndTransfer(true);
+				break;
+			case FILLING :
+				setIntakeAndTransfer(true);
+				break;
+			case LOADED :
+				launcher.autoSetVelocity(getPose());
+				if (!isTransferManual) {
+					intake.forward();
+					transfer.off();
+				}
+				break;
+			case FULL :
+				launcher.autoSetVelocity(getPose());
+				setIntakeAndTransfer(false);
+				break;
+		}
+	}
+
+	private void setIntakeAndTransfer(boolean on) {
+		if (isTransferManual)
+			return;
+
+		if (on) {
+			intake.forward();
+			transfer.forward();
+		} else {
+			intake.off();
+			transfer.off();
+		}
 	}
 
 	@Override
-	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake);
+	public void periodic() {
+		setTargetPose(getAlliance(), getPose());
+
+		if (!isUtilityOpMode()) {
+			updateStates();
+		}
+
+		if (Turret.AUTO_AIM) {
+			getTurret().trackGoal(TurretPoses.targetPose, Calc.predict(getPose(), getVelocity(), 0.05));
+		}
+
+		if (debugEnabled) {
+			debugAll();
+		}
+
+		follower.update();
 	}
 }

@@ -1,10 +1,246 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.setup;
 
+import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
+import com.pedropathing.paths.Path;
+
+import org.firstinspires.ftc.teamcode.data.Alliance;
 
 public class PathsAndPoses {
 
-	private static final PoseFactory factory = new PoseFactory(PoseFactory.Operation.IDENTITY, true);
-	public static Pose currentPose = factory.of(67, 67, 67);
+	public static PoseFactory factory = PoseFactory.degrees();
+	public final CommonPoints cp;
+	public final LeavePoses leavePoses;
+	public final FarFlowerAutoPoses farFlowerPoses;
+	public final CloseFlowerAutoPoses closeFlowerPoses;
+	public final DoubleFlowerAutoPoses doubleFlowerPoses;
+	public final BackLeaveAutoPoses backLeaveAutoPoses;
+	public PathsAndPoses() {
+		cp = new CommonPoints();
+		leavePoses = new LeavePoses();
+		farFlowerPoses = new FarFlowerAutoPoses();
+		closeFlowerPoses = new CloseFlowerAutoPoses();
+		doubleFlowerPoses = new DoubleFlowerAutoPoses();
+		backLeaveAutoPoses = new BackLeaveAutoPoses();
+	}
+
+	public static class TurretPoses {
+		public static Pose targetPose = factory.of(0, 0, 0);
+		public static final Pose redAudienceHive = factory.of(58, 53, 0);
+		public static final Pose redFarHive = factory.of(58, 88, 0);
+		public static final Pose blueAudienceHive = factory.of(84, 53, 0);
+		public static final Pose blueFarHive = factory.of(84, 88, 0);
+	}
+
+	/* Auto Path Poses */
+
+	public class CommonPoints {
+		public final Pose startingPose = factory.of(30.43, 7.48, 180);
+		public final Pose gardenIntakePose = factory.of(9.24, 7.31, 180);
+		public final Pose frontLeavePose = factory.of(11.92, 120.23, 0);
+		public final Pose backLeavePose = factory.of(7, 94.95, 0);
+		public final Pose beforeCloseFlowerIntakePose = factory.of(20.03, 46.64, 180);
+		public final Pose afterCloseFlowerIntakePose = factory.of(10.17, 46.64, 180);
+		public final Pose beforeFarFlowerIntakePose = factory.of(47.16, 123, 90);
+		public final Pose afterFarFlowerIntakePose = factory.of(47.16, 129, 90);
+		public final Path startingPose_To_gardenIntakePose() {
+			return Paths.line(startingPose, gardenIntakePose).linear(startingPose, gardenIntakePose);
+		}
+
+		public final Path currentPose_To_frontLeavePose(Pose currPose) {
+			return Paths.line(currPose, frontLeavePose).linear(currPose, frontLeavePose);
+		}
+
+		public final Path currentPose_To_backLeavePose(Pose currPose) {
+			return Paths.line(currPose, backLeavePose).linear(currPose, backLeavePose);
+		}
+	}
+
+	/* Starting at Open Hive */
+	public class LeavePoses {
+		public final MidLeavePoses midLeavePoses = new MidLeavePoses();
+		public final Pose control = factory.of(25.96, 56.11, 180);
+		public final Path startingPose_To_frontLeavePose() {
+			return Paths.line(cp.startingPose, cp.frontLeavePose).constant(cp.startingPose);
+		}
+		public final Path startingPose_To_backLeavePose() {
+			return Paths.line(cp.startingPose, cp.backLeavePose).linear(cp.startingPose, cp.backLeavePose);
+		}
+		public final Path midPose_To_frontLeavePose() {
+			return Paths.curve(cp.gardenIntakePose, control, cp.frontLeavePose).linear(
+				cp.gardenIntakePose, cp.frontLeavePose
+			);
+		}
+		public final Path midPose_To_backLeavePose() {
+			return Paths.curve(cp.gardenIntakePose, control, cp.backLeavePose).linear(
+				cp.gardenIntakePose, cp.backLeavePose
+			);
+		}
+
+		public class MidLeavePoses {
+			public final Pose middleControl = factory.of(86.68, 32.16, 90);
+			public final Pose midLeavePose = factory.of(72.37, 103.32, 90);
+			public final Pose frontLeavePose = cp.frontLeavePose;
+			public final Pose backLeavePose = cp.backLeavePose;
+
+			public final Path midPose_To_midLeavePose() {
+				return Paths.curve(cp.gardenIntakePose, middleControl, midLeavePose).linear(
+					cp.gardenIntakePose, midLeavePose
+				);
+			}
+			public final Path midLeavePose_To_frontLeavePose() {
+				return Paths.line(midLeavePose, frontLeavePose).linear(midLeavePose, frontLeavePose);
+			}
+			public final Path midLeavePose_To_backLeavePose() {
+				return Paths.line(midLeavePose, backLeavePose).linear(midLeavePose, backLeavePose);
+			}
+		}
+	}
+	public class CloseFlowerAutoPoses {
+		public CloseFlowerAutoMiddlePoses middlePoses = new CloseFlowerAutoMiddlePoses();
+		public final Pose leaveControlPoint = factory.of(25.11, 54.47, 0);
+
+		public Path gardenIntakePose_To_beforeCloseFlowerIntakePose() {
+			return Paths.line(cp.gardenIntakePose, cp.beforeCloseFlowerIntakePose).constant(cp.gardenIntakePose);
+		}
+
+		public Path beforeCloseFlowerIntakePose_To_afterCloseFlowerIntakePose() {
+			return Paths.line(cp.beforeCloseFlowerIntakePose, cp.afterCloseFlowerIntakePose).constant(
+				cp.afterCloseFlowerIntakePose
+			);
+		}
+
+		public Path afterCloseFlowerIntakePose_To_frontLeavePose() {
+			return Paths.curve(cp.afterCloseFlowerIntakePose, leaveControlPoint, cp.frontLeavePose).linear(
+				cp.afterCloseFlowerIntakePose, cp.frontLeavePose
+			);
+		}
+
+		public Path afterCloseFlowerIntakePose_To_backLeavePose() {
+			return Paths.curve(cp.afterCloseFlowerIntakePose, leaveControlPoint, cp.backLeavePose).linear(
+				cp.afterCloseFlowerIntakePose, cp.backLeavePose
+			);
+		}
+
+		public class CloseFlowerAutoMiddlePoses {
+			private final Pose midMiddlePathPose = factory.of(60.6001, 60.8558, 90);
+			private final Pose firstControl = factory.of(62.3008, 17.0909, 0);
+			private final Pose secondMidMiddlePathPose = factory.of(59.5239, 102.5848, 90);
+			private final Pose secondControl = factory.of(55.7883, 114.9808, 0);
+
+			public Path afterCloseFlowerIntakePose_To_midMiddlePathPose() {
+				return Paths.curve(cp.afterCloseFlowerIntakePose, firstControl, midMiddlePathPose).linear(
+					cp.afterCloseFlowerIntakePose, midMiddlePathPose
+				);
+			}
+
+			public Path midMiddlePathPose_To_secondMidMiddlePathPose() {
+				return Paths.line(midMiddlePathPose, secondMidMiddlePathPose).linear(
+					midMiddlePathPose, secondMidMiddlePathPose
+				);
+			}
+
+			public Path secondMidMiddlePathPose_To_frontLeavePose() {
+				return Paths.curve(secondMidMiddlePathPose, secondControl, cp.frontLeavePose).linear(
+					secondMidMiddlePathPose, cp.frontLeavePose
+				);
+			}
+
+			public Path secondMidMiddlePathPose_To_backLeavePose() {
+				return Paths.curve(secondMidMiddlePathPose, secondControl, cp.backLeavePose).linear(
+					secondMidMiddlePathPose, cp.backLeavePose
+				);
+			}
+		}
+	}
+
+	public class FarFlowerAutoPoses {
+		public FarFlowerAutoMiddlePoses middlePoses = new FarFlowerAutoMiddlePoses();
+		private final Pose firstControl = factory.of(29.12, 42.64, 0);
+		private final Pose secondControl = factory.of(14.67, 99.09, 0);
+
+		private final Pose midPose = factory.of(23.74, 63.72, 90);
+
+		public Path gardenIntakePose_To_midPose() {
+			return Paths.curve(cp.gardenIntakePose, firstControl, midPose).linear(
+				cp.gardenIntakePose, midPose
+			);
+		}
+
+		public Path midPose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(midPose, secondControl, cp.beforeFarFlowerIntakePose).constant(
+				cp.beforeFarFlowerIntakePose
+			);
+		}
+
+		public Path beforeFarFlowerIntakePose_To_afterFarFlowerIntakePose() {
+			return Paths.line(cp.beforeFarFlowerIntakePose, cp.afterFarFlowerIntakePose).constant(
+				cp.afterFarFlowerIntakePose
+			);
+		}
+
+		public Path afterFarFlowerIntakePose_To_frontLeavePose() {
+			return Paths.line(cp.afterFarFlowerIntakePose, cp.frontLeavePose).linear(
+				cp.afterFarFlowerIntakePose, cp.frontLeavePose
+			);
+		}
+
+		public Path afterFarFlowerIntakePose_To_backLeavePose() {
+			return Paths.line(cp.afterFarFlowerIntakePose, cp.backLeavePose).linear(
+				cp.afterFarFlowerIntakePose, cp.backLeavePose
+			);
+		}
+
+		public class FarFlowerAutoMiddlePoses {
+			private final Pose midMiddlePose = factory.of(60.6001, 60.8558, 90);
+			private final Pose firstControl = factory.of(60.805, 26.2059, 0);
+			private final Pose secondControl = factory.of(65.8009, 86.7661, 0);
+			public Path gardenIntakePose_To_midMiddlePose() {
+				return Paths.curve(cp.gardenIntakePose, firstControl, midMiddlePose).linear(
+					cp.gardenIntakePose, midMiddlePose
+				);
+			}
+
+			public Path midMiddlePose_To_beforeFarFlowerIntakePose() {
+				return Paths.curve(midMiddlePose, secondControl, cp.beforeFarFlowerIntakePose).constant(
+					cp.beforeFarFlowerIntakePose
+				);
+			}
+		}
+	}
+
+	public class DoubleFlowerAutoPoses {
+
+		public DoubleFlowerAutoMiddlePoses middlePoses = new DoubleFlowerAutoMiddlePoses();
+
+		public final Pose control = factory.of(23.1, 118.99, 90);
+		public Path afterCloseFlowerIntakePose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(cp.afterCloseFlowerIntakePose, control, cp.beforeFarFlowerIntakePose).linear(
+				cp.afterCloseFlowerIntakePose, cp.beforeFarFlowerIntakePose
+			);
+		}
+		public class DoubleFlowerAutoMiddlePoses {
+			public Path secondMidMiddlePose_To_beforeFarFlowerIntakePose() {
+				return Paths.line(
+					closeFlowerPoses.middlePoses.secondMidMiddlePathPose, cp.beforeFarFlowerIntakePose
+				).linear(closeFlowerPoses.middlePoses.secondMidMiddlePathPose, cp.beforeFarFlowerIntakePose);
+			}
+		}
+	}
+
+	public class BackLeaveAutoPoses {
+		public final Pose start = factory.of(31.2587, 133.5892, 180);
+		public final Pose path1 = factory.of(47.5021, 122.5019, 90);
+		public final Pose path1Control1 = factory.of(27.5859, 108.9778, 0);
+
+		public Path backStartingPose_To_beforeFarFlowerIntakePose() {
+			return Paths.curve(start, path1Control1, path1).linear(start, path1);
+		}
+
+		public Path start_To_leave() {
+			return Paths.line(start, cp.frontLeavePose).constant(start);
+		}
+	}
+
 }
