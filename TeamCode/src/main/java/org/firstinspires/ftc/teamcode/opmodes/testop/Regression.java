@@ -53,7 +53,7 @@ public class Regression extends NextOpMode {
 				gamepad1.right_stick_x,
 				robot.getFollower().pose().heading()
 		);
-		robot.getFollower().manual(powers);
+		ManualDrive.driveOrHold(robot.getFollower(), powers);
 
 		robot.getLauncher().PID();
 		telemetry.addData("Target RPM", robot.getLauncher().getTargetVelocity());

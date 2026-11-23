@@ -50,9 +50,9 @@ public class DrivetrainTest extends NextOpMode {
 
 		if (isFieldCentric) {
 			DrivePowers powers = ManualDrive.fieldCentric(-gamepad1.left_stick_x, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getFollower().pose().heading());
-			robot.getFollower().manual(powers);
+			ManualDrive.driveOrHold(robot.getFollower(), powers);
 		} else {
-			robot.getFollower().manual(-gamepad1.left_stick_x, gamepad1.left_stick_x, gamepad1.right_stick_x);
+			ManualDrive.driveOrHold(robot.getFollower(), -gamepad1.left_stick_x, gamepad1.left_stick_x, gamepad1.right_stick_x);
 		}
 	}
 

@@ -59,7 +59,7 @@ public class RobotTest extends NextOpMode {
 				gamepad1.right_stick_x,
 				robot.getFollower().pose().heading()
 		);
-		robot.getFollower().manual(powers);
+		ManualDrive.driveOrHold(robot.getFollower(), powers);
 		Telemetry.log("Joysticks", "Drive Robot");
 		Telemetry.log("Right Bumper", "Cycle Intake");
 		Telemetry.log("Left Bumper", "Cycle Transfer");
