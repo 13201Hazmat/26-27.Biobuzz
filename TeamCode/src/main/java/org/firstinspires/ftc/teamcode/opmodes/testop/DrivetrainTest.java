@@ -31,14 +31,11 @@ public class DrivetrainTest extends NextOpMode {
 	public void start() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		double forward = gamepad1.left_stick_x;
-		double lateral = gamepad1.left_stick_y;
-		double turn = gamepad1.right_stick_x;
-		robot.getFollower().manual(forward, lateral, turn);
-
 		gp1.leftTrigger().isOver(0.2).onTrue(instant(() -> robot.setDebugEnabled(true))).onFalse(
 			instant(() -> robot.setDebugEnabled(false))
 		);
+
+		gp1.rightBumper().onTrue(instant(() -> isFieldCentric = !isFieldCentric));
 	}
 
 	@Override
@@ -47,13 +44,15 @@ public class DrivetrainTest extends NextOpMode {
 		Telemetry.log("Right Stick Y Value", gamepad1.right_stick_y);
 		Telemetry.log("Left Stick X Value", gamepad1.left_stick_x);
 		Telemetry.log("Left Stick Y Value", gamepad1.left_stick_y);
+		Telemetry.log("----------------", "---");
+		Telemetry.log(isFieldCentric ? "Field Centric": "Robot Centric", "-");
 		Telemetry.log("Left Trigger", "Debug");
-		double forward = gamepad1.left_stick_x;
-		double lateral = gamepad1.left_stick_y;
-		double turn = gamepad1.right_stick_x;
+
 		if (isFieldCentric) {
-			DrivePowers powers = ManualDrive.fieldCentric(forward, lateral, turn, robot.getFollower().pose().heading());
+			DrivePowers powers = ManualDrive.fieldCentric(-gamepad1.left_stick_x, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getFollower().pose().heading());
 			robot.getFollower().manual(powers);
+		} else {
+			robot.getFollower().manual(-gamepad1.left_stick_x, gamepad1.left_stick_x, gamepad1.right_stick_x);
 		}
 	}
 

@@ -44,7 +44,6 @@ public class BaseAuto extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.getFollower().update();
 		telemetry.addData("POSE", robot.getFollower().pose());
 	}
 }

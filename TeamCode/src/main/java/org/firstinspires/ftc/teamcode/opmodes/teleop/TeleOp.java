@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import static com.pedropathing.ivy.commands.Commands.instant;
 
 import com.pedropathing.drivetrain.DrivePowers;
+import com.pedropathing.follower.ManualDrive;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.PoseStorage;
@@ -46,7 +47,6 @@ public abstract class TeleOp extends NextOpMode {
 		// robot.getDrivetrain().startDrive(gamepad1/* , () -> robot.getPose().heading()
 		// */);
 
-		robot.getFollower().manual();
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
 		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());
@@ -78,6 +78,12 @@ public abstract class TeleOp extends NextOpMode {
 
 	@Override
 	public void periodic() {
-
+		DrivePowers powers = ManualDrive.fieldCentric(
+				-gamepad1.left_stick_y,
+				gamepad1.left_stick_x,
+				gamepad1.right_stick_x,
+				robot.getFollower().pose().heading()
+		);
+		robot.getFollower().manual(powers);
 	}
 }

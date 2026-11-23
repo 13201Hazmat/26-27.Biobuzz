@@ -16,6 +16,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.Calc;
@@ -236,6 +237,7 @@ public class HazmatRobot implements NextRobot {
 		}
 	}
 
+
 	@Override
 	public void periodic() {
 		setTargetPose(getAlliance(), getPose());
@@ -252,6 +254,6 @@ public class HazmatRobot implements NextRobot {
 			debugAll();
 		}
 
-		follower.update();
+		getFollower().update();
 	}
 }

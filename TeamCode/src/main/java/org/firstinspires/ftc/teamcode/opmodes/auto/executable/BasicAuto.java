@@ -49,7 +49,6 @@ public class BasicAuto extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		robot.getFollower().update();
 		telemetry.addData("POSE", robot.getFollower().pose());
 		telemetry.addData("ALLIANCE", Alliance.currentAlliance);
 		telemetry.update();

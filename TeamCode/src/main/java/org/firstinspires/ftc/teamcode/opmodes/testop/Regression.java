@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opmodes.testop;
 import static com.pedropathing.ivy.commands.Commands.instant;
 
 import com.pedropathing.api.PoseFactory;
+import com.pedropathing.drivetrain.DrivePowers;
+import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.data.Calc;
@@ -31,10 +33,7 @@ public class Regression extends NextOpMode {
 	@Override
 	public void start() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
-		double forward = gamepad1.left_stick_x;
-		double lateral = gamepad1.left_stick_y;
-		double turn = gamepad1.right_stick_x;
-		robot.getFollower().manual(forward, lateral, turn);
+
 		gp1.triangle().onTrue(instant(() -> robot.getLauncher().incrementRPM()));
 		gp1.cross().onTrue(instant(() -> robot.getLauncher().decrementRPM()));
 		gp1.circle().onTrue(instant(() -> robot.getLauncher().setTargetVelocity(0)));
@@ -47,6 +46,15 @@ public class Regression extends NextOpMode {
 
 	@Override
 	public void periodic() {
+
+		DrivePowers powers = ManualDrive.fieldCentric(
+				-gamepad1.left_stick_y,
+				gamepad1.left_stick_x,
+				gamepad1.right_stick_x,
+				robot.getFollower().pose().heading()
+		);
+		robot.getFollower().manual(powers);
+
 		robot.getLauncher().PID();
 		telemetry.addData("Target RPM", robot.getLauncher().getTargetVelocity());
 		telemetry.addData("Current RPM", robot.getLauncher().getCurrentRPM());
