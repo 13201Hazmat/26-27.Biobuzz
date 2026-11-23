@@ -19,7 +19,6 @@ import com.pedropathing.math.Velocity;
 
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.Calc;
-import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
@@ -37,7 +36,6 @@ import dev.nextftc.robot.opmode.NextUtility;
 public class HazmatRobot implements NextRobot {
 
 	private Follower follower;
-	private final Drivetrain drivetrain;
 	private Intake intake;
 	private final Transfer transfer;
 	private Turret turret;
@@ -70,15 +68,10 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public HazmatRobot() {
-		drivetrain = new Drivetrain();
 		intake = new Intake();
 		transfer = new Transfer();
 		launcher = new Launcher();
 		turret = new Turret();
-	}
-
-	public Drivetrain getDrivetrain() {
-		return drivetrain;
 	}
 
 	public Intake getIntake() {
@@ -123,7 +116,7 @@ public class HazmatRobot implements NextRobot {
 	@NonNull
 	@Override
 	public Set<Mechanism> getMechanisms() {
-		return Set.of(intake, transfer, drivetrain, launcher, turret);
+		return Set.of(intake, transfer, launcher, turret);
 	}
 
 	public void toggleManualTransfer() {
@@ -199,7 +192,6 @@ public class HazmatRobot implements NextRobot {
 
 	public void debugAll() {
 		transfer.debug();
-		drivetrain.debug();
 		intake.debug();
 		launcher.debug();
 		turret.debug();

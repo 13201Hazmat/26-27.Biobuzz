@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
 
+import com.pedropathing.drivetrain.DrivePowers;
+
 import org.firstinspires.ftc.teamcode.data.Alliance;
 import org.firstinspires.ftc.teamcode.data.PoseStorage;
 import org.firstinspires.ftc.teamcode.robot.HazmatRobot;
@@ -41,8 +43,9 @@ public abstract class TeleOp extends NextOpMode {
 	protected void gp1() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
 
-		robot.getDrivetrain().startDrive(gamepad1/* , () -> robot.getPose().heading() */);
+//		robot.getDrivetrain().startDrive(gamepad1/* , () -> robot.getPose().heading() */);
 
+		robot.getFollower().manual();
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()).with(instant(robot::setManualTransferTrue)));
 		gp1.leftStickButton().onTrue(instant(robot::toggleManualTransfer));
 		gp1.rightStickButton().onTrue(robot.getIntake().toggleRamp());

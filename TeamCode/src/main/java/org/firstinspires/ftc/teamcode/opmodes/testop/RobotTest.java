@@ -28,8 +28,10 @@ public class RobotTest extends NextOpMode {
 	@Override
 	public void start() {
 		CommandGamepad gp1 = new CommandGamepad(gamepad1);
-
-		robot.getDrivetrain().startDrive(gamepad1);
+		double forward = gamepad1.left_stick_x;
+		double lateral = gamepad1.left_stick_y;
+		double turn = gamepad1.right_stick_x;
+		robot.getFollower().manual(forward, lateral, turn);
 
 		// Intake and Transfer Controls
 		gp1.rightBumper().onTrue(instant(() -> robot.getIntake().cycle()));
