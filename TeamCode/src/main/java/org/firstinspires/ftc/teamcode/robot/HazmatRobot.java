@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.pedropathing.api.PoseFactory;
+import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
@@ -235,6 +237,25 @@ public class HazmatRobot implements NextRobot {
 			intake.off();
 			transfer.off();
 		}
+	}
+
+	public void startFieldCentricDrive(Gamepad gamepad) {
+		DrivePowers powers = ManualDrive.fieldCentric(
+				-gamepad.left_stick_y,
+				gamepad.left_stick_x,
+				gamepad.right_stick_x,
+				follower.pose().heading()
+		);
+		ManualDrive.driveOrHold(getFollower(), powers);
+	}
+
+	public void startRobotCentricDrive(Gamepad gamepad) {
+		ManualDrive.driveOrHold(
+				follower,
+				-gamepad.left_stick_y,
+				gamepad.left_stick_x,
+				gamepad.right_stick_x
+		);
 	}
 
 

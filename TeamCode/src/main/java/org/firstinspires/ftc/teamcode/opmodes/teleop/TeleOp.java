@@ -78,13 +78,15 @@ public abstract class TeleOp extends NextOpMode {
 
 	@Override
 	public void periodic() {
-		DrivePowers powers = ManualDrive.fieldCentric(
-				-gamepad1.left_stick_y,
-				gamepad1.left_stick_x,
-				gamepad1.right_stick_x,
-				robot.getFollower().pose().heading()
-		);
+//		DrivePowers powers = ManualDrive.fieldCentric(
+//				-gamepad1.left_stick_y,
+//				gamepad1.left_stick_x,
+//				gamepad1.right_stick_x,
+//				robot.getFollower().pose().heading()
+//		);
+//
+//		ManualDrive.driveOrHold(robot.getFollower(), powers);
 
-		ManualDrive.driveOrHold(robot.getFollower(), powers);
+		robot.startFieldCentricDrive(gamepad1);
 	}
 }
