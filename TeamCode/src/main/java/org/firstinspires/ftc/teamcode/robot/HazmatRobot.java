@@ -52,7 +52,6 @@ public class HazmatRobot implements NextRobot {
 	private PoseFactory f = PoseFactory.degrees();
 	public final Pose blueHpCorner = f.of(133.432, 7.569, 90);
 	public final Pose rightHpCorner = f.of(7.9, 132, -90);
-
 	@Nullable
 	public NextOpMode getActiveOpMode() {
 		return activeOpMode;
@@ -188,13 +187,13 @@ public class HazmatRobot implements NextRobot {
 			launcher.closeGate(),
 			instant(() -> {
 				isLaunching = false;
-				transfer.getTransferSensing().getStoredBalls().clear();
+				transfer.setCount(0);
 			}
 			)
 		).raceWith(onInterrupt(() -> {
+			launcher.closeGate();
 			isLaunching = false;
 		}));
-		// .unless(() -> transfer.getTransferSensing().getStoredBalls().isEmpty());
 	}
 
 	public void debugAll() {
@@ -206,41 +205,42 @@ public class HazmatRobot implements NextRobot {
 	}
 
 	public void updateStates() {
-		if (isLaunching || launcher.isPowerMode())
+		if (isLaunching)
 			return;
 
-		switch (transfer.getTransferSensingState()) {
-			case EMPTY :
-				launcher.setIdle();
-				setIntakeAndTransfer(true);
-				break;
-			case FILLING :
-				setIntakeAndTransfer(true);
-				break;
-			case LOADED :
-				launcher.autoSetVelocity(getPose());
-				if (!isTransferManual) {
-					intake.forward();
-					transfer.off();
-				}
-				break;
-			case FULL :
-				launcher.autoSetVelocity(getPose());
-				setIntakeAndTransfer(false);
-				break;
+		int count = transfer.getCount();
+
+		if (count >= 4) {
+			launcher.autoSetVelocity(getPose());
+			setIntakeAndTransfer(3);
+		} else if (count >= 2) {
+			launcher.autoSetVelocity(getPose());
+			setIntakeAndTransfer(2);
+		} else {
+			launcher.setIdle();
+			setIntakeAndTransfer(1);
 		}
 	}
 
-	private void setIntakeAndTransfer(boolean on) {
+	private void setIntakeAndTransfer(int state) {
 		if (isTransferManual)
 			return;
 
-		if (on) {
-			intake.forward();
-			transfer.forward();
-		} else {
-			intake.off();
-			transfer.off();
+		switch (state) {
+			case 1:
+				intake.forward();
+				transfer.forward();
+				break;
+
+			case 2:
+				intake.forward();
+				transfer.off();
+				break;
+
+			case 3:
+				intake.off();
+				transfer.off();
+				break;
 		}
 	}
 

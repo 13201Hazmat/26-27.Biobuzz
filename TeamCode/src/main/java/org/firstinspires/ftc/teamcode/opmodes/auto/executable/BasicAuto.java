@@ -35,13 +35,10 @@ public class BasicAuto extends NextOpMode {
 	@Override
 	public void start() {
 		robot.getFollower().setPose(runnables.paths.cp.startingPose);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().setCount(4);
+
 		runnables.leaveAuto(() -> true).schedule();
 	}
-
 	@Override
 	public void disabledPeriodic() {
 		robot.init().schedule();

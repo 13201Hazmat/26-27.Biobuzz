@@ -111,16 +111,11 @@ public class Auto extends BaseAuto {
 	@Override
 	public void start() {
 		super.start();
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().setCount(4);
 	}
 
 	@Override
 	public void periodic() {
-		telemetry.addData("QUEU", robot.getTransfer().getTransferSensing().getStoredBalls());
-		telemetry.addData("STATE", robot.getTransfer().getTransferSensingState());
 		telemetry.update();
 	}
 }

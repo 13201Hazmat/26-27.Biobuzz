@@ -34,10 +34,7 @@ public class BasicBackAuto extends NextOpMode {
 	@Override
 	public void start() {
 		robot.getFollower().setPose(runnables.paths.backLeaveAutoPoses.start);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
-		robot.getTransfer().getTransferSensing().getStoredBalls().add(BallType.POLLEN);
+		robot.getTransfer().setCount(4);
 		runnables.backLeaveAuto(() -> true).schedule();
 	}
 

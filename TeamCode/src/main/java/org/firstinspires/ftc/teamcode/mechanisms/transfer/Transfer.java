@@ -4,18 +4,16 @@ import static dev.nextftc.units.Units.Amperes;
 
 import com.pedropathing.ivy.Command;
 
+import org.firstinspires.ftc.teamcode.data.BallType;
 import org.firstinspires.ftc.teamcode.data.Config;
 
 import dev.nextftc.hardware.actuators.NextMotor;
+import dev.nextftc.hardware.sensors.NextDigitalSensor;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.telemetry.Telemetry;
 import dev.nextftc.units.measuretypes.Current;
 
 public class Transfer implements Mechanism {
-
-	public enum TransferSensingState {
-		EMPTY, FILLING, LOADED, FULL
-	}
 
 	public enum TransferMotorState {
 		FORWARD, BACKWARD, OFF
@@ -28,39 +26,44 @@ public class Transfer implements Mechanism {
 	private final Current currentLimit = Amperes.of(5.0);
 
 	private final NextMotor transferMotor = new NextMotor(Config.transferMotorModule, Config.transferMotorPort);
-	private TransferMotorState transferMotorState;
-	private TransferSensingState transferSensingState;
-	private final TransferTracking transferTracking;
+	private final NextDigitalSensor intakeBeamBreak = new NextDigitalSensor(
+			Config.intakeBeamBreakModule, Config.intakeBeamBreakPort, false
+	);
+
+	private TransferMotorState transferMotorState = TransferMotorState.OFF;
+	private int ballCount = 0;
+	private boolean lastIntakeBeamState = false;
 
 	public Transfer() {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
-		transferTracking = new TransferTracking();
-		transferMotorState = TransferMotorState.OFF;
-		transferSensingState = TransferSensingState.EMPTY;
-
-		transferMotor.setCurrentAlert(currentLimit);
-
-		transferTracking.init();
 	}
 
 	public double getSpeed() {
 		return transferMotor.getThrottle();
 	}
 
-	public TransferTracking getTransferSensing() {
-		return this.transferTracking;
+	public NextDigitalSensor getIntakeBeamBreak() {
+		return intakeBeamBreak;
 	}
 
-	public TransferSensingState getTransferSensingState() {
-		return transferSensingState;
+	public int getCount() {
+		return ballCount;
+	}
+
+	public void setCount(int count) {
+		ballCount = count;
+	}
+
+	public void increaseCount() {
+		ballCount++;
+	}
+
+	public void decreaseCount() {
+		ballCount--;
 	}
 
 	private void setState(TransferMotorState transferMotorState) {
 		this.transferMotorState = transferMotorState;
-	}
-
-	public boolean isStalling() {
-		return transferMotor.isOverCurrent();
 	}
 
 	public void forward() {
@@ -98,40 +101,35 @@ public class Transfer implements Mechanism {
 	}
 
 	public void debug() {
-		transferTracking.debug();
+		Telemetry.log("Intake Beam", intakeBeamBreak.isTriggered());
+		Telemetry.log("BALL TYPE:", BallType.currentBallType);
+		Telemetry.log("NUMBER OF BALLS:", ballCount);
 		Telemetry.log("TRANSFER STATE:", transferMotorState);
 		Telemetry.log("TRANSFER SPEED", transferMotor.getThrottle());
 	}
 
-	@Override
-	public void periodic() {
-		transferTracking.periodic();
+	private void updateBallCount() {
+		boolean currentIntakeBeamState = intakeBeamBreak.isTriggered();
 
-		switch (transferTracking.getStoredBalls().size()) {
-			case 0 :
-				transferSensingState = TransferSensingState.EMPTY;
-				break;
-			case 1 :
-				transferSensingState = TransferSensingState.FILLING;
-				break;
-			case 2 :
-			case 3 :
-				transferSensingState = TransferSensingState.LOADED;
-				break;
-			case 4 :
-			case 5 :
-				transferSensingState = TransferSensingState.FULL;
-				break;
+		if (currentIntakeBeamState && !lastIntakeBeamState) {
+			increaseCount();
 		}
 
+		lastIntakeBeamState = currentIntakeBeamState;
+	}
+
+	@Override
+	public void periodic() {
+		updateBallCount();
+
 		switch (transferMotorState) {
-			case FORWARD :
+			case FORWARD:
 				transferMotor.setThrottle(FORWARD_SPEED);
 				break;
-			case BACKWARD :
+			case BACKWARD:
 				transferMotor.setThrottle(BACKWARD_SPEED);
 				break;
-			case OFF :
+			case OFF:
 				transferMotor.setThrottle(OFF_SPEED);
 				break;
 		}
