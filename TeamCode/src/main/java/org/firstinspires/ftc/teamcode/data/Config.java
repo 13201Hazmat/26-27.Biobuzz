@@ -50,4 +50,5 @@ public class Config {
 
 	public static String intakeColorSensorName = "intakeColorSensor";
 
+	public static final String arducamName = "Webcam 1";
 }
