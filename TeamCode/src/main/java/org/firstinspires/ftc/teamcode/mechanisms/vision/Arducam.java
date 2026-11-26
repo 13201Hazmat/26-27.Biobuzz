@@ -55,6 +55,10 @@ public class Arducam implements Mechanism {
         return null;
     }
 
+    public void update() {
+        this.detectedTags = processor.getFreshDetections();
+    }
+
     public void stop() {
         if(visionPortal != null) {
             visionPortal.close();
@@ -71,6 +75,6 @@ public class Arducam implements Mechanism {
 
     @Override
     public void periodic() {
-        this.detectedTags = processor.getFreshDetections();
+        update();
     }
 }

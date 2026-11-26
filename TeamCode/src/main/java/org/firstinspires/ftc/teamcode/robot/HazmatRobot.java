@@ -100,6 +100,10 @@ public class HazmatRobot implements NextRobot {
 		return launcher;
 	}
 
+	public Arducam getArducam() {
+		return arducam;
+	}
+
 	public Follower getFollower() {
 		if (follower == null) {
 			follower = Constants.create(RobotController.hardwareMap());
