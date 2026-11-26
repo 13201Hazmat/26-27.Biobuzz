@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms.transfer;
+package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static dev.nextftc.units.Units.Amperes;
 

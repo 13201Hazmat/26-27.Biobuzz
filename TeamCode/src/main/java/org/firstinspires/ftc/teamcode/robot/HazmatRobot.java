@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Launcher;
 import org.firstinspires.ftc.teamcode.mechanisms.Turret;
-import org.firstinspires.ftc.teamcode.mechanisms.transfer.Transfer;
+import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
