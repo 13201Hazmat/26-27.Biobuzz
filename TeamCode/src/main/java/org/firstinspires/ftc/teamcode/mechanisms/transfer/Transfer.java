@@ -36,6 +36,7 @@ public class Transfer implements Mechanism {
 
 	public Transfer() {
 		transferMotor.setDirection(NextMotor.Direction.FORWARD);
+		setCount(0);
 	}
 
 	public double getSpeed() {
